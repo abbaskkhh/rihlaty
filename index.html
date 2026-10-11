@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>رحلتي — ٢١٤ يومًا</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0B0A0C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Cairo', sans-serif; background-color: #0B0A0C; color: #F5F3F4; -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body class="p-4 pb-24 max-w-md mx-auto min-h-screen select-none">
+
+  <!-- زر التثبيت كتطبيق (يظهر تلقائياً عندما يدعم المتصفح التثبيت) -->
+  <div id="installBanner" class="hidden mb-4 p-3 bg-gradient-to-r from-[#E11D48]/20 to-[#121013] border border-[#E11D48]/40 rounded-2xl flex items-center justify-between">
+    <div class="text-xs">
+      <span class="font-bold text-white block">تثبيت «رحلتي» كـ تطبيق</span>
+      <span class="text-[#AAA2A7] text-[10px]">استخدمه كتطبيق مستقل بدون شريط المتصفح</span>
+    </div>
+    <button onclick="installPWA()" class="bg-[#E11D48] hover:bg-[#F43F5E] text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-all">
+      تثبيت الآن
+    </button>
+  </div>
+
+  <header class="mb-4">
+    <div class="flex justify-between items-center">
+      <h1 class="text-xl font-black text-white">رحلتي</h1>
+      <span class="text-[11px] bg-[#1A181C] border border-[#30262B] px-2.5 py-1 rounded-full text-[#AAA2A7]">
+        ٢١٤ يومًا نحو الانضباط
+      </span>
+    </div>
+  </header>
+
+  <!-- بطاقة الرحلة والتقدم -->
+  <div class="bg-[#121013] border border-[#30262B] p-5 rounded-3xl shadow-lg mb-4">
+    <div class="flex justify-between items-center mb-2">
+      <span id="phaseTitle" class="text-xs font-bold text-[#F43F5E] bg-[#E11D48]/20 px-2.5 py-0.5 rounded-full border border-[#E11D48]/30">
+        المرحلة الأولى: بناء الأساس
+      </span>
+      <span id="journeyPercent" class="text-2xl font-black text-white">0%</span>
+    </div>
+    <h2 class="text-lg font-black mb-1">
+      اليوم <span id="currentDay">١</span> <span class="text-xs font-normal text-[#AAA2A7]">من أصل ٢١٤</span>
+    </h2>
+    <p class="text-xs text-[#AAA2A7] mb-3">«لا أحتاج إلى أن أكون مثاليًا؛ أحتاج إلى أن أستمر.»</p>
+    
+    <div class="w-full bg-[#1A181C] h-2.5 rounded-full overflow-hidden">
+      <div id="progressBar" class="bg-gradient-to-r from-[#E11D48] to-[#F43F5E] h-full transition-all duration-500" style="width: 1%"></div>
+    </div>
+    <div class="flex justify-between text-[11px] text-[#AAA2A7] mt-2">
+      <span>تاريخ البدء: <span id="startDateDisplay">---</span></span>
+      <span>المتبقي: <span id="remainingDays">٢١٣</span> يومًا</span>
+    </div>
+  </div>
+
+  <!-- شبكة مؤشرات الوزن والعناية -->
+  <div class="grid grid-cols-2 gap-3 mb-4">
+    <!-- الوزن -->
+    <div class="bg-[#121013] border border-[#30262B] p-4 rounded-2xl flex flex-col justify-between">
+      <div class="flex justify-between items-center text-xs text-[#AAA2A7]">
+        <span>الوزن الحالي</span>
+        <button onclick="updateWeight()" class="text-[#F43F5E] text-[11px] font-bold">+ تعديل</button>
+      </div>
+      <div class="my-2">
+        <span id="currentWeight" class="text-2xl font-black text-white">0</span>
+        <span class="text-xs text-[#AAA2A7]">كغ</span>
+      </div>
+      <div class="text-[10px] text-[#AAA2A7] border-t border-[#30262B]/60 pt-1">
+        الهدف: <span id="targetWeight">0</span> كغ
+      </div>
+    </div>
+
+    <!-- الماء -->
+    <div class="bg-[#121013] border border-[#30262B] p-4 rounded-2xl flex flex-col justify-between">
+      <div class="flex justify-between items-center text-xs text-[#AAA2A7]">
+        <span>شرب الماء</span>
+        <span id="waterGoal" class="text-[10px] text-blue-400">٣٠٠٠ مل</span>
+      </div>
+      <div class="my-2">
+        <span id="waterCurrent" class="text-2xl font-black text-white">0</span>
+        <span class="text-xs text-[#AAA2A7]">مل</span>
+      </div>
+      <div class="flex gap-1.5 pt-1">
+        <button onclick="addWater(250)" class="flex-1 bg-[#1A181C] text-[10px] py-1 rounded-lg border border-[#30262B] hover:border-blue-400">+٢٥٠</button>
+        <button onclick="addWater(500)" class="flex-1 bg-[#1A181C] text-[10px] py-1 rounded-lg border border-[#30262B] hover:border-blue-400">+٥٠٠</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- العادات اليومية -->
+  <div class="bg-[#121013] border border-[#30262B] p-5 rounded-3xl mb-4">
+    <div class="flex justify-between items-center mb-3">
+      <h3 class="text-sm font-bold text-white">عادات الانضباط اليومي</h3>
+      <span id="habitsDoneRatio" class="text-xs text-[#10B981] font-semibold">0 من 5</span>
+    </div>
+    <div id="habitsList" class="space-y-2"></div>
+  </div>
+
+  <!-- شريط سفلي للتحكم والضبط -->
+  <div class="fixed bottom-0 left-0 right-0 bg-[#121013]/95 border-t border-[#30262B] p-3 backdrop-blur flex justify-around text-xs">
+    <button onclick="setupJourney()" class="text-[#AAA2A7] hover:text-white">إعدادات الرحلة</button>
+    <button onclick="toggleHardDay()" id="hardDayBtn" class="text-[#AAA2A7] hover:text-[#F43F5E]">وضع اليوم الصعب</button>
+    <button onclick="exportData()" class="text-[#AAA2A7] hover:text-white">نسخة احتياطية</button>
+  </div>
+
+  <script>
+    const TOTAL_DAYS = 214;
+    const defaultHabits = [
+      { id: 1, title: 'شرب الماء الكافي بالتساوي' },
+      { id: 2, title: 'المشي أو الحركة ٢٠-٣٠ دقيقة' },
+      { id: 3, title: 'الالتزام بوجبات نظيفة دون عشوائية' },
+      { id: 4, title: 'النوم المبكر (٧-٨ ساعات)' },
+      { id: 5, title: 'التمرين أو الإطالة المقررة' }
+    ];
+
+    let appData = JSON.parse(localStorage.getItem('rehlaty_data')) || {
+      startDate: new Date().toISOString().split('T')[0],
+      startingWeight: 88.0,
+      targetWeight: 72.0,
+      currentWeight: 88.0,
+      water: 0,
+      completedHabits: [],
+      isHardDay: false
+    };
+
+    function saveData() {
+      localStorage.setItem('rehlaty_data', JSON.stringify(appData));
+      render();
+    }
+
+    function render() {
+      // حساب الأيام
+      const start = new Date(appData.startDate);
+      const now = new Date();
+      start.setHours(0,0,0,0);
+      now.setHours(0,0,0,0);
+      const diffTime = Math.max(0, now - start);
+      const currentDay = Math.min(Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1, TOTAL_DAYS);
+      const remaining = Math.max(0, TOTAL_DAYS - currentDay);
+      const percent = Math.min(100, Math.round((currentDay / TOTAL_DAYS) * 100));
+
+      document.getElementById('currentDay').innerText = currentDay;
+      document.getElementById('remainingDays').innerText = remaining;
+      document.getElementById('journeyPercent').innerText = percent + '%';
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('startDateDisplay').innerText = appData.startDate;
+
+      // الأوزان والماء
+      document.getElementById('currentWeight').innerText = appData.currentWeight;
+      document.getElementById('targetWeight').innerText = appData.targetWeight;
+      document.getElementById('waterCurrent').innerText = appData.water;
+
+      // العادات
+      const list = document.getElementById('habitsList');
+      list.innerHTML = '';
+      let completedCount = 0;
+      defaultHabits.forEach(h => {
+        const isDone = appData.completedHabits.includes(h.id);
+        if (isDone) completedCount++;
+        list.innerHTML += `
+          <div onclick="toggleHabit(${h.id})" class="p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
+            isDone ? 'bg-[#10B981]/10 border-[#10B981]/40 text-[#AAA2A7]' : 'bg-[#1A181C] border-[#30262B] text-white'
+          }">
+            <span class="text-xs ${isDone ? 'line-through' : ''}">${h.title}</span>
+            <span class="text-sm font-bold ${isDone ? 'text-[#10B981]' : 'text-[#AAA2A7]'}">${isDone ? '✓' : '○'}</span>
+          </div>
+        `;
+      });
+      document.getElementById('habitsDoneRatio').innerText = `${completedCount} من ${defaultHabits.length}`;
+
+      const hardBtn = document.getElementById('hardDayBtn');
+      if (appData.isHardDay) {
+        hardBtn.innerText = 'وضع اليوم الصعب مفعّل ✓';
+        hardBtn.className = 'text-[#10B981] font-bold';
+      } else {
+        hardBtn.innerText = 'وضع اليوم الصعب';
+        hardBtn.className = 'text-[#AAA2A7] hover:text-[#F43F5E]';
+      }
+    }
+
+    function toggleHabit(id) {
+      if (appData.completedHabits.includes(id)) {
+        appData.completedHabits = appData.completedHabits.filter(x => x !== id);
+      } else {
+        appData.completedHabits.push(id);
+      }
+      saveData();
+    }
+
+    function addWater(amount) {
+      appData.water += amount;
+      saveData();
+    }
+
+    function updateWeight() {
+      const val = prompt('أدخل وزنك الجديد (كغ):', appData.currentWeight);
+      if (val && !isNaN(val)) {
+        appData.currentWeight = parseFloat(val);
+        saveData();
+      }
+    }
+
+    function setupJourney() {
+      const start = prompt('تاريخ بداية الرحلة (YYYY-MM-DD):', appData.startDate);
+      const startW = prompt('الوزن الابتدائي:', appData.startingWeight);
+      const targetW = prompt('الوزن المستهدف:', appData.targetWeight);
+      if (start) appData.startDate = start;
+      if (startW) appData.startingWeight = parseFloat(startW);
+      if (targetW) appData.targetWeight = parseFloat(targetW);
+      saveData();
+    }
+
+    function toggleHardDay() {
+      appData.isHardDay = !appData.isHardDay;
+      if (appData.isHardDay) {
+        alert('تم تفعيل وضع اليوم الصعب: ركز اليوم على الحد الأدنى (الماء البسيط، وجبات معتدلة، ونوم كافٍ) دون لوم النفس.');
+      }
+      saveData();
+    }
+
+    function exportData() {
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", str);
+      downloadAnchor.setAttribute("download", "rehlaty_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    // PWA Install Event Handler
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').classList.remove('hidden');
+    });
+
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('installBanner').classList.add('hidden');
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+
+    // تسجيل الـ Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
