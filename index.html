@@ -10,1884 +10,2366 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon-192.png">
 
-  <!-- الخطوط والمكتبات الخارجية -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bgMain: '#0B0A0C',
-            bgCard: '#121013',
-            bgSec: '#1A181C',
-            crimson: '#E11D48',
-            glow: '#F43F5E',
-            greenAcc: '#10B981',
-            borderSubtle: '#30262B',
-            textLight: '#F5F3F4',
-            textMuted: '#AAA2A7'
-          },
-          fontFamily: {
-            cairo: ['Cairo', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
-
   <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      background-color: #0B0A0C;
-      color: #F5F3F4;
+    /* ================= نظام التصميم المحلي المتكامل (100% Offline CSS) ================= */
+    :root {
+      --bg-main: #0B0A0C;
+      --bg-card: #121013;
+      --bg-sec: #1A181C;
+      --crimson: #E11D48;
+      --glow: #F43F5E;
+      --green: #10B981;
+      --amber: #F59E0B;
+      --blue: #3B82F6;
+      --purple: #8B5CF6;
+      --text-main: #F5F3F4;
+      --text-muted: #AAA2A7;
+      --border: #30262B;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       -webkit-tap-highlight-color: transparent;
+      font-family: 'Segoe UI', Tahoma, system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
       overflow-x: hidden;
+      user-select: none;
+      padding-bottom: 90px;
     }
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: #0B0A0C; }
-    ::-webkit-scrollbar-thumb { background: #30262B; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #E11D48; }
-    .slider-handle::-webkit-slider-thumb {
-      appearance: none;
-      width: 24px;
-      height: 24px;
+
+    /* التخطيط والحاويات */
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-hero {
+      background: linear-gradient(135deg, #121013 0%, #1F1218 65%, rgba(225, 29, 72, 0.18) 100%);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+
+    .card-sub {
+      background: var(--bg-sec);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    /* الشبكات والمرونة */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .flex-between { display: flex; align-items: center; justify-content: space-between; }
+    .flex-center { display: flex; align-items: center; justify-content: center; }
+    .flex-gap { display: flex; align-items: center; gap: 8px; }
+    .space-y > * + * { margin-top: 10px; }
+
+    /* النصوص والأرقام */
+    .title-xl { font-size: 1.45rem; font-weight: 900; color: var(--text-main); }
+    .title-lg { font-size: 1.1rem; font-weight: 800; color: var(--text-main); }
+    .title-md { font-size: 0.92rem; font-weight: 700; color: var(--text-main); }
+    .text-sm { font-size: 0.8rem; color: var(--text-muted); }
+    .text-xs { font-size: 0.72rem; color: var(--text-muted); }
+    .stat-num { font-size: 1.65rem; font-weight: 900; color: var(--text-main); line-height: 1.1; }
+    .text-crimson { color: var(--glow); }
+    .text-green { color: var(--green); }
+    .text-amber { color: var(--amber); }
+    .text-blue { color: var(--blue); }
+
+    /* الشارات (Badges) */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(225, 29, 72, 0.16);
+      color: var(--glow);
+      border: 1px solid rgba(225, 29, 72, 0.35);
+    }
+    .badge-green {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--amber);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    /* أشرطة التقدم */
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--bg-sec);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--crimson), var(--glow));
+      border-radius: 999px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .progress-fill-green {
+      background: linear-gradient(90deg, #059669, var(--green));
+    }
+
+    /* الأزرار والمدخلات */
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 0.18s ease;
+    }
+    button:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson), var(--glow));
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 11px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-sec {
+      background: var(--bg-sec);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 9px 14px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-sec:hover { border-color: var(--glow); }
+    .btn-sos {
+      background: linear-gradient(135deg, #991B1B, #E11D48);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.8rem;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid #FCA5A5;
+      box-shadow: 0 0 18px rgba(225, 29, 72, 0.5);
+      animation: pulse-sos 2.2s infinite;
+    }
+
+    @keyframes pulse-sos {
+      0%, 100% { box-shadow: 0 0 10px rgba(225, 29, 72, 0.4); }
+      50% { box-shadow: 0 0 22px rgba(244, 63, 94, 0.85); }
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg-sec);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--crimson);
+    }
+
+    /* العادات وعناصر القوائم */
+    .habit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: var(--bg-sec);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .habit-row.done {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+    .habit-check {
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: #E11D48;
-      cursor: ew-resize;
-      box-shadow: 0 0 10px rgba(225, 29, 72, 0.7);
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
+    .habit-row.done .habit-check {
+      background: var(--green);
+      border-color: var(--green);
+      color: #000;
+    }
+
+    /* شريط التنقل السفلي */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(18, 16, 19, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      z-index: 100;
+      padding: 6px 8px 10px;
+    }
+    .bottom-nav-inner {
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .nav-btn {
+      background: transparent;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.68rem;
+      font-weight: 600;
+      gap: 3px;
+      padding: 4px 8px;
+      border-radius: 10px;
+    }
+    .nav-btn.active {
+      color: var(--glow);
+      font-weight: 800;
+    }
+
+    /* النوافذ المنبثقة (Modals) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.84);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* خريطة الالتزام الحرارية (Heatmap) */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(15, 1fr);
+      gap: 4px;
+      margin-top: 10px;
+    }
+    .heat-cell {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      background: var(--bg-sec);
+      border: 1px solid var(--border);
+      font-size: 0.55rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+    }
+    .heat-cell.lvl-1 { background: rgba(16, 185, 129, 0.25); border-color: rgba(16, 185, 129, 0.4); color: #fff; }
+    .heat-cell.lvl-2 { background: rgba(16, 185, 129, 0.55); border-color: rgba(16, 185, 129, 0.7); color: #fff; }
+    .heat-cell.lvl-3 { background: var(--green); border-color: #34D399; color: #000; font-weight: 800; }
+    .heat-cell.today { outline: 2px solid var(--glow); }
+
+    /* دائرة التنفس في نافذة الطوارئ */
+    .breath-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 16px auto;
+      background: radial-gradient(circle, rgba(225,29,72,0.45) 0%, rgba(16,185,129,0.1) 100%);
+      border: 2px solid var(--glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      transition: transform 4s ease-in-out;
+    }
+
+    .hidden { display: none !important; }
+    .w-full { width: 100%; }
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .text-center { text-align: center; }
+
+    /* شريط التمرير الأفقي */
+    .scroll-x {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .scroll-x::-webkit-scrollbar { height: 3px; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between select-none">
+<body>
 
-  <!-- الحاوية الأساسية لتطبيق PWA -->
-  <div id="appContainer" class="flex-1 w-full max-w-lg mx-auto p-4 pb-28">
+  <div class="container">
 
-    <!-- شريط التثبيت الذكي -->
-    <div id="installBanner" class="hidden mb-4 p-3 bg-gradient-to-r from-crimson/20 via-bgCard to-bgCard border border-crimson/40 rounded-2xl flex items-center justify-between shadow-xl">
-      <div class="text-xs">
-        <span class="font-bold text-textLight block">تثبيت «رحلتي» كتطبيق</span>
-        <span class="text-textMuted text-[10px]">يعمل بلا إنترنت مع شاشة كاملة وسرعة فائقة</span>
+    <!-- شريط تثبيت التطبيق PWA -->
+    <div id="installBanner" class="card card-hero hidden" style="padding: 12px 16px;">
+      <div class="flex-between">
+        <div>
+          <div class="title-md">تثبيت تطبيق «رحلتي» على الهاتف</div>
+          <div class="text-xs">يعمل ١٠٠٪ بدون إنترنت وبشاشة كاملة</div>
+        </div>
+        <button onclick="installPWA()" class="btn-primary">تثبيت الآن</button>
       </div>
-      <button onclick="installPWA()" class="bg-crimson hover:bg-glow text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-all shadow-md">
-        تثبيت
-      </button>
     </div>
 
-    <!-- رأس التطبيق الثابت -->
-    <header class="flex items-center justify-between mb-4 pb-2 border-b border-borderSubtle/60">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-crimson to-glow flex items-center justify-center shadow-lg shadow-crimson/30">
-          <i data-lucide="flame" class="w-4 h-4 text-white"></i>
+    <!-- الشريط العلوي الدائم (Header + XP + SOS) -->
+    <header class="flex-between mb-3" style="padding-bottom:10px; border-bottom:1px solid var(--border);">
+      <div class="flex-gap">
+        <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, var(--crimson), var(--glow)); display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; box-shadow: 0 4px 12px rgba(225,29,72,0.4);">
+          ٢١٤
         </div>
         <div>
-          <h1 class="text-lg font-black text-textLight leading-tight">رحلتي</h1>
-          <p class="text-[10px] text-textMuted">٢١٤ يومًا نحو الانضباط</p>
+          <div class="flex-gap">
+            <span class="title-lg">رحلتي</span>
+            <span id="hdrLevelBadge" class="badge">مستوى ١</span>
+          </div>
+          <div class="text-xs"><span id="hdrXpText">0 XP</span> • 🛡️ <span id="hdrShieldsText">1</span> درع</div>
         </div>
       </div>
-      <div class="flex items-center gap-2">
-        <span id="headerDayBadge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-bgSec border border-borderSubtle text-glow">
-          اليوم ١
-        </span>
-        <button onclick="switchTab('settings')" class="p-2 rounded-xl bg-bgCard border border-borderSubtle text-textMuted hover:text-textLight">
-          <i data-lucide="settings" class="w-4 h-4"></i>
+
+      <div class="flex-gap">
+        <button onclick="openSosModal()" class="btn-sos" title="زر الطوارئ عند الرغبة بالتخبيص">
+          🚨 إنقاذ سريع
+        </button>
+        <button onclick="switchTab('settings')" class="btn-sec" style="padding:8px 10px;">
+          ⚙️
         </button>
       </div>
     </header>
 
-    <!-- حاوية الصفحات التفاعلية (Views Container) -->
-    <main id="mainViewsArea">
+    <!-- ================= 1. شاشة الإعداد الأولي (ONBOARDING) ================= -->
+    <section id="view-onboarding" class="hidden">
+      <div class="card card-hero">
+        <div class="text-center mb-3">
+          <span class="badge mb-2">إعداد الرحلة لأول مرة</span>
+          <h1 class="title-xl">ميثاق الـ ٢١٤ يومًا</h1>
+          <p class="text-sm">أدخل بياناتك الواقعية لتخصيص حسابات الأيض والمراحل بدقة.</p>
+        </div>
 
-      <!-- ================= 1. شاشة الإعداد الأولي (ONBOARDING) ================= -->
-      <section id="viewOnboarding" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-6 shadow-2xl">
-          <div class="text-center mb-6">
-            <span class="inline-block px-3 py-1 bg-crimson/15 text-glow text-xs font-bold rounded-full border border-crimson/30 mb-2">
-              تهيئة الرحلة لأول مرة
-            </span>
-            <h2 class="text-xl font-black text-textLight">صياغة ميثاقك للـ ٢١٤ يومًا</h2>
-            <p class="text-xs text-textMuted mt-1">أدخل بياناتك الواقعية لضبط الأهداف التلقائية دون مبالغة.</p>
+        <form onsubmit="submitOnboarding(event)" class="space-y">
+          <div>
+            <label class="text-xs">الاسم أو اللقب</label>
+            <input type="text" id="obName" required value="عباس">
           </div>
-
-          <form id="onboardingForm" onsubmit="handleOnboardingSubmit(event)" class="space-y-4">
+          <div class="grid-2">
             <div>
-              <label class="block text-xs text-textMuted mb-1">الاسم أو اللقب</label>
-              <input type="text" id="obName" required value="عباس" class="w-full bg-bgSec border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight focus:border-crimson outline-none">
+              <label class="text-xs">الطول (سم)</label>
+              <input type="number" id="obHeight" required min="100" max="240" value="175">
             </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-xs text-textMuted mb-1">الطول (سم)</label>
-                <input type="number" id="obHeight" required value="175" class="w-full bg-bgSec border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight focus:border-crimson outline-none">
-              </div>
-              <div>
-                <label class="block text-xs text-textMuted mb-1">سنة الميلاد</label>
-                <input type="number" id="obBirthYear" required value="2003" class="w-full bg-bgSec border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight focus:border-crimson outline-none">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-xs text-textMuted mb-1">الوزن الحالي (كغ)</label>
-                <input type="number" step="0.1" id="obStartWeight" required value="88.0" class="w-full bg-bgSec border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight focus:border-crimson outline-none">
-              </div>
-              <div>
-                <label class="block text-xs text-textMuted mb-1">الوزن المستهدف (كغ)</label>
-                <input type="number" step="0.1" id="obTargetWeight" required value="72.0" class="w-full bg-bgSec border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight focus:border-crimson outline-none">
-              </div>
-            </div>
-
             <div>
-              <label class="block text-xs text-textMuted mb-1">مستوى النشاط اليومي المعتاد</label>
-              <select id="obActivity" class="w-full bg-bgSec border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight focus:border-crimson outline-none">
-                <option value="sedentary">قليل الحركة (مكتبي / نشاط خفيف)</option>
-                <option value="light" selected>نشاط خفيف (مشي معتدل ١-٣ أيام)</option>
-                <option value="moderate">نشاط متوسط (تمارين وحركة ٣-٥ أيام)</option>
-                <option value="high">نشاط مرتفع (تمارين مكثفة أو عمل يدوي شاق)</option>
+              <label class="text-xs">سنة الميلاد</label>
+              <input type="number" id="obBirth" required min="1950" max="2015" value="2003">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="text-xs">الوزن الابتدائي (كغ)</label>
+              <input type="number" step="0.1" id="obStartW" required min="35" max="280" value="88.0">
+            </div>
+            <div>
+              <label class="text-xs">الوزن المستهدف (كغ)</label>
+              <input type="number" step="0.1" id="obTargetW" required min="35" max="250" value="74.0">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="text-xs">هدف الماء اليومي (مل)</label>
+              <input type="number" step="100" id="obWaterGoal" required value="3000">
+            </div>
+            <div>
+              <label class="text-xs">نظام الصيام المفضل</label>
+              <select id="obFastingHours">
+                <option value="16">١٦ ساعة صيام (16:8)</option>
+                <option value="14">١٤ ساعة صيام (14:10)</option>
+                <option value="18">١٨ ساعة صيام (18:6)</option>
               </select>
             </div>
-
-            <div>
-              <label class="block text-xs text-textMuted mb-1">عهدي مع نفسي (الميثاق)</label>
-              <textarea id="obContract" rows="3" class="w-full bg-bgSec border border-borderSubtle rounded-xl p-3 text-xs text-textLight focus:border-crimson outline-none">أتعهد بأن أعمل على تحسين صحتي وانضباطي يومًا بعد يوم. إذا تعثرت، سأعود إلى الطريق دون أن أعتبر التعثر نهاية الرحلة.</textarea>
-            </div>
-
-            <button type="submit" class="w-full py-3 bg-crimson hover:bg-glow text-white font-black text-sm rounded-xl shadow-lg shadow-crimson/30 transition-all flex items-center justify-center gap-2">
-              <i data-lucide="sparkles" class="w-4 h-4"></i>
-              ابدأ رحلتي الآن
-            </button>
-          </form>
-        </div>
-      </section>
-
-      <!-- ================= 2. لوحة التحكم الرئيسية (DASHBOARD) ================= -->
-      <section id="viewDashboard" class="space-y-4">
-        <!-- بطاقة الرحلة الكبرى -->
-        <div class="bg-gradient-to-l from-bgCard via-bgCard to-crimson/10 border border-borderSubtle rounded-3xl p-5 shadow-xl relative overflow-hidden">
-          <div class="flex justify-between items-start mb-3">
-            <div>
-              <span id="dashPhaseBadge" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-crimson/20 text-glow border border-crimson/30">
-                المرحلة الأولى: بناء الأساس
-              </span>
-              <h2 class="text-2xl font-black text-textLight mt-1">
-                اليوم <span id="dashDayNum">١</span> <span class="text-xs font-normal text-textMuted">من أصل ٢١٤</span>
-              </h2>
-            </div>
-            <div class="text-left">
-              <span id="dashProgressPct" class="text-3xl font-black text-textLight">0%</span>
-              <p class="text-[10px] text-textMuted">متبقي <span id="dashDaysLeft">٢١٣</span> يومًا</p>
-            </div>
           </div>
-
-          <!-- شريط التقدم التفاعلي -->
-          <div class="w-full bg-bgSec h-2.5 rounded-full overflow-hidden mb-3 border border-borderSubtle/50">
-            <div id="dashProgressBar" class="bg-gradient-to-r from-crimson to-glow h-full rounded-full transition-all duration-700" style="width: 1%"></div>
-          </div>
-
-          <p class="text-xs text-textMuted leading-relaxed bg-bgMain/60 p-3 rounded-2xl border border-borderSubtle/40">
-            «لا أحتاج إلى أن أكون مثاليًا؛ أحتاج إلى أن أستمر.» — الاستمرارية اليومية تتفوق دائماً على الحماس المؤقت.
-          </p>
-        </div>
-
-        <!-- شبكة المؤشرات الرئيسية -->
-        <div class="grid grid-cols-2 gap-3">
-          <!-- بطاقة الوزن -->
-          <div class="bg-bgCard border border-borderSubtle rounded-3xl p-4 flex flex-col justify-between">
-            <div class="flex justify-between items-center text-xs text-textMuted">
-              <span>الوزن الحالي</span>
-              <button onclick="quickLogWeightPrompt()" class="text-glow font-bold text-[11px] hover:underline">+ تسجيل</button>
-            </div>
-            <div class="my-2">
-              <span id="dashWeightVal" class="text-2xl font-black text-textLight">--</span>
-              <span class="text-xs text-textMuted">كغ</span>
-              <span id="dashWeightDiff" class="text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 bg-greenAcc/10 text-greenAcc">0.0</span>
-            </div>
-            <div class="text-[10px] text-textMuted border-t border-borderSubtle/60 pt-1 flex justify-between">
-              <span>البداية: <b id="dashStartWeight">--</b></span>
-              <span>الهدف: <b id="dashTargetWeight">--</b></span>
-            </div>
-          </div>
-
-          <!-- بطاقة الانضباط -->
-          <div class="bg-bgCard border border-borderSubtle rounded-3xl p-4 flex flex-col justify-between">
-            <div class="flex justify-between items-center text-xs text-textMuted">
-              <span>انضباط اليوم</span>
-              <span id="dashHabitsPct" class="text-xs font-bold text-greenAcc">0%</span>
-            </div>
-            <div class="my-2">
-              <span id="dashHabitsDone" class="text-2xl font-black text-textLight">0</span>
-              <span class="text-xs text-textMuted">من <span id="dashHabitsTotal">5</span> مهام</span>
-            </div>
-            <div class="w-full bg-bgSec h-1.5 rounded-full overflow-hidden">
-              <div id="dashHabitsBar" class="bg-greenAcc h-full rounded-full transition-all duration-300" style="width: 0%"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- شبكة الرعاية السريعة (ماء، خطوات، نوم، تمرين) -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          <!-- ماء -->
-          <div class="bg-bgCard border border-borderSubtle rounded-2xl p-3">
-            <div class="flex justify-between text-blue-400 mb-1">
-              <i data-lucide="droplet" class="w-3.5 h-3.5"></i>
-              <span id="dashWaterGoal" class="text-[10px] text-textMuted">3000 مل</span>
-            </div>
-            <span id="dashWaterVal" class="text-lg font-black text-textLight">0 مل</span>
-            <div class="flex gap-1 mt-2">
-              <button onclick="addWater(250)" class="flex-1 bg-bgSec text-[10px] py-1 rounded-lg border border-borderSubtle hover:border-blue-400">+250</button>
-              <button onclick="addWater(500)" class="flex-1 bg-bgSec text-[10px] py-1 rounded-lg border border-borderSubtle hover:border-blue-400">+500</button>
-            </div>
-          </div>
-
-          <!-- خطوات -->
-          <div class="bg-bgCard border border-borderSubtle rounded-2xl p-3">
-            <div class="flex justify-between text-greenAcc mb-1">
-              <i data-lucide="footprints" class="w-3.5 h-3.5"></i>
-              <span class="text-[10px] text-textMuted">هدف ٨ آلاف</span>
-            </div>
-            <span id="dashStepsVal" class="text-lg font-black text-textLight">0</span>
-            <div class="flex gap-1 mt-2">
-              <button onclick="addSteps(1000)" class="flex-1 bg-bgSec text-[10px] py-1 rounded-lg border border-borderSubtle hover:border-greenAcc">+1k</button>
-              <button onclick="addSteps(2500)" class="flex-1 bg-bgSec text-[10px] py-1 rounded-lg border border-borderSubtle hover:border-greenAcc">+2.5k</button>
-            </div>
-          </div>
-
-          <!-- نوم -->
-          <div class="bg-bgCard border border-borderSubtle rounded-2xl p-3 flex flex-col justify-between">
-            <div class="flex justify-between text-indigo-400 mb-1">
-              <i data-lucide="moon" class="w-3.5 h-3.5"></i>
-              <span class="text-[10px] text-textMuted">ساعات</span>
-            </div>
-            <span id="dashSleepVal" class="text-lg font-black text-textLight">7 س</span>
-            <div class="flex gap-1 mt-2">
-              <button onclick="adjustSleep(-1)" class="flex-1 bg-bgSec text-[10px] py-1 rounded border border-borderSubtle">-</button>
-              <button onclick="adjustSleep(1)" class="flex-1 bg-bgSec text-[10px] py-1 rounded border border-borderSubtle">+</button>
-            </div>
-          </div>
-
-          <!-- تمرين -->
-          <div class="bg-bgCard border border-borderSubtle rounded-2xl p-3 flex flex-col justify-between">
-            <div class="flex justify-between text-glow mb-1">
-              <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i>
-              <span class="text-[10px] text-textMuted">دقائق</span>
-            </div>
-            <span id="dashWorkoutVal" class="text-lg font-black text-textLight">0 د</span>
-            <div class="flex gap-1 mt-2">
-              <button onclick="addWorkoutMinutes(15)" class="w-full bg-bgSec text-[10px] py-1 rounded border border-borderSubtle hover:border-crimson">+15 د</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- قائمة عادات اليوم السريعة -->
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5">
-          <div class="flex justify-between items-center mb-3">
-            <h3 class="text-sm font-bold text-textLight flex items-center gap-1.5">
-              <i data-lucide="check-square" class="w-4 h-4 text-crimson"></i>
-              عادات اليوم المقررة
-            </h3>
-            <span class="text-[11px] text-textMuted" id="dashHabitsCounterLabel">0 من 5</span>
-          </div>
-          <div id="dashHabitsList" class="space-y-2.5">
-            <!-- تتولد العادات ديناميكياً -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 3. سجل رحلة الوزن (WEIGHT TRACKER) ================= -->
-      <section id="viewWeight" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <h2 class="text-base font-black text-textLight mb-1 flex items-center gap-2">
-            <i data-lucide="scale" class="w-5 h-5 text-crimson"></i>
-            رحلة وزني والقياسات
-          </h2>
-          <p class="text-xs text-textMuted mb-4">التذبذب اليومي طبيعي، العبرة باتجاه المنحنى العام.</p>
-
-          <!-- بطاقات المقارنة -->
-          <div class="grid grid-cols-3 gap-2.5 mb-5 text-center">
-            <div class="bg-bgSec p-3 rounded-2xl border border-borderSubtle">
-              <span class="text-[10px] text-textMuted block">الوزن الأخير</span>
-              <span id="wtLastVal" class="text-lg font-black text-textLight">--</span>
-              <span class="text-[9px] text-textMuted">كغ</span>
-            </div>
-            <div class="bg-bgSec p-3 rounded-2xl border border-borderSubtle">
-              <span class="text-[10px] text-textMuted block">المفقود</span>
-              <span id="wtLossVal" class="text-lg font-black text-greenAcc">--</span>
-              <span class="text-[9px] text-textMuted">كغ</span>
-            </div>
-            <div class="bg-bgSec p-3 rounded-2xl border border-borderSubtle">
-              <span class="text-[10px] text-textMuted block">إلى الهدف</span>
-              <span id="wtToTargetVal" class="text-lg font-black text-glow">--</span>
-              <span class="text-[9px] text-textMuted">كغ</span>
-            </div>
-          </div>
-
-          <!-- مخطط SVG التفاعلي -->
-          <div class="bg-bgMain p-4 rounded-2xl border border-borderSubtle/60 mb-5">
-            <div class="flex justify-between items-center mb-3">
-              <span class="text-xs font-bold text-textLight">منحنى التغير الزمني</span>
-              <span class="text-[10px] text-textMuted" id="wtChartCountLabel">سجلات القياس</span>
-            </div>
-            <div class="w-full h-36 flex items-center justify-center overflow-hidden" id="wtSvgChartContainer">
-              <!-- رسم SVG ديناميكي -->
-            </div>
-          </div>
-
-          <!-- استمارة قياس جديد -->
-          <form onsubmit="handleNewWeightSubmit(event)" class="space-y-3 bg-bgSec/60 p-4 rounded-2xl border border-borderSubtle">
-            <h4 class="text-xs font-bold text-textLight">تسجيل قياس جديد</h4>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-[10px] text-textMuted mb-1">الوزن (كغ) *</label>
-                <input type="number" step="0.1" id="wtInputVal" required placeholder="85.5" class="w-full bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none focus:border-crimson">
-              </div>
-              <div>
-                <label class="block text-[10px] text-textMuted mb-1">التاريخ *</label>
-                <input type="date" id="wtInputDate" required class="w-full bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none focus:border-crimson">
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-[10px] text-textMuted mb-1">الخصر (سم - اختياري)</label>
-                <input type="number" step="0.5" id="wtInputWaist" placeholder="92" class="w-full bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none focus:border-crimson">
-              </div>
-              <div>
-                <label class="block text-[10px] text-textMuted mb-1">الصدر (سم - اختياري)</label>
-                <input type="number" step="0.5" id="wtInputChest" placeholder="100" class="w-full bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none focus:border-crimson">
-              </div>
-            </div>
-            <div>
-              <label class="block text-[10px] text-textMuted mb-1">ملاحظات القياس (اختياري)</label>
-              <input type="text" id="wtInputNotes" placeholder="مثال: بعد الاستيقاظ مباشرة، صيام تام" class="w-full bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none focus:border-crimson">
-            </div>
-            <button type="submit" class="w-full py-2.5 bg-crimson hover:bg-glow text-white font-bold text-xs rounded-xl shadow-md transition-all">
-              حفظ القياس
-            </button>
-          </form>
-
-          <!-- جدول السجلات السابقة -->
-          <div class="mt-5 space-y-2" id="wtHistoryList">
-            <!-- تتولد القياسات ديناميكياً -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 4. تحولي بالصور (BEFORE & AFTER) ================= -->
-      <section id="viewPhotos" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <div class="flex justify-between items-center mb-3">
-            <div>
-              <h2 class="text-base font-black text-textLight flex items-center gap-2">
-                <i data-lucide="camera" class="w-5 h-5 text-crimson"></i>
-                تحولي بالصور
-              </h2>
-              <p class="text-xs text-textMuted">الصور تُحفظ محلياً في جهازك بخصوصية ١٠٠٪.</p>
-            </div>
-            <button onclick="openUploadPhotoModal()" class="px-3 py-1.5 bg-crimson hover:bg-glow text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-1">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              إضافة
-            </button>
-          </div>
-
-          <!-- أداة المقارنة التفاعلية (Dual Comparison) -->
-          <div id="photosComparisonArea" class="bg-bgMain p-4 rounded-2xl border border-borderSubtle mb-5">
-            <div class="flex justify-between items-center mb-3">
-              <span class="text-xs font-bold text-textLight flex items-center gap-1">
-                <i data-lucide="split" class="w-3.5 h-3.5 text-glow"></i>
-                مقارنة قبل وبعد
-              </span>
-              <div class="flex gap-1 text-[10px] bg-bgSec p-1 rounded-xl">
-                <button onclick="setCompareMode('slider')" id="btnCompSlider" class="px-2 py-0.5 rounded-lg bg-crimson text-white">شريط السحب</button>
-                <button onclick="setCompareMode('side')" id="btnCompSide" class="px-2 py-0.5 rounded-lg text-textMuted">جنبًا لجنب</button>
-              </div>
-            </div>
-
-            <!-- محرك العرض التفاعلي -->
-            <div id="compareViewer" class="relative w-full aspect-[3/4] max-h-96 rounded-2xl overflow-hidden select-none border border-borderSubtle bg-bgSec flex items-center justify-center">
-              <p class="text-xs text-textMuted">أضف صورتين على الأقل لتفعيل المقارنة التفاعلية.</p>
-            </div>
-          </div>
-
-          <!-- معرض الخط الزمني للصور -->
-          <h3 class="text-xs font-bold text-textLight mb-2 flex items-center gap-1">
-            <i data-lucide="calendar" class="w-3.5 h-3.5 text-crimson"></i>
-            معرض الرحلة الزمني
-          </h3>
-          <div id="photosTimelineGrid" class="grid grid-cols-2 gap-3">
-            <!-- تظهر الصور هنا -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 5. صالة التمارين ثلاثية الأبعاد (THREE.JS 3D GYM) ================= -->
-      <section id="viewExercises" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <div class="flex justify-between items-center mb-3">
-            <div>
-              <h2 class="text-base font-black text-textLight flex items-center gap-2">
-                <i data-lucide="activity" class="w-5 h-5 text-crimson"></i>
-                صالة التمارين ثلاثية الأبعاد
-              </h2>
-              <p class="text-xs text-textMuted">مجسم تشريحي إجرائي لتوضيح التكنيك والمفاصل.</p>
-            </div>
-          </div>
-
-          <!-- كانفاس Three.js -->
-          <div class="relative w-full h-72 bg-bgMain rounded-2xl overflow-hidden border border-borderSubtle shadow-inner">
-            <div id="threeCanvasMount" class="w-full h-full"></div>
-
-            <!-- أزرار التحكم الطافية في الكاميرا والمؤقت -->
-            <div class="absolute bottom-2.5 left-2.5 right-2.5 flex justify-between items-center pointer-events-auto">
-              <div class="flex gap-2">
-                <button onclick="toggleExercise3DAnimation()" id="btnPlay3D" class="p-2 bg-bgCard/90 backdrop-blur rounded-xl border border-borderSubtle text-textLight hover:text-glow">
-                  <i data-lucide="pause" class="w-4 h-4"></i>
-                </button>
-                <button onclick="reset3DCamera()" class="p-2 bg-bgCard/90 backdrop-blur rounded-xl border border-borderSubtle text-textLight hover:text-white">
-                  <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                </button>
-              </div>
-
-              <!-- مؤقت الجلسة -->
-              <div class="bg-bgCard/90 backdrop-blur border border-borderSubtle px-3 py-1.5 rounded-xl flex items-center gap-2 text-xs font-mono">
-                <i data-lucide="timer" class="w-3.5 h-3.5 text-glow"></i>
-                <span id="workoutTimerDisplay">00:00</span>
-                <button onclick="toggleWorkoutTimer()" id="btnWorkoutTimerAction" class="text-[10px] text-glow font-bold mr-1">بدء</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- قائمة التمارين القابلة للاختيار -->
-          <div class="flex gap-2 overflow-x-auto py-2 scrollbar-none">
-            <button onclick="selectExercise('squat')" class="ex-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border border-crimson bg-crimson text-white">قرفصاء بالدمبل</button>
-            <button onclick="selectExercise('press')" class="ex-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border border-borderSubtle bg-bgSec text-textMuted">ضغط الأكتاف</button>
-            <button onclick="selectExercise('curl')" class="ex-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border border-borderSubtle bg-bgSec text-textMuted">ثني البايسبس</button>
-            <button onclick="selectExercise('jacks')" class="ex-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border border-borderSubtle bg-bgSec text-textMuted">قفز هوائي</button>
-            <button onclick="selectExercise('stretch')" class="ex-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border border-borderSubtle bg-bgSec text-textMuted">إطالة الرقبة والأكتاف</button>
-          </div>
-
-          <!-- بطاقة شرح التمرين الحالي -->
-          <div id="exerciseDetailsBox" class="bg-bgSec/60 p-4 rounded-2xl border border-borderSubtle text-xs space-y-2.5">
-            <div class="flex justify-between items-center border-b border-borderSubtle pb-2">
-              <span id="exBoxName" class="font-bold text-textLight text-sm">القرفصاء بالدمبل (Dumbbell Squat)</span>
-              <span id="exBoxReps" class="text-[10px] bg-bgCard px-2 py-0.5 rounded text-textMuted">٣ جولات × ١٠-١٢ تكرار</span>
-            </div>
-            <p id="exBoxMuscles" class="text-glow text-[11px]">العضلات: العضلة الرباعية، الألوية، أوتار الركبة</p>
-            <div>
-              <span class="font-bold text-greenAcc block mb-1">طريقة الأداء السليمة:</span>
-              <ul id="exBoxInstructions" class="list-disc list-inside space-y-1 text-textMuted">
-                <li>باعد بين القدمين بعرض الكتفين مع استقامة الظهر.</li>
-                <li>اهبط بالحوض للخلف والأسفل كأنك تجلس على كرسي.</li>
-                <li>ادفع من خلال الكعبين للعودة لنقطة البداية.</li>
-              </ul>
-            </div>
-            <div>
-              <span class="font-bold text-amber-400 block mb-1">أخطاء شائعة تجنبها:</span>
-              <p id="exBoxMistakes" class="text-textMuted">تقويس أسفل الظهر، أو انحناء الركبتين للداخل أثناء الصعود.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 6. نظام الانضباط وبناء العادات (DISCIPLINE) ================= -->
-      <section id="viewDiscipline" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <div class="flex justify-between items-center mb-4">
-            <div>
-              <h2 class="text-base font-black text-textLight flex items-center gap-2">
-                <i data-lucide="check-square" class="w-5 h-5 text-crimson"></i>
-                نظام انضباطي
-              </h2>
-              <p class="text-xs text-textMuted">بناء السلاسل دون كسر الاستمرارية.</p>
-            </div>
-            <button onclick="promptAddNewHabit()" class="px-3 py-1.5 bg-crimson hover:bg-glow text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-1">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              إضافة عادة
-            </button>
-          </div>
-
-          <!-- بطاقات السلسلة -->
-          <div class="grid grid-cols-2 gap-3 mb-4">
-            <div class="bg-bgSec p-4 rounded-2xl border border-borderSubtle flex items-center gap-3">
-              <div class="p-2.5 rounded-xl bg-crimson/15 text-glow">
-                <i data-lucide="flame" class="w-6 h-6"></i>
-              </div>
-              <div>
-                <span class="text-[10px] text-textMuted block">السلسلة الحالية</span>
-                <span id="streakCurrentVal" class="text-xl font-black text-textLight">0 أيام</span>
-              </div>
-            </div>
-            <div class="bg-bgSec p-4 rounded-2xl border border-borderSubtle flex items-center gap-3">
-              <div class="p-2.5 rounded-xl bg-greenAcc/15 text-greenAcc">
-                <i data-lucide="award" class="w-6 h-6"></i>
-              </div>
-              <div>
-                <span class="text-[10px] text-textMuted block">أطول سلسلة</span>
-                <span id="streakLongestVal" class="text-xl font-black text-textLight">0 أيام</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- العادات -->
-          <div id="disciplineHabitsList" class="space-y-2.5">
-            <!-- قائمة العادات الكاملة -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 7. التعافي من الانتكاسات (RECOVERY & HARD DAY) ================= -->
-      <section id="viewRecovery" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <h2 class="text-base font-black text-textLight flex items-center gap-2 mb-1">
-            <i data-lucide="heart-pulse" class="w-5 h-5 text-greenAcc"></i>
-            العودة إلى المسار
-          </h2>
-          <p class="text-xs text-textMuted mb-4">التعثر خطوة حتمية في رحلة ٢١٤ يومًا؛ البطولة في العودة الهادئة.</p>
-
-          <div class="p-4 bg-gradient-to-r from-bgSec to-greenAcc/10 rounded-2xl border border-borderSubtle mb-4">
-            <h3 class="text-sm font-bold text-textLight mb-1">لم تنتهِ رحلتك إطلاقًا.</h3>
-            <p class="text-xs text-textMuted leading-relaxed">
-              «لا نعاقب أنفسنا بالحرمان، ولا نصفر العداد. اختر ما أربكك اليوم، واستأنف الرحلة بخطوة مصغرة.»
-            </p>
-          </div>
-
-          <!-- تشخيص سبب التعثر -->
-          <div class="space-y-2 mb-4">
-            <label class="block text-xs font-bold text-textLight">ما هو السبب الرئيسي للتعثر اليوم؟</label>
-            <select id="recoveryReasonSelect" class="w-full bg-bgSec border border-borderSubtle rounded-xl p-2.5 text-xs text-textLight outline-none focus:border-crimson">
-              <option value="sleep">قلة النوم والإرهاق الجسدي</option>
-              <option value="stress">الضغط النفسي ومشتتات الدراسة أو العمل</option>
-              <option value="emotional">الجوع العاطفي أو اشتهاء مفاجئ للسكريات</option>
-              <option value="planning">الانشغال وعدم التخطيط للوجبة مسبقاً</option>
-              <option value="screens">السهر الطويل وتصفح الهاتف</option>
+          <div>
+            <label class="text-xs">مستوى النشاط اليومي</label>
+            <select id="obActivity">
+              <option value="sedentary">قليل الحركة (عمل أو دراسة مكتبية)</option>
+              <option value="light" selected>نشاط خفيف (مشي ١-٣ أيام أسبوعيًا)</option>
+              <option value="moderate">نشاط متوسط (تمرين ٣-٥ أيام أسبوعيًا)</option>
+              <option value="high">نشاط عالٍ (جهد بدني يومي مكثف)</option>
             </select>
           </div>
+          <div>
+            <label class="text-xs">لماذا أبدأ هذه الرحلة؟ (يظهر لك في لحظات الضعف)</label>
+            <textarea id="obReasons" rows="2">لأستعيد خفة حركتي، وأبني انضباطاً قوياً ينعكس على دراستي وصحتي ومستقبلي.</textarea>
+          </div>
+          <div>
+            <label class="text-xs">عهدي مع نفسي (رسالة لليوم ٢١٤)</label>
+            <textarea id="obContract" rows="3">أتعهد بأن أعمل على تحسين صحتي وانضباطي يومًا بعد يوم. إذا تعثرت، سأعود إلى الطريق فوراً دون أن أعتبر التعثر نهاية الرحلة.</textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full mt-3" style="padding:14px;">
+            🚀 ابدأ رحلتي الآن (اليوم ١ من ٢١٤)
+          </button>
+        </form>
+      </div>
+    </section>
 
-          <!-- وضع اليوم الصعب -->
-          <div class="p-4 bg-bgMain rounded-2xl border border-borderSubtle space-y-3">
-            <div class="flex justify-between items-center">
-              <span class="text-xs font-bold text-textLight flex items-center gap-1.5">
-                <i data-lucide="shield-check" class="w-4 h-4 text-glow"></i>
-                بروتوكول «وضع اليوم الصعب»
-              </span>
-              <span class="text-[10px] text-textMuted bg-bgSec px-2 py-0.5 rounded">حماية المسار</span>
-            </div>
-            <p class="text-[11px] text-textMuted leading-relaxed">
-              عند الإرهاق أو الانتكاسة، نقلص المتطلبات إلى الحد الأدنى للبقاء داخل اللعبة:
-            </p>
-            <ul class="text-xs text-textLight space-y-1.5">
-              <li class="flex items-center gap-2">✓ شرب الماء باعتدال (١.٥ إلى ٢ لتر).</li>
-              <li class="flex items-center gap-2">✓ وجبات بسيطة متوازنة دون جلد الذات.</li>
-              <li class="flex items-center gap-2">✓ نوم مبكر لترميم الجهاز العصبي.</li>
-            </ul>
+    <!-- ================= 2. لوحة التحكم الرئيسية (DASHBOARD) ================= -->
+    <section id="view-dashboard">
+      <!-- بطاقة التقدم الكبرى -->
+      <div class="card card-hero">
+        <div class="flex-between mb-2">
+          <span id="dashPhaseName" class="badge">المرحلة ١: بناء الأساس</span>
+          <span id="dashHardModeBadge" class="badge badge-amber hidden">🛡️ وضع اليوم الصعب</span>
+        </div>
 
-            <button onclick="toggleHardDayMode()" id="btnActivateHardDay" class="w-full py-2.5 rounded-xl text-xs font-bold bg-crimson hover:bg-glow text-white transition-all shadow-md">
-              تفعيل وضع اليوم الصعب لهذا اليوم
-            </button>
+        <div class="flex-between mb-2">
+          <div>
+            <div class="title-xl">اليوم <span id="dashDayNum">1</span> <span class="text-sm">من ٢١٤</span></div>
+            <div class="text-xs">متبقي <span id="dashDaysLeft">213</span> يومًا • البداية: <span id="dashStartDate">--</span></div>
+          </div>
+          <div class="text-center">
+            <div id="dashPct" class="stat-num text-crimson">0%</div>
+            <div class="text-xs">مكتمل</div>
           </div>
         </div>
-      </section>
 
-      <!-- ================= 8. خريطة الأيام الـ ٢١٤ (ROADMAP) ================= -->
-      <section id="viewRoadmap" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <h2 class="text-base font-black text-textLight flex items-center gap-2 mb-1">
-            <i data-lucide="map" class="w-5 h-5 text-crimson"></i>
-            خريطة الـ ٢١٤ يومًا
-          </h2>
-          <p class="text-xs text-textMuted mb-4">المحطات الثماني لتحويل الانضباط إلى نمط حياة مستدام.</p>
-
-          <div id="roadmapPhasesList" class="space-y-3">
-            <!-- تتولد المراحل الثماني ديناميكياً -->
-          </div>
+        <div class="progress-track mb-3">
+          <div id="dashProgressBar" class="progress-fill" style="width: 1%;"></div>
         </div>
-      </section>
 
-      <!-- ================= 9. التغذية وحاسبة السعرات (NUTRITION) ================= -->
-      <section id="viewNutrition" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <h2 class="text-base font-black text-textLight flex items-center gap-2 mb-1">
-            <i data-lucide="utensils" class="w-5 h-5 text-crimson"></i>
-            تغذيتي وحساب الاحتياج
-          </h2>
-          <p class="text-xs text-textMuted mb-4">تقدير احتياجك الفعلي من الطاقة دون هوس حسابي مجهد.</p>
-
-          <!-- بطاقات الأيض TDEE & BMR -->
-          <div class="grid grid-cols-2 gap-3 mb-4">
-            <div class="bg-bgSec p-4 rounded-2xl border border-borderSubtle text-center">
-              <span class="text-[10px] text-textMuted block">معدل الأيض الأساسي (BMR)</span>
-              <span id="nutBmrVal" class="text-xl font-black text-textLight">--</span>
-              <span class="text-[10px] text-textMuted">سعرة / يوم</span>
-            </div>
-            <div class="bg-bgSec p-4 rounded-2xl border border-borderSubtle text-center">
-              <span class="text-[10px] text-textMuted block">الاحتياج التقريبي (TDEE)</span>
-              <span id="nutTdeeVal" class="text-xl font-black text-glow">--</span>
-              <span class="text-[10px] text-textMuted">سعرة للمحافظة</span>
-            </div>
-          </div>
-
-          <!-- تسجيل وجبة سريعة -->
-          <form onsubmit="handleLogMealSubmit(event)" class="bg-bgMain p-4 rounded-2xl border border-borderSubtle space-y-3 mb-4">
-            <h4 class="text-xs font-bold text-textLight">تسجيل وجبة</h4>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="mealTitle" required placeholder="اسم الوجبة (مثلاً: بيض وتوست)" class="bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none">
-              <select id="mealType" class="bg-bgCard border border-borderSubtle rounded-xl px-2 py-2 text-xs text-textLight outline-none">
-                <option value="breakfast">فطور</option>
-                <option value="lunch">غداء</option>
-                <option value="dinner">عشاء</option>
-                <option value="snack">سناك</option>
-              </select>
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="number" id="mealCalories" placeholder="السعرات التقديرية (اختياري)" class="bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none">
-              <input type="number" id="mealProtein" placeholder="بروتين بالغرام (اختياري)" class="bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none">
-            </div>
-            <button type="submit" class="w-full py-2 bg-crimson hover:bg-glow text-white text-xs font-bold rounded-xl shadow-md">
-              إضافة الوجبة
-            </button>
-          </form>
-
-          <!-- سجل وجبات اليوم -->
-          <div id="mealsListToday" class="space-y-2">
-            <!-- قائمة وجبات اليوم -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 10. مؤقت التركيز وإدارة الوقت (FOCUS POMODORO) ================= -->
-      <section id="viewFocus" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-6 shadow-xl text-center">
-          <h2 class="text-base font-black text-textLight flex items-center justify-center gap-2 mb-1">
-            <i data-lucide="hourglass" class="w-5 h-5 text-glow"></i>
-            مؤقت التركيز والانضباط
-          </h2>
-          <p class="text-xs text-textMuted mb-6">جلسات ٢٥ دقيقة لإنجاز مهمة أو مشي دون تشتت الشاشات.</p>
-
-          <div class="relative w-48 h-48 mx-auto flex items-center justify-center rounded-full border-4 border-borderSubtle bg-bgMain mb-6 shadow-2xl">
-            <span id="pomoTimeDisplay" class="text-4xl font-black font-mono text-textLight">25:00</span>
-          </div>
-
-          <div class="flex justify-center gap-3">
-            <button onclick="togglePomodoro()" id="btnPomoToggle" class="px-6 py-2.5 bg-crimson hover:bg-glow text-white text-xs font-bold rounded-xl shadow-lg shadow-crimson/30 transition-all">
-              بدء الجلسة
-            </button>
-            <button onclick="resetPomodoro()" class="px-4 py-2.5 bg-bgSec hover:bg-borderSubtle text-textLight text-xs font-bold rounded-xl border border-borderSubtle transition-all">
-              إعادة ضبط
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 11. مذكرات رحلتي (JOURNAL) ================= -->
-      <section id="viewJournal" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl">
-          <div class="flex justify-between items-center mb-3">
-            <div>
-              <h2 class="text-base font-black text-textLight flex items-center gap-2">
-                <i data-lucide="book-open" class="w-5 h-5 text-crimson"></i>
-                مذكرات رحلتي
-              </h2>
-              <p class="text-xs text-textMuted">تفريغ الذهن ومراقبة الدوافع النفسية.</p>
-            </div>
-          </div>
-
-          <!-- استمارة تدوين -->
-          <form onsubmit="handleJournalSubmit(event)" class="space-y-3 bg-bgSec p-4 rounded-2xl border border-borderSubtle mb-4">
-            <div>
-              <label class="block text-[11px] text-textMuted mb-1">ما الذي نجحت فيه اليوم؟</label>
-              <textarea id="jrSuccesses" rows="2" placeholder="الالتزام بالماء، عدم الاستسلام للرغبة العشوائية..." class="w-full bg-bgCard border border-borderSubtle rounded-xl p-2.5 text-xs text-textLight outline-none focus:border-crimson"></textarea>
-            </div>
-            <div>
-              <label class="block text-[11px] text-textMuted mb-1">ما الصعوبة أو التحدي الذي ظهر؟</label>
-              <textarea id="jrDifficulties" rows="2" placeholder="شعور بالإرهاق، إغراء طعام عشوائي..." class="w-full bg-bgCard border border-borderSubtle rounded-xl p-2.5 text-xs text-textLight outline-none focus:border-crimson"></textarea>
-            </div>
-            <div>
-              <label class="block text-[11px] text-textMuted mb-1">لحظة فخر اليوم (مهما كانت صغيرة)</label>
-              <input type="text" id="jrPride" placeholder="مشيت ٢٠ دقيقة رغم تعبي" class="w-full bg-bgCard border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none focus:border-crimson">
-            </div>
-            <button type="submit" class="w-full py-2 bg-crimson hover:bg-glow text-white text-xs font-bold rounded-xl shadow-md">
-              حفظ التدوينة
-            </button>
-          </form>
-
-          <div id="journalEntriesList" class="space-y-3">
-            <!-- قائمة التدوينات -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 12. التقارير واليوم ٢١٤ (REPORTS) ================= -->
-      <section id="viewReports" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl space-y-4">
-          <h2 class="text-base font-black text-textLight flex items-center gap-2">
-            <i data-lucide="file-text" class="w-5 h-5 text-crimson"></i>
-            تقارير التحول واليوم ٢١٤
-          </h2>
-          <p class="text-xs text-textMuted">رصد التغير الحقيقي المدعوم بالأرقام والسجلات الفعلية.</p>
-
-          <div class="p-4 bg-gradient-to-br from-bgSec via-bgSec to-crimson/15 rounded-2xl border border-borderSubtle space-y-3">
-            <div class="flex items-center gap-2 text-glow font-bold text-sm">
-              <i data-lucide="trophy" class="w-5 h-5"></i>
-              <span>قصة رحلتي — تقرير التخرج (اليوم ٢١٤)</span>
-            </div>
-            <p class="text-xs text-textMuted leading-relaxed">
-              في ختام الـ ٢١٤ يومًا، يتوج هذا القسم قصتك الكاملة بمقارنة شاملة بين البداية والنهاية.
-            </p>
-
-            <div class="bg-bgMain/80 p-3 rounded-xl border border-borderSubtle text-xs space-y-1.5">
-              <span class="text-glow font-bold block">رسالة من نفسك القديمة (كُتبت في اليوم الأول):</span>
-              <p id="reportsPastLetter" class="text-textLight italic">«--»</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 13. الإعدادات والنسخ الاحتياطي (SETTINGS) ================= -->
-      <section id="viewSettings" class="space-y-4 hidden">
-        <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 shadow-xl space-y-4">
-          <h2 class="text-base font-black text-textLight flex items-center gap-2">
-            <i data-lucide="settings" class="w-5 h-5 text-crimson"></i>
-            الإعدادات والنسخ الاحتياطي المحلي
-          </h2>
-          <p class="text-xs text-textMuted">التحكم في بياناتك المخزنة على هذا الهاتف وحمايتها من الضياع.</p>
-
-          <!-- ملخص الملف الشخصي -->
-          <div class="bg-bgSec p-4 rounded-2xl border border-borderSubtle text-xs space-y-2">
-            <div class="flex justify-between">
-              <span class="text-textMuted">الاسم:</span>
-              <span id="setProfileName" class="font-bold text-textLight">--</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-textMuted">تاريخ البدء المعتمد:</span>
-              <span id="setProfileStartDate" class="font-bold text-textLight">--</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-textMuted">الوزن الابتدائي / المستهدف:</span>
-              <span id="setProfileWeights" class="font-bold text-textLight">--</span>
-            </div>
-          </div>
-
-          <!-- أدوات النسخ الاحتياطي -->
-          <div class="space-y-2 pt-2">
-            <h4 class="text-xs font-bold text-textLight">تصدير واستيراد البيانات (JSON)</h4>
-            <div class="flex gap-2">
-              <button onclick="exportFullBackupJSON()" class="flex-1 py-2.5 bg-bgSec hover:bg-borderSubtle border border-borderSubtle rounded-xl text-xs font-bold text-textLight flex items-center justify-center gap-1.5">
-                <i data-lucide="download" class="w-4 h-4 text-glow"></i>
-                تصدير نسخة احتياطية
-              </button>
-              <button onclick="document.getElementById('importFileInput').click()" class="flex-1 py-2.5 bg-bgSec hover:bg-borderSubtle border border-borderSubtle rounded-xl text-xs font-bold text-textLight flex items-center justify-center gap-1.5">
-                <i data-lucide="upload" class="w-4 h-4 text-greenAcc"></i>
-                استيراد نسخة
-              </button>
-              <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="handleImportBackupJSON(event)">
-            </div>
-          </div>
-
-          <!-- إعادة ضبط المصنع -->
-          <div class="pt-4 border-t border-borderSubtle">
-            <button onclick="handleWipeAllData()" class="w-full py-2.5 bg-red-950/40 hover:bg-red-900/60 border border-red-800/50 rounded-xl text-xs font-bold text-red-300 transition-all flex items-center justify-center gap-1.5">
-              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-              إعادة ضبط المصنع ومسح كافة البيانات
-            </button>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <!-- نافذة رفع صورة جديدة (Modal) -->
-    <div id="modalUploadPhoto" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-      <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 w-full max-w-sm space-y-3">
-        <h3 class="text-sm font-bold text-textLight">إضافة صورة جديدة للرحلة</h3>
-        <div>
-          <label class="block text-xs text-textMuted mb-1">اختر الصورة (أمامي أو جانبي)</label>
-          <input type="file" accept="image/*" id="photoFileInput" class="w-full text-xs text-textMuted file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-crimson file:text-white">
-        </div>
-        <div id="photoPreviewContainer" class="hidden w-24 h-32 mx-auto rounded-xl overflow-hidden border border-borderSubtle">
-          <img id="photoPreviewImg" src="" alt="معاينة" class="w-full h-full object-cover">
-        </div>
-        <div>
-          <label class="block text-xs text-textMuted mb-1">ملاحظات (اختياري)</label>
-          <input type="text" id="photoNotesInput" placeholder="الأسبوع الرابع، إضاءة الصباح..." class="w-full bg-bgSec border border-borderSubtle rounded-xl px-3 py-2 text-xs text-textLight outline-none">
-        </div>
-        <div class="flex gap-2 pt-2">
-          <button onclick="closeUploadPhotoModal()" class="flex-1 py-2 bg-bgSec text-textMuted text-xs rounded-xl">إلغاء</button>
-          <button onclick="saveUploadedPhoto()" class="flex-1 py-2 bg-crimson hover:bg-glow text-white text-xs font-bold rounded-xl">حفظ</button>
+        <div class="card-sub text-xs" style="background: rgba(11,10,12,0.65);">
+          💡 <span id="dashDailyQuote">«لا أحتاج إلى أن أكون مثاليًا؛ أحتاج إلى أن أستمر.»</span>
         </div>
       </div>
-    </div>
 
-    <!-- درج التنقل الإضافي (More Menu Modal) -->
-    <div id="modalMoreMenu" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end justify-center p-4 hidden">
-      <div class="bg-bgCard border border-borderSubtle rounded-3xl p-5 w-full max-w-sm space-y-2 mb-16">
-        <h4 class="text-xs font-bold text-textMuted mb-3">الأقسام الإضافية</h4>
-        <button onclick="switchTab('nutrition'); closeMoreMenu();" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-bgSec hover:bg-borderSubtle text-xs font-bold text-textLight">
-          <i data-lucide="utensils" class="w-4 h-4 text-glow"></i>
-          حاسبة التغذية والأيض
-        </button>
-        <button onclick="switchTab('focus'); closeMoreMenu();" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-bgSec hover:bg-borderSubtle text-xs font-bold text-textLight">
-          <i data-lucide="hourglass" class="w-4 h-4 text-blue-400"></i>
-          مؤقت التركيز وإدارة الوقت
-        </button>
-        <button onclick="switchTab('journal'); closeMoreMenu();" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-bgSec hover:bg-borderSubtle text-xs font-bold text-textLight">
-          <i data-lucide="book-open" class="w-4 h-4 text-greenAcc"></i>
-          مذكرات رحلتي
-        </button>
-        <button onclick="switchTab('reports'); closeMoreMenu();" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-bgSec hover:bg-borderSubtle text-xs font-bold text-textLight">
-          <i data-lucide="file-text" class="w-4 h-4 text-amber-400"></i>
-          تقارير التحول واليوم ٢١٤
-        </button>
-        <button onclick="closeMoreMenu()" class="w-full py-2 bg-bgMain text-textMuted text-xs rounded-xl mt-2">إغلاق</button>
+      <!-- مؤقت الصيام المتقطع الذكي -->
+      <div class="card">
+        <div class="flex-between mb-2">
+          <div class="flex-gap">
+            <span style="font-size:1.1rem;">⏱️</span>
+            <div>
+              <div class="title-md">مؤقت الصيام المتقطع (<span id="fastProtocolLabel">16:8</span>)</div>
+              <div id="fastStatusLabel" class="text-xs text-green">جاهز لبدء نافذة الصيام</div>
+            </div>
+          </div>
+          <button onclick="toggleFastingTimer()" id="btnFastAction" class="btn-primary" style="padding:7px 12px; font-size:0.75rem;">
+            بدء الصيام
+          </button>
+        </div>
+        <div class="flex-between card-sub mt-2">
+          <div>
+            <span class="text-xs">الوقت المنقضي</span>
+            <div id="fastElapsedDisplay" class="title-lg" style="font-family:monospace;">00:00:00</div>
+          </div>
+          <div style="text-align:left;">
+            <span class="text-xs">المرحلة الحيوية</span>
+            <div id="fastBioStage" class="text-xs font-bold text-crimson">فترة التغذية / الاستعداد</div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <!-- ملخص الوزن والانضباط اليومي -->
+      <div class="grid-2 mb-3">
+        <!-- بطاقة الوزن -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="flex-between mb-2">
+            <span class="text-xs">الوزن الحالي</span>
+            <button onclick="quickWeightModal()" class="text-xs text-crimson" style="background:none; font-weight:800;">+ قياس</button>
+          </div>
+          <div class="flex-gap" style="align-items:baseline;">
+            <span id="dashCurrWeight" class="stat-num">--</span>
+            <span class="text-xs">كغ</span>
+          </div>
+          <div class="flex-between text-xs mt-2" style="border-top:1px solid var(--border); padding-top:6px;">
+            <span>التغير: <b id="dashWeightDelta" class="text-green">0.0</b></span>
+            <span>الهدف: <b id="dashTargetWeight">--</b></span>
+          </div>
+        </div>
+
+        <!-- بطاقة الانضباط -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="flex-between mb-2">
+            <span class="text-xs">انضباط اليوم</span>
+            <span id="dashDisciplinePct" class="text-xs text-green" style="font-weight:800;">0%</span>
+          </div>
+          <div class="flex-gap" style="align-items:baseline;">
+            <span id="dashHabitsDoneCount" class="stat-num">0</span>
+            <span class="text-xs">من <span id="dashHabitsTotalCount">5</span> عادات</span>
+          </div>
+          <div class="progress-track mt-2" style="height:7px;">
+            <div id="dashDisciplineBar" class="progress-fill progress-fill-green" style="width:0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- عدادات الرعاية اليومية (الماء مع كوب 300 مل، المشي، النوم، الطاقة) -->
+      <div class="grid-2 mb-3">
+        <!-- شرب الماء -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="flex-between text-xs mb-1">
+            <span class="text-blue" style="font-weight:700;">💧 شرب الماء</span>
+            <span id="dashWaterTarget">3000 مل</span>
+          </div>
+          <div id="dashWaterCurrent" class="title-lg mb-2">0 مل</div>
+          <div class="grid-3">
+            <button onclick="addWater(200)" class="btn-sec" style="padding:6px 4px; font-size:0.68rem;">+٢٠٠</button>
+            <button onclick="addWater(300)" class="btn-sec" style="padding:6px 4px; font-size:0.68rem; border-color:var(--blue);">+٣٠٠ كوب</button>
+            <button onclick="addWater(500)" class="btn-sec" style="padding:6px 4px; font-size:0.68rem;">+٥٠٠</button>
+          </div>
+        </div>
+
+        <!-- دقائق المشي والنشاط البدني الدقيق -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="flex-between text-xs mb-1">
+            <span class="text-green" style="font-weight:700;">🚶 المشي والحركة</span>
+            <span>هدف ٣٠ د</span>
+          </div>
+          <div class="flex-between mb-2">
+            <span id="dashWalkMinutes" class="title-lg">0 دقيقة</span>
+            <span id="dashWalkKm" class="text-xs text-green">~ 0.0 كم</span>
+          </div>
+          <div class="grid-2">
+            <button onclick="addWalkMinutes(10)" class="btn-sec" style="padding:6px; font-size:0.7rem;">+١٠ دقائق</button>
+            <button onclick="addWalkMinutes(20)" class="btn-sec" style="padding:6px; font-size:0.7rem;">+٢٠ دقيقة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- النوم ومستوى الطاقة -->
+      <div class="grid-2 mb-3">
+        <div class="card" style="margin-bottom:0;">
+          <div class="flex-between text-xs mb-1">
+            <span>🌙 ساعات النوم</span>
+            <button onclick="switchTab('focus')" class="text-xs text-crimson" style="background:none;">حاسبة النوم</button>
+          </div>
+          <div class="flex-between mt-2">
+            <button onclick="adjustSleep(-0.5)" class="btn-sec" style="padding:4px 12px;">-</button>
+            <span id="dashSleepHours" class="title-lg">7.0 س</span>
+            <button onclick="adjustSleep(0.5)" class="btn-sec" style="padding:4px 12px;">+</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="flex-between text-xs mb-1">
+            <span>⚡ طاقتي اليوم</span>
+            <span id="dashEnergyVal" class="text-amber">3 / 5</span>
+          </div>
+          <div class="grid-4 mt-2" style="grid-template-columns: repeat(5, 1fr);">
+            <button onclick="setEnergy(1)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">1</button>
+            <button onclick="setEnergy(2)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">2</button>
+            <button onclick="setEnergy(3)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">3</button>
+            <button onclick="setEnergy(4)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">4</button>
+            <button onclick="setEnergy(5)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">5</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- قائمة عادات اليوم على الرئيسية -->
+      <div class="card">
+        <div class="flex-between mb-3">
+          <span class="title-md">✅ عادات اليوم الأساسية (+15 XP لكل عادة)</span>
+          <button onclick="switchTab('discipline')" class="text-xs text-crimson" style="background:none;">إدارة العادات</button>
+        </div>
+        <div id="dashHabitsContainer" class="space-y"></div>
+      </div>
+    </section>
+
+    <!-- ================= 3. قسم الوزن والمتوسط المتحرك (WEIGHT & MOVING AVG) ================= -->
+    <section id="view-weight" class="hidden">
+      <div class="card">
+        <div class="flex-between mb-2">
+          <div>
+            <h2 class="title-lg">⚖️ سجل الوزن والمتوسط المتحرك</h2>
+            <p class="text-xs">الخط الأخضر يوضح المتوسط الحقيقي لآخر ٧ قياسات لتجاهل احتباس السوائل.</p>
+          </div>
+        </div>
+
+        <div class="grid-3 mb-3 text-center">
+          <div class="card-sub">
+            <span class="text-xs">الوزن الحالي</span>
+            <div id="wtStatCurr" class="title-lg mt-2">--</div>
+          </div>
+          <div class="card-sub">
+            <span class="text-xs">متوسط ٧ أيام</span>
+            <div id="wtStatAvg" class="title-lg text-green mt-2">--</div>
+          </div>
+          <div class="card-sub">
+            <span class="text-xs">إجمالي النزول</span>
+            <div id="wtStatLost" class="title-lg text-crimson mt-2">--</div>
+          </div>
+        </div>
+
+        <!-- المخطط البياني المزدوج (SVG) -->
+        <div class="card-sub mb-3">
+          <div class="flex-between text-xs mb-2">
+            <span>🔴 الوزن اليومي</span>
+            <span class="text-green">🟢 المتوسط المتحرك (٧ أيام)</span>
+          </div>
+          <div id="weightChartBox" style="width:100%; height:150px; display:flex; align-items:center; justify-content:center;"></div>
+        </div>
+
+        <!-- نموذج إضافة وزن وقياسات الجسم -->
+        <form onsubmit="submitWeightRecord(event)" class="card-sub space-y">
+          <div class="title-md">تسجيل قياس جديد (+20 XP)</div>
+          <div class="grid-2">
+            <div>
+              <label class="text-xs">الوزن (كغ) *</label>
+              <input type="number" step="0.1" id="wtFormWeight" required placeholder="85.4">
+            </div>
+            <div>
+              <label class="text-xs">التاريخ *</label>
+              <input type="date" id="wtFormDate" required>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div>
+              <label class="text-xs">الخصر (سم)</label>
+              <input type="number" step="0.5" id="wtFormWaist" placeholder="92">
+            </div>
+            <div>
+              <label class="text-xs">الصدر (سم)</label>
+              <input type="number" step="0.5" id="wtFormChest" placeholder="102">
+            </div>
+            <div>
+              <label class="text-xs">الذراع (سم)</label>
+              <input type="number" step="0.5" id="wtFormArm" placeholder="35">
+            </div>
+          </div>
+          <div>
+            <label class="text-xs">ملاحظات الظروف (مثل: بعد التمرين، نوم قليل، وجبة مالحة)</label>
+            <input type="text" id="wtFormNotes" placeholder="صباحاً قبل الفطور">
+          </div>
+          <button type="submit" class="btn-primary w-full">حفظ القياس في السجل</button>
+        </form>
+
+        <div class="mt-3">
+          <div class="title-md mb-2">السجل الزمني للقياسات</div>
+          <div id="weightHistoryContainer" class="space-y"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. قسم صور قبل وبعد (PHOTOS STUDIO) ================= -->
+    <section id="view-photos" class="hidden">
+      <div class="card">
+        <div class="flex-between mb-3">
+          <div>
+            <h2 class="title-lg">📸 مختبر صور قبل وبعد</h2>
+            <p class="text-xs">محفوظة محلياً داخل هاتفك (IndexedDB) ولا تغادر جهازك أبداً.</p>
+          </div>
+          <button onclick="openPhotoModal()" class="btn-primary">+ صورة جديدة</button>
+        </div>
+
+        <!-- أداة المقارنة التفاعلية -->
+        <div class="card-sub mb-3">
+          <div class="flex-between mb-2">
+            <span class="title-md">مقارنة التحول البصري</span>
+            <div class="flex-gap">
+              <button onclick="setPhotoMode('slider')" id="btnModeSlider" class="btn-primary" style="padding:4px 10px; font-size:0.7rem;">شريط السحب</button>
+              <button onclick="setPhotoMode('side')" id="btnModeSide" class="btn-sec" style="padding:4px 10px; font-size:0.7rem;">جنبًا لجنب</button>
+            </div>
+          </div>
+
+          <div class="grid-2 mb-2" id="photoPickersRow">
+            <select id="selPhotoBefore" onchange="renderPhotoComparison()"></select>
+            <select id="selPhotoAfter" onchange="renderPhotoComparison()"></select>
+          </div>
+
+          <div id="photoCompareStage" style="width:100%; height:310px; border-radius:14px; overflow:hidden; position:relative; background:#0B0A0C; border:1px solid var(--border); display:flex; align-items:center; justify-content:center;">
+            <span class="text-xs">أضف صورتين على الأقل لتفعيل شريط المقارنة.</span>
+          </div>
+        </div>
+
+        <div class="title-md mb-2">الخط الزمني للصور (<span id="photoCountLabel">0</span>)</div>
+        <div id="photosGalleryGrid" class="grid-2"></div>
+      </div>
+    </section>
+
+    <!-- ================= 5. صالة التمارين ثلاثية الأبعاد (100% OFFLINE 3D GYM) ================= -->
+    <section id="view-exercises" class="hidden">
+      <div class="card">
+        <div class="flex-between mb-2">
+          <div>
+            <h2 class="title-lg">🏋️ صالة التمارين ثلاثية الأبعاد (Offline 3D)</h2>
+            <p class="text-xs">اسحب يميناً ويساراً على المجسم لتدوير الكاميرا بزاوية ٣٦٠ درجة.</p>
+          </div>
+          <span class="badge badge-green">يعمل بدون إنترنت</span>
+        </div>
+
+        <!-- شاشة العرض ثلاثية الأبعاد المدمجة -->
+        <div style="position:relative; width:100%; height:290px; background:#080709; border-radius:16px; border:1px solid var(--border); overflow:hidden; margin-bottom:12px;">
+          <canvas id="gym3dCanvas" style="width:100%; height:100%; display:block; cursor:grab;"></canvas>
+
+          <!-- أزرار التحكم فوق الكانفاس -->
+          <div style="position:absolute; bottom:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center;">
+            <div class="flex-gap">
+              <button onclick="toggle3DPlay()" id="btn3dPlay" class="btn-sec" style="background:rgba(18,16,19,0.85);">⏸️ إيقاف</button>
+              <button onclick="reset3DAngle()" class="btn-sec" style="background:rgba(18,16,19,0.85);">🔄 زاوية أمامية</button>
+            </div>
+            <div class="card-sub flex-gap" style="padding:6px 10px; background:rgba(18,16,19,0.9);">
+              <span id="exTimerText" style="font-family:monospace; font-weight:900; font-size:0.9rem;">00:00</span>
+              <button onclick="toggleExTimer()" id="btnExTimer" class="text-xs text-crimson" style="background:none; font-weight:800;">بدء</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- شريط اختيار التمارين -->
+        <div class="scroll-x mb-3" id="exerciseButtonsBar"></div>
+
+        <!-- تفاصيل التمرين المختار -->
+        <div class="card-sub space-y">
+          <div class="flex-between">
+            <span id="exTitle" class="title-md">--</span>
+            <span id="exRepsBadge" class="badge">--</span>
+          </div>
+          <div id="exMuscles" class="text-xs text-crimson"></div>
+          <div class="text-xs">
+            <b class="text-green">✔️ الأداء الصحيح:</b>
+            <p id="exGuide" class="mt-2"></p>
+          </div>
+          <div class="text-xs">
+            <b class="text-amber">⚠️ أخطاء شائعة والبديل المريح:</b>
+            <p id="exMistakes" class="mt-2"></p>
+          </div>
+          <button onclick="completeWorkoutSession()" class="btn-primary w-full">+ تسجيل إتمام جلسة التمرين (+30 XP)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 6. الانضباط وخريطة الـ ٢١٤ يومًا وبنك المكافآت ================= -->
+    <section id="view-discipline" class="hidden">
+      <!-- السلاسل والدروع -->
+      <div class="card">
+        <div class="flex-between mb-3">
+          <div>
+            <h2 class="title-lg">🔥 نظام الانضباط وبنك المكافآت</h2>
+            <p class="text-xs">الالتزام التراكمي وبناء الهوية الجديدة.</p>
+          </div>
+          <button onclick="addNewCustomHabit()" class="btn-primary" style="padding:7px 12px;">+ عادة جديدة</button>
+        </div>
+
+        <div class="grid-3 mb-3 text-center">
+          <div class="card-sub">
+            <span class="text-xs">السلسلة الحالية</span>
+            <div id="discCurrStreak" class="title-lg text-crimson mt-2">0 يوم</div>
+          </div>
+          <div class="card-sub">
+            <span class="text-xs">أطول سلسلة</span>
+            <div id="discMaxStreak" class="title-lg text-green mt-2">0 يوم</div>
+          </div>
+          <div class="card-sub">
+            <span class="text-xs">دروع الحماية</span>
+            <div id="discShieldsCount" class="title-lg text-amber mt-2">1 🛡️</div>
+          </div>
+        </div>
+
+        <div id="fullHabitsList" class="space-y mb-3"></div>
+
+        <!-- خريطة الالتزام الحرارية لـ 214 يوم -->
+        <div class="card-sub">
+          <div class="flex-between">
+            <span class="title-md">خريطة الالتزام الحرارية (٢١٤ يومًا)</span>
+            <span class="text-xs">أخضر = يوم ملتزم</span>
+          </div>
+          <div id="heatmapGrid" class="heatmap-grid"></div>
+        </div>
+      </div>
+
+      <!-- بنك المكافآت الشخصية -->
+      <div class="card">
+        <div class="flex-between mb-2">
+          <div>
+            <h3 class="title-md">🎁 بنك المكافآت الذاتية</h3>
+            <p class="text-xs">كافئ نفسك بمكافآت صحية غير غذائية عند جمع نقاط XP.</p>
+          </div>
+          <button onclick="addCustomReward()" class="btn-sec">+ مكافأة</button>
+        </div>
+        <div id="rewardsListContainer" class="space-y mt-2"></div>
+      </div>
+
+      <!-- قسم التعافي ووضع اليوم الصعب -->
+      <div class="card">
+        <h3 class="title-md mb-1">❤️‍🩹 التعافي من الانتكاسات ووضع اليوم الصعب</h3>
+        <p class="text-xs mb-3">إذا مررت بيوم مرهق أو انقطعت، لا تصفّر عدادك. شخّص السبب وفعّل خطة الحد الأدنى.</p>
+
+        <select id="relapseReason" class="mb-2" onchange="generateRecoveryAdvice()">
+          <option value="">-- اختر ما الذي يواجهك اليوم؟ --</option>
+          <option value="sleep">قلة النوم والإرهاق البدني</option>
+          <option value="stress">ضغط الدراسة أو العمل والتوتر</option>
+          <option value="craving">جوع عاطفي أو رغبة شديدة بالسكريات</option>
+          <option value="time">ضيق الوقت وعدم التخطيط المسبق</option>
+        </select>
+        <div id="recoveryAdviceBox" class="card-sub text-xs hidden mb-3"></div>
+
+        <button onclick="toggleHardDay()" id="btnHardDayToggle" class="btn-sec w-full">
+          🛡️ تفعيل «وضع اليوم الصعب» (الاكتفاء بـ ٣ عادات أساسية اليوم)
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 7. التغذية، الأيض، وبنك الوجبات السريعة ================= -->
+    <section id="view-nutrition" class="hidden">
+      <div class="card">
+        <h2 class="title-lg mb-1">🥗 تغذيتي وبنك الوجبات السريعة</h2>
+        <p class="text-xs mb-3">حسابات تقديرية مرنة لمساعدتك على الوعي بكمياتك دون حرمان قاسٍ.</p>
+
+        <div class="grid-3 mb-3 text-center">
+          <div class="card-sub">
+            <span class="text-xs">الأيض الأساسي</span>
+            <div id="nutBmr" class="title-md mt-2">--</div>
+          </div>
+          <div class="card-sub">
+            <span class="text-xs">سعرات الثبات</span>
+            <div id="nutTdee" class="title-md mt-2">--</div>
+          </div>
+          <div class="card-sub">
+            <span class="text-xs">هدف الخسارة</span>
+            <div id="nutTargetCal" class="title-md text-green mt-2">--</div>
+          </div>
+        </div>
+
+        <!-- بنك الوجبات المتكررة السريعة -->
+        <div class="card-sub mb-3">
+          <div class="title-md mb-2">⚡ تسجيل سريع من بنك الوجبات المعتادة</div>
+          <div class="grid-2" id="quickMealsBank">
+            <button onclick="quickAddMeal('٣ بيضات مسلوقة + خيار', 240, 20)" class="btn-sec text-xs">🥚 فطور بيض (240 سعرة)</button>
+            <button onclick="quickAddMeal('صدر دجاج مشوي + سلطة', 350, 42)" class="btn-sec text-xs">🍗 دجاج وسلطة (350 سعرة)</button>
+            <button onclick="quickAddMeal('علبة تونة مصفاة + خبز أسمر', 280, 28)" class="btn-sec text-xs">🐟 وجبة تونة (280 سعرة)</button>
+            <button onclick="quickAddMeal('زبادي يوناني + حفنة مكسرات', 210, 15)" class="btn-sec text-xs">🥣 سناك صحي (210 سعرة)</button>
+          </div>
+        </div>
+
+        <!-- إضافة وجبة مخصصة -->
+        <form onsubmit="submitCustomMeal(event)" class="card-sub space-y mb-3">
+          <div class="title-md">إضافة وجبة مخصصة</div>
+          <div class="grid-2">
+            <input type="text" id="mealNameIn" required placeholder="اسم الطعام والكمية">
+            <input type="number" id="mealCalIn" required placeholder="السعرات التقديرية">
+          </div>
+          <button type="submit" class="btn-primary w-full">إضافة لسجل اليوم</button>
+        </form>
+
+        <div class="flex-between mb-2">
+          <span class="title-md">وجبات اليوم المسجلة</span>
+          <span id="mealsTotalCalLabel" class="badge badge-green">0 سعرة</span>
+        </div>
+        <div id="todayMealsContainer" class="space-y"></div>
+      </div>
+    </section>
+
+    <!-- ================= 8. إدارة الوقت، حاسبة النوم، المذكرات، وبطاقة الإنجاز ================= -->
+    <section id="view-focus" class="hidden">
+      <!-- مؤقت بومودورو للتركيز -->
+      <div class="card text-center">
+        <h2 class="title-lg mb-1">⏳ مؤقت التركيز ومنع التشتت</h2>
+        <p class="text-xs mb-3">جلسة ٢٥ دقيقة للتركيز في الدراسة أو المشي بعيداً عن تصفح الهاتف.</p>
+        <div id="pomoClock" style="font-size:2.6rem; font-weight:900; font-family:monospace; margin:12px 0;">25:00</div>
+        <div class="flex-center flex-gap">
+          <button onclick="togglePomo()" id="btnPomoStart" class="btn-primary">بدء جلسة التركيز</button>
+          <button onclick="resetPomo()" class="btn-sec">إعادة ضبط</button>
+        </div>
+      </div>
+
+      <!-- حاسبة دورات النوم الذكية (90 دقيقة) -->
+      <div class="card">
+        <h3 class="title-md mb-1">🛌 حاسبة دورات النوم الصحية (٩٠ دقيقة)</h3>
+        <p class="text-xs mb-2">حدد متى تريد الاستيقاظ غداً لنقترح عليك أفضل وقت للنوم للاستيقاظ بنشاط.</p>
+        <div class="flex-gap">
+          <input type="time" id="wakeUpTimeInput" value="06:30" onchange="calcSleepCycles()">
+          <button onclick="calcSleepCycles()" class="btn-primary">احسب</button>
+        </div>
+        <div id="sleepCyclesResult" class="card-sub text-xs mt-2"></div>
+      </div>
+
+      <!-- مذكرات الرحلة -->
+      <div class="card">
+        <h3 class="title-md mb-2">📓 مذكرات رحلتي والمراجعة الذاتية (+20 XP)</h3>
+        <form onsubmit="submitJournal(event)" class="space-y mb-3">
+          <input type="text" id="jrWinIn" required placeholder="أهم إنجاز نجحت فيه اليوم...">
+          <input type="text" id="jrChallengeIn" placeholder="أبرز صعوبة واجهتني وكيف سأتجنبها غداً...">
+          <button type="submit" class="btn-primary w-full">حفظ في المذكرات</button>
+        </form>
+        <div id="journalListContainer" class="space-y"></div>
+      </div>
+
+      <!-- مولد بطاقة الإنجاز المصورة وخريطة المراحل -->
+      <div class="card">
+        <h3 class="title-md mb-1">🏆 بطاقة إنجازي المصورة وخريطة الـ ٢١٤ يومًا</h3>
+        <p class="text-xs mb-3">أنشئ صورة أنيقة تلخص تقدمك الحالي لحفظها في ألبوم هاتفك.</p>
+        <button onclick="downloadAchievementCard()" class="btn-primary w-full mb-3">📥 توليد وتنزيل بطاقة إنجازي (PNG)</button>
+
+        <div class="title-md mb-2">مراحل الرحلة الثماني</div>
+        <div id="phasesRoadmapContainer" class="space-y"></div>
+      </div>
+    </section>
+
+    <!-- ================= 9. الإعدادات والنسخ الاحتياطي (SETTINGS) ================= -->
+    <section id="view-settings" class="hidden">
+      <div class="card space-y">
+        <h2 class="title-lg">⚙️ الإعدادات والخصوصية والنسخ الاحتياطي</h2>
+        <p class="text-xs">جميع بياناتك وصورك محفوظة محلياً على جهازك. احتفظ بنسخة احتياطية دورياً.</p>
+
+        <div class="card-sub text-xs space-y">
+          <div><b>الاسم:</b> <span id="setInfoName">--</span></div>
+          <div><b>تاريخ بدء الرحلة:</b> <span id="setInfoStart">--</span></div>
+          <div><b>العهد الشخصي:</b> <span id="setInfoContract">--</span></div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label class="text-xs">تعديل الوزن المستهدف (كغ)</label>
+            <input type="number" step="0.1" id="setEditTargetW">
+          </div>
+          <div>
+            <label class="text-xs">تعديل هدف الماء (مل)</label>
+            <input type="number" step="100" id="setEditWater">
+          </div>
+        </div>
+        <button onclick="saveQuickSettings()" class="btn-primary w-full">حفظ التعديلات</button>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:12px 0;">
+
+        <div class="title-md">النسخ الاحتياطي والاسترجاع</div>
+        <div class="grid-2">
+          <button onclick="exportBackupJSON()" class="btn-sec">📤 تصدير ملف JSON</button>
+          <button onclick="document.getElementById('importJsonInput').click()" class="btn-sec">📥 استيراد نسخة</button>
+          <input type="file" id="importJsonInput" accept=".json" class="hidden" onchange="importBackupJSON(event)">
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:12px 0;">
+        <button onclick="wipeAllAppData()" class="btn-sec w-full" style="border-color:#991B1B; color:#FCA5A5;">
+          🗑️ إعادة ضبط المصنع ومسح كافة البيانات
+        </button>
+      </div>
+    </section>
 
   </div>
 
-  <!-- شريط التنقل السفلي الثابت (Bottom Navigation Bar) -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-bgCard/95 backdrop-blur-md border-t border-borderSubtle p-2 safe-bottom">
-    <div class="max-w-lg mx-auto flex items-center justify-around text-[10px]">
-      <button onclick="switchTab('dashboard')" id="navBtn-dashboard" class="nav-item flex flex-col items-center py-1 text-glow font-bold">
-        <i data-lucide="home" class="w-5 h-5 mb-1"></i>
+  <!-- ================= نافذة الطوارئ ضد التخبيص (SOS CRAVING MODAL) ================= -->
+  <div id="modalSos" class="modal-backdrop hidden">
+    <div class="modal-box text-center space-y">
+      <span class="badge">🚨 درع الطوارئ اللحظي</span>
+      <h3 class="title-lg">تمهّل ١٥ دقيقة قبل أي قرار عشوائي!</h3>
+      <p class="text-xs">الرغبة الملحّة في الأكل العشوائي أو الكسل هي موجة عصبية مؤقتة تنكسر خلال دقائق.</p>
+
+      <!-- دائرة التنفس 4-7-8 -->
+      <div id="breathVisualizer" class="breath-circle">تنفّس بعمق</div>
+
+      <!-- تذكير بأسباب المستخدم وعقده الشخصي -->
+      <div class="card-sub text-xs" style="text-align:right;">
+        <div class="text-crimson font-bold mb-1">تذكّر لماذا بدأت هذه الرحلة:</div>
+        <div id="sosReasonsText" class="mb-2">--</div>
+        <div class="text-green font-bold mb-1">عهدك مع نفسك:</div>
+        <div id="sosContractText">--</div>
+      </div>
+
+      <div class="card-sub text-xs" style="text-align:right;">
+        <div>1️⃣ اشرب الآن كوب ماء كامل (٣٠٠ مل).</div>
+        <div>2️⃣ ابتعد عن المطبخ أو الشاشة لمدة ٥ دقائق.</div>
+        <div>3️⃣ تذكر أن لذة الطعام العشوائي تدوم ٣ دقائق، وفخر الانضباط يدوم طوال اليوم.</div>
+      </div>
+
+      <div class="grid-2">
+        <button onclick="surviveCravingSuccess()" class="btn-primary">💪 تغلبت على الرغبة (+25 XP)</button>
+        <button onclick="closeSosModal()" class="btn-sec">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= نافذة رفع صورة جديدة (PHOTO UPLOAD MODAL) ================= -->
+  <div id="modalPhoto" class="modal-backdrop hidden">
+    <div class="modal-box space-y">
+      <h3 class="title-md">📸 إضافة صورة توثيق جديدة</h3>
+      <p class="text-xs">نصيحة: التقط الصورة بنفس الإضاءة والمسافة لمقارنة عادلة.</p>
+      <input type="file" id="photoInputFile" accept="image/*" onchange="previewSelectedPhoto(event)">
+      <div id="photoPreviewWrap" class="hidden text-center">
+        <img id="photoPreviewImg" src="" style="max-height:180px; border-radius:12px; margin:8px auto; border:1px solid var(--border);">
+      </div>
+      <input type="text" id="photoNoteIn" placeholder="ملاحظة عن الصورة (اختياري)">
+      <div class="grid-2">
+        <button onclick="savePhotoRecord()" class="btn-primary">حفظ الصورة (+25 XP)</button>
+        <button onclick="closePhotoModal()" class="btn-sec">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= شريط التنقل السفلي (BOTTOM NAVIGATION) ================= -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active">
+        <span style="font-size:1.15rem;">🏠</span>
         <span>الرئيسية</span>
       </button>
-      <button onclick="switchTab('weight')" id="navBtn-weight" class="nav-item flex flex-col items-center py-1 text-textMuted hover:text-textLight">
-        <i data-lucide="scale" class="w-5 h-5 mb-1"></i>
+      <button onclick="switchTab('weight')" id="nav-weight" class="nav-btn">
+        <span style="font-size:1.15rem;">⚖️</span>
         <span>الوزن</span>
       </button>
-      <button onclick="switchTab('photos')" id="navBtn-photos" class="nav-item flex flex-col items-center py-1 text-textMuted hover:text-textLight">
-        <i data-lucide="camera" class="w-5 h-5 mb-1"></i>
+      <button onclick="switchTab('photos')" id="nav-photos" class="nav-btn">
+        <span style="font-size:1.15rem;">📸</span>
         <span>الصور</span>
       </button>
-      <button onclick="switchTab('exercises')" id="navBtn-exercises" class="nav-item flex flex-col items-center py-1 text-textMuted hover:text-textLight">
-        <i data-lucide="activity" class="w-5 h-5 mb-1"></i>
+      <button onclick="switchTab('exercises')" id="nav-exercises" class="nav-btn">
+        <span style="font-size:1.15rem;">🏋️</span>
         <span>التمارين 3D</span>
       </button>
-      <button onclick="switchTab('discipline')" id="navBtn-discipline" class="nav-item flex flex-col items-center py-1 text-textMuted hover:text-textLight">
-        <i data-lucide="check-square" class="w-5 h-5 mb-1"></i>
+      <button onclick="switchTab('discipline')" id="nav-discipline" class="nav-btn">
+        <span style="font-size:1.15rem;">🔥</span>
         <span>انضباطي</span>
       </button>
-      <button onclick="switchTab('recovery')" id="navBtn-recovery" class="nav-item flex flex-col items-center py-1 text-textMuted hover:text-textLight">
-        <i data-lucide="heart-pulse" class="w-5 h-5 mb-1"></i>
-        <span>التعافي</span>
+      <button onclick="switchTab('nutrition')" id="nav-nutrition" class="nav-btn">
+        <span style="font-size:1.15rem;">🥗</span>
+        <span>تغذيتي</span>
       </button>
-      <button onclick="openMoreMenu()" id="navBtn-more" class="nav-item flex flex-col items-center py-1 text-textMuted hover:text-textLight">
-        <i data-lucide="grid" class="w-5 h-5 mb-1"></i>
-        <span>المزيد</span>
+      <button onclick="switchTab('focus')" id="nav-focus" class="nav-btn">
+        <span style="font-size:1.15rem;">📓</span>
+        <span>وقتي ومذكراتي</span>
       </button>
     </div>
   </nav>
 
-  <!-- ================= المحرك البرمجي المتكامل (JAVASCRIPT ENGINE) ================= -->
+  <!-- ================= المحرك البرمجي الشامل (100% OFFLINE ENGINE) ================= -->
   <script>
     const TOTAL_DAYS = 214;
-    const DB_NAME = 'RehlatyMasterDB';
+    const DB_NAME = 'RihlatyOfflineDB_v2';
     const DB_VERSION = 1;
 
-    // المراحل الثماني للرحلة
+    const QUOTES = [
+      '«لا أحتاج إلى أن أكون مثاليًا؛ أحتاج إلى أن أستمر.»',
+      '«الانضباط هو أن تختار بين ما تريده الآن وما تريده أكثر في النهاية.»',
+      '«كل كوب ماء وكل دقيقة مشي هي تصويت لهويتك الجديدة.»',
+      '«إذا تعثرت في وجبة، فلا تجعلها يومًا؛ وإذا تعثرت في يوم، فلا تجعله أسبوعًا.»',
+      '«الأرقام تتبع العادات؛ ركّز على إتمام عادات اليوم وسيأتي الوزن تلقائيًا.»'
+    ];
+
     const PHASES = [
-      { id: 1, title: 'المرحلة الأولى: بناء الأساس', start: 1, end: 30, desc: 'الاعتياد على تسجيل الوزن والنشاط الخفيف وضبط النوم دون قسوة.', challenge: 'تسجيل البيانات ٧ أيام متتالية دون انقطاع.' },
-      { id: 2, title: 'المرحلة الثانية: تثبيت العادات', start: 31, end: 60, desc: 'تحويل السلوكيات إلى روتين تلقائي ومقاومة الأكل العشوائي.', challenge: 'سلسلة انضباط لمدة ١٠ أيام.' },
-      { id: 3, title: 'المرحلة الثالثة: تحسين الاستمرارية', start: 61, end: 90, desc: 'مواجهة ثبات الوزن الطبيعي وإعادة تقييم الإشارات البدنية.', challenge: 'مراجعة أسبوعية مستمرة لشهر كامل.' },
-      { id: 4, title: 'المرحلة الرابعة: رفع مستوى الانضباط', start: 91, end: 120, desc: 'تحسين جودة الأغذية وبناء صلابة ذهنية ضد التسويف.', challenge: 'تجاوز ٣ أيام صعبة بنجاح دون انقطاع.' },
-      { id: 5, title: 'المرحلة الخامسة: تقوية الروتين', start: 121, end: 150, desc: 'ترسيخ نمط الحياة الجديد بحيث لا يستنزف طاقة الإرادة.', challenge: 'تحقيق ٨٠٪ انضباط للشهر كاملاً.' },
-      { id: 6, title: 'المرحلة السادسة: مواجهة التحديات', start: 151, end: 180, desc: 'إدارة الضغوط والمناسبات دون التخلي عن رعاية النفس.', challenge: 'المحافظة على المشي والماء أثناء الانشغال.' },
-      { id: 7, title: 'المرحلة السابعة: ترسيخ الاستقلالية', start: 181, end: 210, desc: 'التحكم الذاتي الكامل والوعي الحقيقي بالشبع والنشاط.', challenge: 'جلسة تصوير مقارنة دقيقة.' },
-      { id: 8, title: 'المرحلة الأخيرة: التخرج والاستمرار', start: 211, end: 214, desc: 'مراجعة قصة التحول، الاحتفال بالانضباط، ووضع خطة البقاء.', challenge: 'إصدار التقرير النهائي الشامل.' }
+      { id: 1, title: 'المرحلة ١: بناء الأساس', start: 1, end: 30, goal: 'تثبيت شرب الماء، المشي اليومي، وتسجيل الوزن بانتظام.' },
+      { id: 2, title: 'المرحلة ٢: تثبيت العادات', start: 31, end: 60, goal: 'تقليل الأكل العشوائي الليلي والالتزام بنوم متوازن.' },
+      { id: 3, title: 'المرحلة ٣: تحسين الاستمرارية', start: 61, end: 90, goal: 'التعامل الهادئ مع ثبات الوزن وإدخال تمارين القوة.' },
+      { id: 4, title: 'المرحلة ٤: رفع الانضباط', start: 91, end: 120, goal: 'رفع جودة البروتين في الوجبات ومقاومة التسويف.' },
+      { id: 5, title: 'المرحلة ٥: تقوية الروتين', start: 121, end: 150, goal: 'تحويل النشاط والحركة إلى عادة تلقائية لا تحتاج لمجهود ذهني.' },
+      { id: 6, title: 'المرحلة ٦: مواجهة التحديات', start: 151, end: 180, goal: 'الحفاظ على الأساسيات حتى في أيام الامتحانات أو الانشغال.' },
+      { id: 7, title: 'المرحلة ٧: ترسيخ الاستقلالية', start: 181, end: 210, goal: 'قيادة الذات بثقة تامة وفهم إشارات الجوع والشبع.' },
+      { id: 8, title: 'المرحلة ٨: التخرج والاستمرار', start: 211, end: 214, goal: 'توثيق قصة التحول والانطلاق في نمط حياة دائم.' }
     ];
 
-    // العادات الافتراضية
     const DEFAULT_HABITS = [
-      { id: 'h1', title: 'شرب الماء الكافي بالتساوي', desc: 'توزيع الماء على مدار اليوم' },
-      { id: 'h2', title: 'المشي أو الحركة ٢٠-٣٠ دقيقة', desc: 'حركة يومية منخفضة الشدة' },
-      { id: 'h3', title: 'وجبات نظيفة دون عشوائية', desc: 'الأكل بوعي وتجنب اللقيمات المشتتة' },
-      { id: 'h4', title: 'النوم المبكر (٧-٨ ساعات)', desc: 'تعافي الجهاز العصبي والعضلي' },
-      { id: 'h5', title: 'التمرين أو الإطالة المقررة', desc: 'أداء جلسة المقاومة أو الإطالة' }
+      { id: 'h1', title: 'شرب الماء الكافي موزّعاً على اليوم', core: true },
+      { id: 'h2', title: 'مشي أو نشاط بدني ٢٠-٣٠ دقيقة', core: true },
+      { id: 'h3', title: 'وجبات متوازنة بدون أكل عشوائي', core: true },
+      { id: 'h4', title: 'أداء تمرين القوة أو الإطالة المقرر', core: false },
+      { id: 'h5', title: 'النوم في وقت مبكر وإبعاد الهاتف', core: false }
     ];
 
-    // حالة التطبيق في الذاكرة
-    let appState = {
+    const DEFAULT_REWARDS = [
+      { id: 'r1', title: 'شراء قميص أو ملابس رياضية جديدة', cost: 300, claimed: false },
+      { id: 'r2', title: 'يوم مفتوح للترفيه أو نزهة مع الأصدقاء', cost: 500, claimed: false },
+      { id: 'r3', title: 'شراء أداة أو جهاز مفيد كنت أؤجله', cost: 1000, claimed: false }
+    ];
+
+    let state = {
       profile: null,
+      xp: 0,
+      shields: 1,
+      fastingStart: null,
+      habits: [...DEFAULT_HABITS],
+      rewards: [...DEFAULT_REWARDS],
       weights: [],
       photos: [],
-      habits: [...DEFAULT_HABITS],
-      todayLog: {
-        date: getTodayStr(),
-        water: 0,
-        steps: 0,
-        sleep: 7,
-        workoutMin: 0,
-        completedHabits: [],
-        isHardDay: false,
-        meals: []
-      },
-      journals: [],
-      currentTab: 'dashboard'
+      logs: {},
+      journals: []
     };
 
-    // ================= محرك IndexedDB المحلي =================
-    let dbInstance = null;
-    function initDB() {
-      return new Promise((resolve, reject) => {
+    // ================= IndexedDB Wrapper =================
+    let db = null;
+    function openDB() {
+      return new Promise((resolve) => {
         const req = indexedDB.open(DB_NAME, DB_VERSION);
         req.onupgradeneeded = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains('profile')) db.createStore = db.createObjectStore('profile', { keyPath: 'id' });
-          if (!db.objectStoreNames.contains('weights')) db.createObjectStore('weights', { keyPath: 'id' });
-          if (!db.objectStoreNames.contains('photos')) db.createObjectStore('photos', { keyPath: 'id' });
-          if (!db.objectStoreNames.contains('dailyLogs')) db.createObjectStore('dailyLogs', { keyPath: 'date' });
-          if (!db.objectStoreNames.contains('habits')) db.createObjectStore('habits', { keyPath: 'id' });
-          if (!db.objectStoreNames.contains('journals')) db.createObjectStore('journals', { keyPath: 'id' });
+          const d = e.target.result;
+          if (!d.objectStoreNames.contains('kv')) d.createObjectStore('kv');
+          if (!d.objectStoreNames.contains('photos')) d.createObjectStore('photos', { keyPath: 'id' });
         };
-        req.onsuccess = () => { dbInstance = req.result; resolve(); };
-        req.onerror = () => reject(req.error);
+        req.onsuccess = (e) => { db = e.target.result; resolve(); };
+        req.onerror = () => resolve();
       });
     }
 
-    async function dbGet(storeName, key) {
-      return new Promise((resolve) => {
-        const tx = dbInstance.transaction(storeName, 'readonly');
-        const req = tx.objectStore(storeName).get(key);
-        req.onsuccess = () => resolve(req.result ? req.result.data || req.result : null);
-        req.onerror = () => resolve(null);
-      });
+    function saveState() {
+      const copy = { ...state, photos: [] };
+      localStorage.setItem('rihlaty_master_v2', JSON.stringify(copy));
+      if (db) {
+        const tx = db.transaction('kv', 'readwrite');
+        tx.objectStore('kv').put(copy, 'mainState');
+      }
     }
 
-    async function dbGetAll(storeName) {
-      return new Promise((resolve) => {
-        const tx = dbInstance.transaction(storeName, 'readonly');
-        const req = tx.objectStore(storeName).getAll();
-        req.onsuccess = () => resolve(req.result || []);
-        req.onerror = () => resolve([]);
-      });
+    async function loadState() {
+      await openDB();
+      const localRaw = localStorage.getItem('rihlaty_master_v2');
+      if (localRaw) {
+        try { state = { ...state, ...JSON.parse(localRaw) }; } catch (e) {}
+      }
+      if (db) {
+        await new Promise((resolve) => {
+          const tx = db.transaction(['kv', 'photos'], 'readonly');
+          const reqKv = tx.objectStore('kv').get('mainState');
+          reqKv.onsuccess = () => {
+            if (reqKv.result && !localRaw) state = { ...state, ...reqKv.result };
+          };
+          const reqPh = tx.objectStore('photos').getAll();
+          reqPh.onsuccess = () => {
+            if (reqPh.result) state.photos = reqPh.result.sort((a,b) => a.day - b.day);
+          };
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => resolve();
+        });
+      }
     }
 
-    async function dbPut(storeName, item) {
-      return new Promise((resolve) => {
-        const tx = dbInstance.transaction(storeName, 'readwrite');
-        tx.objectStore(storeName).put(item);
-        tx.oncomplete = () => resolve();
-      });
-    }
-
-    async function dbDelete(storeName, key) {
-      return new Promise((resolve) => {
-        const tx = dbInstance.transaction(storeName, 'readwrite');
-        tx.objectStore(storeName).delete(key);
-        tx.oncomplete = () => resolve();
-      });
-    }
-
-    // ================= دوال الحسابات =================
-    function getTodayStr() {
+    function todayKey() {
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
-    function calculateDayProgress() {
-      if (!appState.profile || !appState.profile.startDate) {
-        return { currentDay: 1, remainingDays: 213, pct: 0, phase: PHASES[0] };
+    function getTodayLog() {
+      const k = todayKey();
+      if (!state.logs[k]) {
+        state.logs[k] = {
+          date: k,
+          water: 0,
+          walkMin: 0,
+          sleep: 7.0,
+          energy: 3,
+          doneHabits: [],
+          meals: [],
+          hardMode: false
+        };
       }
-      const start = new Date(appState.profile.startDate);
-      const now = new Date(getTodayStr());
-      start.setHours(0,0,0,0);
-      now.setHours(0,0,0,0);
-      const diffDays = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
-      const currentDay = Math.min(Math.max(diffDays, 1), TOTAL_DAYS);
-      const remainingDays = Math.max(TOTAL_DAYS - currentDay, 0);
-      const pct = Math.min(100, Math.round((currentDay / TOTAL_DAYS) * 100));
-      const phase = PHASES.find(p => currentDay >= p.start && currentDay <= p.end) || PHASES[0];
-      return { currentDay, remainingDays, pct, phase };
+      return state.logs[k];
     }
 
-    function calculateBMR(weight, height, birthYear) {
-      const age = Math.max(new Date().getFullYear() - birthYear, 18);
-      return Math.round(10 * weight + 6.25 * height - 5 * age + 5);
-    }
-
-    // ================= التهيئة وتحميل البيانات =================
-    async function loadAllAppState() {
-      await initDB();
-      appState.profile = await dbGet('profile', 'user');
-      appState.weights = (await dbGetAll('weights')).sort((a,b) => a.date.localeCompare(b.date));
-      appState.photos = (await dbGetAll('photos')).sort((a,b) => a.dayNumber - b.dayNumber);
-      
-      const customHabits = await dbGetAll('habits');
-      if (customHabits.length > 0) appState.habits = customHabits;
-
-      const todayLog = await dbGet('dailyLogs', getTodayStr());
-      if (todayLog) {
-        appState.todayLog = todayLog;
-      } else {
-        appState.todayLog.date = getTodayStr();
-        await dbPut('dailyLogs', appState.todayLog);
+    function getJourneyProgress() {
+      if (!state.profile || !state.profile.startDate) {
+        return { day: 1, left: 213, pct: 0, phase: PHASES[0] };
       }
-
-      appState.journals = (await dbGetAll('journals')).sort((a,b) => b.createdAt - a.createdAt);
-
-      if (!appState.profile || !appState.profile.isStarted) {
-        showOnboarding();
-      } else {
-        renderDashboard();
-        renderAllViews();
-      }
-      lucide.createIcons();
+      const s = new Date(state.profile.startDate);
+      const n = new Date(todayKey());
+      s.setHours(0,0,0,0); n.setHours(0,0,0,0);
+      const diff = Math.floor((n - s) / 86400000) + 1;
+      const day = Math.min(Math.max(diff, 1), TOTAL_DAYS);
+      const left = Math.max(TOTAL_DAYS - day, 0);
+      const pct = Math.min(100, Math.round((day / TOTAL_DAYS) * 100));
+      const phase = PHASES.find(p => day >= p.start && day <= p.end) || PHASES[0];
+      return { day, left, pct, phase };
     }
 
-    // ================= معالجة الإعداد الأولي =================
-    function showOnboarding() {
-      document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
-      document.getElementById('viewOnboarding').classList.remove('hidden');
-      document.querySelector('nav').classList.add('hidden');
+    function addXP(amount) {
+      state.xp = (state.xp || 0) + amount;
+      saveState();
+      renderHeader();
     }
 
-    async function handleOnboardingSubmit(e) {
+    function vibrate(ms = 35) {
+      if (navigator.vibrate) navigator.vibrate(ms);
+    }
+
+    // ================= الإعداد الأولي (Onboarding) =================
+    function submitOnboarding(e) {
       e.preventDefault();
-      const today = getTodayStr();
-      const profile = {
-        id: 'user',
+      const startW = parseFloat(document.getElementById('obStartW').value);
+      const today = todayKey();
+      state.profile = {
         name: document.getElementById('obName').value.trim(),
         height: parseFloat(document.getElementById('obHeight').value),
-        birthYear: parseInt(document.getElementById('obBirthYear').value),
-        startWeight: parseFloat(document.getElementById('obStartWeight').value),
-        targetWeight: parseFloat(document.getElementById('obTargetWeight').value),
+        birth: parseInt(document.getElementById('obBirth').value),
+        startW: startW,
+        targetW: parseFloat(document.getElementById('obTargetW').value),
+        waterGoal: parseInt(document.getElementById('obWaterGoal').value) || 3000,
+        fastHours: parseInt(document.getElementById('obFastingHours').value) || 16,
         activity: document.getElementById('obActivity').value,
+        reasons: document.getElementById('obReasons').value.trim(),
         contract: document.getElementById('obContract').value.trim(),
-        startDate: today,
-        isStarted: true
+        startDate: today
       };
 
-      await dbPut('profile', { id: 'user', data: profile });
-      appState.profile = profile;
-
-      // حفظ الوزن الأولي
-      const initialWeightRecord = {
-        id: 'wt_' + Date.now(),
+      state.weights = [{
+        id: 'w_' + Date.now(),
         date: today,
-        weight: profile.startWeight,
-        notes: 'الوزن المعتمد عند انطلاق الرحلة',
-        createdAt: Date.now()
-      };
-      await dbPut('weights', initialWeightRecord);
-      appState.weights.push(initialWeightRecord);
+        weight: startW,
+        waist: null,
+        chest: null,
+        arm: null,
+        notes: 'الوزن الابتدائي عند انطلاق الرحلة'
+      }];
 
-      document.querySelector('nav').classList.remove('hidden');
+      addXP(50);
+      saveState();
+      document.getElementById('view-onboarding').classList.add('hidden');
+      document.querySelector('.bottom-nav').classList.remove('hidden');
       switchTab('dashboard');
-      renderAllViews();
-      lucide.createIcons();
+      renderAll();
     }
 
-    // ================= التنقل بين الواجهات =================
-    function switchTab(tabId) {
-      appState.currentTab = tabId;
-      document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
-      const activeSection = document.getElementById('view' + tabId.charAt(0).toUpperCase() + tabId.slice(1));
-      if (activeSection) activeSection.classList.remove('hidden');
-
-      document.querySelectorAll('.nav-item').forEach(b => {
-        b.className = 'nav-item flex flex-col items-center py-1 text-textMuted hover:text-textLight';
+    // ================= التنقل بين الأقسام =================
+    function switchTab(tab) {
+      const sections = ['dashboard', 'weight', 'photos', 'exercises', 'discipline', 'nutrition', 'focus', 'settings'];
+      sections.forEach(s => {
+        const el = document.getElementById('view-' + s);
+        if (el) el.classList.add('hidden');
+        const nav = document.getElementById('nav-' + s);
+        if (nav) nav.classList.remove('active');
       });
-      const currentNavBtn = document.getElementById('navBtn-' + tabId);
-      if (currentNavBtn) {
-        currentNavBtn.className = 'nav-item flex flex-col items-center py-1 text-glow font-bold';
-      }
 
-      if (tabId === 'exercises') initThreeGym();
-      if (tabId === 'weight') renderWeightChart();
-      lucide.createIcons();
+      const target = document.getElementById('view-' + tab);
+      if (target) target.classList.remove('hidden');
+      const activeNav = document.getElementById('nav-' + tab);
+      if (activeNav) activeNav.classList.add('active');
+
+      if (tab === 'exercises') initOffline3DGym();
+      if (tab === 'weight') renderWeightSection();
+      if (tab === 'photos') renderPhotosSection();
+      if (tab === 'discipline') renderDisciplineSection();
+      if (tab === 'nutrition') renderNutritionSection();
+      if (tab === 'focus') renderFocusSection();
+      if (tab === 'settings') renderSettingsSection();
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function openMoreMenu() { document.getElementById('modalMoreMenu').classList.remove('hidden'); lucide.createIcons(); }
-    function closeMoreMenu() { document.getElementById('modalMoreMenu').classList.add('hidden'); }
+    // ================= الرأس ولوحة التحكم =================
+    function renderHeader() {
+      const lvl = Math.floor((state.xp || 0) / 150) + 1;
+      document.getElementById('hdrLevelBadge').innerText = `مستوى ${lvl}`;
+      document.getElementById('hdrXpText').innerText = `${state.xp || 0} XP`;
+      document.getElementById('hdrShieldsText').innerText = state.shields || 1;
+    }
 
-    // ================= عرض لوحة التحكم الرئيسية =================
     function renderDashboard() {
-      const { currentDay, remainingDays, pct, phase } = calculateDayProgress();
-      document.getElementById('headerDayBadge').innerText = `اليوم ${currentDay}`;
-      document.getElementById('dashDayNum').innerText = currentDay;
-      document.getElementById('dashDaysLeft').innerText = remainingDays;
-      document.getElementById('dashProgressPct').innerText = pct + '%';
-      document.getElementById('dashProgressBar').style.width = pct + '%';
-      document.getElementById('dashPhaseBadge').innerText = phase.title;
+      if (!state.profile) return;
+      renderHeader();
+      const { day, left, pct, phase } = getJourneyProgress();
+      const log = getTodayLog();
 
-      const latestW = appState.weights.length > 0 ? appState.weights[appState.weights.length-1].weight : appState.profile.startWeight;
-      const startW = appState.profile.startWeight;
-      const targetW = appState.profile.targetWeight;
-      const diff = (latestW - startW).toFixed(1);
+      document.getElementById('dashPhaseName').innerText = phase.title;
+      document.getElementById('dashDayNum').innerText = day;
+      document.getElementById('dashDaysLeft').innerText = left;
+      document.getElementById('dashStartDate').innerText = state.profile.startDate;
+      document.getElementById('dashPct').innerText = pct + '%';
+      document.getElementById('dashProgressBar').style.width = Math.max(pct, 1) + '%';
+      document.getElementById('dashDailyQuote').innerText = QUOTES[day % QUOTES.length];
 
-      document.getElementById('dashWeightVal').innerText = latestW;
-      document.getElementById('dashStartWeight').innerText = startW;
-      document.getElementById('dashTargetWeight').innerText = targetW;
-      document.getElementById('dashWeightDiff').innerText = Number(diff) <= 0 ? `${diff} كغ` : `+${diff} كغ`;
+      const hardBadge = document.getElementById('dashHardModeBadge');
+      if (log.hardMode) hardBadge.classList.remove('hidden');
+      else hardBadge.classList.add('hidden');
 
-      document.getElementById('dashWaterVal').innerText = `${appState.todayLog.water} مل`;
-      document.getElementById('dashStepsVal').innerText = appState.todayLog.steps.toLocaleString();
-      document.getElementById('dashSleepVal').innerText = `${appState.todayLog.sleep} س`;
-      document.getElementById('dashWorkoutVal').innerText = `${appState.todayLog.workoutMin} د`;
+      // الوزن
+      const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
+      const delta = (currW - state.profile.startW).toFixed(1);
+      document.getElementById('dashCurrWeight').innerText = currW;
+      document.getElementById('dashTargetWeight').innerText = state.profile.targetW + ' كغ';
+      document.getElementById('dashWeightDelta').innerText = (delta <= 0 ? delta : '+' + delta) + ' كغ';
 
       // العادات
-      const list = document.getElementById('dashHabitsList');
-      list.innerHTML = '';
-      let done = 0;
-      appState.habits.forEach(h => {
-        const isChecked = appState.todayLog.completedHabitIds.includes(h.id);
-        if (isChecked) done++;
-        list.innerHTML += `
-          <div onclick="toggleHabit('${h.id}')" class="p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-            isChecked ? 'bg-greenAcc/10 border-greenAcc/40 text-textMuted' : 'bg-bgSec border-borderSubtle text-textLight'
-          }">
-            <div class="flex items-center gap-2.5">
-              <i data-lucide="${isChecked ? 'check-circle-2' : 'circle'}" class="w-4 h-4 ${isChecked ? 'text-greenAcc' : 'text-textMuted'}"></i>
-              <div>
-                <span class="text-xs font-bold ${isChecked ? 'line-through' : ''}">${h.title}</span>
-                <p class="text-[10px] text-textMuted">${h.desc}</p>
-              </div>
+      const activeHabits = log.hardMode ? state.habits.filter(h => h.core) : state.habits;
+      const doneCount = activeHabits.filter(h => log.doneHabits.includes(h.id)).length;
+      const discPct = activeHabits.length > 0 ? Math.round((doneCount / activeHabits.length) * 100) : 0;
+
+      document.getElementById('dashDisciplinePct').innerText = discPct + '%';
+      document.getElementById('dashHabitsDoneCount').innerText = doneCount;
+      document.getElementById('dashHabitsTotalCount').innerText = activeHabits.length;
+      document.getElementById('dashDisciplineBar').style.width = discPct + '%';
+
+      // الماء والمشي والنوم والطاقة
+      document.getElementById('dashWaterTarget').innerText = `${state.profile.waterGoal} مل`;
+      document.getElementById('dashWaterCurrent').innerText = `${log.water} مل`;
+      document.getElementById('dashWalkMinutes').innerText = `${log.walkMin} دقيقة`;
+      document.getElementById('dashWalkKm').innerText = `~ ${(log.walkMin * 0.08).toFixed(1)} كم`;
+      document.getElementById('dashSleepHours').innerText = `${log.sleep.toFixed(1)} س`;
+      document.getElementById('dashEnergyVal').innerText = `${log.energy} / 5`;
+
+      // قائمة عادات اليوم
+      const container = document.getElementById('dashHabitsContainer');
+      container.innerHTML = '';
+      activeHabits.forEach(h => {
+        const isDone = log.doneHabits.includes(h.id);
+        container.innerHTML += `
+          <div onclick="toggleHabit('${h.id}')" class="habit-row ${isDone ? 'done' : ''}">
+            <div class="flex-gap">
+              <div class="habit-check">${isDone ? '✓' : ''}</div>
+              <span class="title-md" style="${isDone ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${h.title}</span>
             </div>
+            <span class="text-xs">${isDone ? '+15 XP' : ''}</span>
           </div>
         `;
       });
-      const habitsPct = Math.round((done / appState.habits.length) * 100);
-      document.getElementById('dashHabitsPct').innerText = habitsPct + '%';
-      document.getElementById('dashHabitsDone').innerText = done;
-      document.getElementById('dashHabitsTotal').innerText = appState.habits.length;
-      document.getElementById('dashHabitsBar').style.width = habitsPct + '%';
-      document.getElementById('dashHabitsCounterLabel').innerText = `${done} من ${appState.habits.length}`;
+
+      document.getElementById('fastProtocolLabel').innerText = `${state.profile.fastHours}:${24 - state.profile.fastHours}`;
     }
 
-    // ================= الرعاية السريعة (ماء، خطوات، نوم، عادات) =================
-    async function addWater(amount) {
-      appState.todayLog.water += amount;
-      await saveTodayLog();
+    function toggleHabit(id) {
+      const log = getTodayLog();
+      const idx = log.doneHabits.indexOf(id);
+      if (idx > -1) {
+        log.doneHabits.splice(idx, 1);
+      } else {
+        log.doneHabits.push(id);
+        addXP(15);
+        vibrate(40);
+      }
+      saveState();
       renderDashboard();
-    }
-    async function addSteps(amount) {
-      appState.todayLog.steps += amount;
-      await saveTodayLog();
-      renderDashboard();
-    }
-    async function adjustSleep(delta) {
-      appState.todayLog.sleep = Math.min(14, Math.max(3, appState.todayLog.sleep + delta));
-      await saveTodayLog();
-      renderDashboard();
-    }
-    async function addWorkoutMinutes(min) {
-      appState.todayLog.workoutMin += min;
-      await saveTodayLog();
-      renderDashboard();
-    }
-    async function toggleHabit(id) {
-      const idx = appState.todayLog.completedHabitIds.indexOf(id);
-      if (idx > -1) appState.todayLog.completedHabitIds.splice(idx, 1);
-      else appState.todayLog.completedHabitIds.push(id);
-      await saveTodayLog();
-      renderDashboard();
-      renderDisciplineView();
-      lucide.createIcons();
-    }
-    async function saveTodayLog() {
-      await dbPut('dailyLogs', appState.todayLog);
+      if (!document.getElementById('view-discipline').classList.contains('hidden')) {
+        renderDisciplineSection();
+      }
     }
 
-    // ================= إدارة الوزن والمخطط البياني (SVG) =================
-    function renderWeightView() {
-      const weights = appState.weights;
-      const latestW = weights.length > 0 ? weights[weights.length-1].weight : appState.profile.startWeight;
-      const startW = appState.profile.startWeight;
-      const targetW = appState.profile.targetWeight;
-
-      document.getElementById('wtLastVal').innerText = latestW;
-      document.getElementById('wtLossVal').innerText = (startW - latestW).toFixed(1);
-      document.getElementById('wtToTargetVal').innerText = Math.abs(latestW - targetW).toFixed(1);
-      document.getElementById('wtInputDate').value = getTodayStr();
-
-      // قائمة السجلات
-      const list = document.getElementById('wtHistoryList');
-      list.innerHTML = '';
-      [...weights].reverse().forEach(w => {
-        list.innerHTML += `
-          <div class="flex justify-between items-center p-3 bg-bgSec/70 rounded-xl border border-borderSubtle text-xs">
-            <div>
-              <span class="font-bold text-textLight text-sm">${w.weight} كغ</span>
-              <span class="text-[10px] text-textMuted mr-2">${w.date}</span>
-              ${w.notes ? `<p class="text-[10px] text-textMuted mt-0.5">${w.notes}</p>` : ''}
-            </div>
-            <button onclick="deleteWeightRecord('${w.id}')" class="text-textMuted hover:text-red-400 p-1">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        `;
-      });
-      renderWeightChart();
+    function addWater(ml) {
+      const log = getTodayLog();
+      log.water += ml;
+      vibrate(25);
+      addXP(5);
+      saveState();
+      renderDashboard();
     }
 
-    function renderWeightChart() {
-      const container = document.getElementById('wtSvgChartContainer');
-      const data = appState.weights;
-      if (!container) return;
-      if (data.length < 2) {
-        container.innerHTML = '<span class="text-xs text-textMuted">سجل قياسين على الأقل لرؤية المخطط البياني.</span>';
+    function addWalkMinutes(min) {
+      const log = getTodayLog();
+      log.walkMin += min;
+      vibrate(35);
+      addXP(10);
+      saveState();
+      renderDashboard();
+    }
+
+    function adjustSleep(delta) {
+      const log = getTodayLog();
+      log.sleep = Math.min(14, Math.max(3, log.sleep + delta));
+      saveState();
+      renderDashboard();
+    }
+
+    function setEnergy(val) {
+      const log = getTodayLog();
+      log.energy = val;
+      saveState();
+      renderDashboard();
+    }
+
+    // ================= مؤقت الصيام المتقطع =================
+    function toggleFastingTimer() {
+      if (state.fastingStart) {
+        state.fastingStart = null;
+      } else {
+        state.fastingStart = Date.now();
+        vibrate(50);
+      }
+      saveState();
+      updateFastingUI();
+    }
+
+    function updateFastingUI() {
+      const btn = document.getElementById('btnFastAction');
+      const status = document.getElementById('fastStatusLabel');
+      const elapsedEl = document.getElementById('fastElapsedDisplay');
+      const stageEl = document.getElementById('fastBioStage');
+
+      if (!state.fastingStart) {
+        btn.innerText = 'بدء الصيام';
+        status.innerText = 'نافذة الأكل مفتوحة / استعداد';
+        elapsedEl.innerText = '00:00:00';
+        stageEl.innerText = 'الاستعداد الهضمي';
         return;
       }
-      const width = 360;
-      const height = 120;
-      const minW = Math.min(...data.map(d => d.weight)) - 1;
-      const maxW = Math.max(...data.map(d => d.weight)) + 1;
-      const pts = data.map((d, i) => {
-        const x = (i / (data.length - 1)) * (width - 40) + 20;
-        const y = height - ((d.weight - minW) / (maxW - minW || 1)) * (height - 30) - 15;
-        return `${x},${y}`;
-      }).join(' ');
 
-      container.innerHTML = `
-        <svg viewBox="0 0 ${width} ${height}" class="w-full h-full overflow-visible">
-          <polyline fill="none" stroke="#E11D48" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${pts}" />
-          ${data.map((d, i) => {
-            const x = (i / (data.length - 1)) * (width - 40) + 20;
-            const y = height - ((d.weight - minW) / (maxW - minW || 1)) * (height - 30) - 15;
-            return `<circle cx="${x}" cy="${y}" r="4" fill="#F43F5E" />`;
-          }).join('')}
-        </svg>
-      `;
+      btn.innerText = 'إنهاء الصيام';
+      const diffSec = Math.floor((Date.now() - state.fastingStart) / 1000);
+      const hrs = Math.floor(diffSec / 3600);
+      const mins = Math.floor((diffSec % 3600) / 60);
+      const secs = diffSec % 60;
+      const targetHrs = state.profile ? state.profile.fastHours : 16;
+
+      elapsedEl.innerText = `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+      status.innerText = hrs >= targetHrs ? '🎉 أتممت هدف الصيام بنجاح!' : `متبقي ${Math.max(0, targetHrs - hrs)} ساعة للهدف`;
+
+      if (hrs < 4) stageEl.innerText = '١. هضم وامتصاص الوجبة الأخيرة';
+      else if (hrs < 12) stageEl.innerText = '٢. انخفاض الأنسولين وراحة الهضم';
+      else if (hrs < 16) stageEl.innerText = '٣. 🔥 بدء حرق الدهون المخزنة';
+      else stageEl.innerText = '٤. ⚡ ذروة حرق الدهون والتجدد الخلوي';
     }
+    setInterval(updateFastingUI, 1000);
 
-    async function handleNewWeightSubmit(e) {
-      e.preventDefault();
-      const val = parseFloat(document.getElementById('wtInputVal').value);
-      const date = document.getElementById('wtInputDate').value;
-      const waist = document.getElementById('wtInputWaist').value;
-      const chest = document.getElementById('wtInputChest').value;
-      const notes = document.getElementById('wtInputNotes').value.trim();
-
-      const record = {
-        id: 'wt_' + Date.now(),
-        date,
-        weight: val,
-        waist: waist ? parseFloat(waist) : null,
-        chest: chest ? parseFloat(chest) : null,
-        notes,
-        createdAt: Date.now()
-      };
-      await dbPut('weights', record);
-      appState.weights.push(record);
-      appState.weights.sort((a,b) => a.date.localeCompare(b.date));
-      document.getElementById('wtInputVal').value = '';
-      renderWeightView();
-      renderDashboard();
-      lucide.createIcons();
-    }
-
-    async function deleteWeightRecord(id) {
-      await dbDelete('weights', id);
-      appState.weights = appState.weights.filter(w => w.id !== id);
-      renderWeightView();
-      renderDashboard();
-      lucide.createIcons();
-    }
-
-    function quickLogWeightPrompt() {
-      const last = appState.weights.length > 0 ? appState.weights[appState.weights.length-1].weight : appState.profile.startWeight;
-      const val = prompt('أدخل وزنك الجديد (كغ):', last);
+    // ================= قسم الوزن والمتوسط المتحرك (7-Day Moving Average) =================
+    function quickWeightModal() {
+      const curr = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
+      const val = prompt('أدخل وزنك اليوم بالكيلوغرام:', curr);
       if (val && !isNaN(val)) {
-        const record = {
-          id: 'wt_' + Date.now(),
-          date: getTodayStr(),
-          weight: parseFloat(val),
-          notes: 'تسجيل سريع من الرئيسية',
-          createdAt: Date.now()
-        };
-        dbPut('weights', record).then(() => {
-          appState.weights.push(record);
+        const w = parseFloat(val);
+        if (w > 30 && w < 300) {
+          state.weights.push({
+            id: 'w_' + Date.now(),
+            date: todayKey(),
+            weight: w,
+            notes: 'قياس سريع من اللوحة الرئيسية'
+          });
+          state.weights.sort((a,b) => a.date.localeCompare(b.date));
+          addXP(20);
+          saveState();
           renderDashboard();
-          renderWeightView();
-        });
-      }
-    }
-
-    // ================= معرض ومقارنة الصور (BEFORE & AFTER) =================
-    let compareMode = 'slider';
-    let tempPhotoDataUrl = null;
-
-    function openUploadPhotoModal() {
-      document.getElementById('modalUploadPhoto').classList.remove('hidden');
-      document.getElementById('photoFileInput').onchange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            tempPhotoDataUrl = reader.result;
-            document.getElementById('photoPreviewImg').src = tempPhotoDataUrl;
-            document.getElementById('photoPreviewContainer').classList.remove('hidden');
-          };
-          reader.readAsDataURL(file);
         }
-      };
-    }
-    function closeUploadPhotoModal() {
-      document.getElementById('modalUploadPhoto').classList.add('hidden');
-      tempPhotoDataUrl = null;
-      document.getElementById('photoPreviewContainer').classList.add('hidden');
+      }
     }
 
-    async function saveUploadedPhoto() {
-      if (!tempPhotoDataUrl) return;
-      const { currentDay } = calculateDayProgress();
-      const lastW = appState.weights.length > 0 ? appState.weights[appState.weights.length-1].weight : null;
-      const record = {
-        id: 'photo_' + Date.now(),
-        date: getTodayStr(),
-        dayNumber: currentDay,
-        weight: lastW,
-        dataUrl: tempPhotoDataUrl,
-        notes: document.getElementById('photoNotesInput').value.trim(),
-        createdAt: Date.now()
-      };
-      await dbPut('photos', record);
-      appState.photos.push(record);
-      closeUploadPhotoModal();
-      renderPhotosView();
-      lucide.createIcons();
-    }
+    function submitWeightRecord(e) {
+      e.preventDefault();
+      const w = parseFloat(document.getElementById('wtFormWeight').value);
+      const d = document.getElementById('wtFormDate').value || todayKey();
+      if (isNaN(w) || w < 30 || w > 300) return;
 
-    function renderPhotosView() {
-      const photos = appState.photos;
-      const grid = document.getElementById('photosTimelineGrid');
-      grid.innerHTML = '';
-
-      photos.forEach(p => {
-        grid.innerHTML += `
-          <div class="relative rounded-2xl overflow-hidden aspect-[3/4] border border-borderSubtle bg-bgSec group">
-            <img src="${p.dataUrl}" alt="اليوم ${p.dayNumber}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-2.5">
-              <span class="text-xs font-bold text-white">اليوم ${p.dayNumber}</span>
-              <span class="text-[10px] text-textMuted">${p.date} ${p.weight ? `• ${p.weight} كغ` : ''}</span>
-            </div>
-            <button onclick="deletePhotoRecord('${p.id}')" class="absolute top-2 left-2 p-1.5 bg-black/60 rounded-lg text-textMuted hover:text-red-400">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        `;
+      state.weights.push({
+        id: 'w_' + Date.now(),
+        date: d,
+        weight: w,
+        waist: parseFloat(document.getElementById('wtFormWaist').value) || null,
+        chest: parseFloat(document.getElementById('wtFormChest').value) || null,
+        arm: parseFloat(document.getElementById('wtFormArm').value) || null,
+        notes: document.getElementById('wtFormNotes').value.trim()
       });
-
-      renderComparisonWidget();
+      state.weights.sort((a,b) => a.date.localeCompare(b.date));
+      document.getElementById('wtFormWeight').value = '';
+      document.getElementById('wtFormNotes').value = '';
+      addXP(20);
+      saveState();
+      renderWeightSection();
+      renderDashboard();
     }
 
-    function renderComparisonWidget() {
-      const photos = appState.photos;
-      const viewer = document.getElementById('compareViewer');
-      if (photos.length < 2) {
-        viewer.innerHTML = '<p class="text-xs text-textMuted">أضف صورتين على الأقل لتفعيل شريط المقارنة التفاعلي.</p>';
-        return;
-      }
-      const before = photos[0];
-      const after = photos[photos.length - 1];
+    function renderWeightSection() {
+      document.getElementById('wtFormDate').value = todayKey();
+      const list = state.weights;
+      const curr = list.length > 0 ? list[list.length - 1].weight : state.profile.startW;
+      const last7 = list.slice(-7);
+      const avg7 = (last7.reduce((s, x) => s + x.weight, 0) / (last7.length || 1)).toFixed(1);
+      const lost = (state.profile.startW - curr).toFixed(1);
 
-      if (compareMode === 'slider') {
-        viewer.innerHTML = `
-          <div class="relative w-full h-full select-none overflow-hidden">
-            <img src="${after.dataUrl}" class="absolute inset-0 w-full h-full object-cover" />
-            <span class="absolute bottom-2 left-2 bg-black/70 px-2 py-0.5 rounded text-[10px] text-white z-10">بعد (اليوم ${after.dayNumber})</span>
-            <div id="sliderClippedBox" class="absolute inset-0 overflow-hidden" style="width: 50%;">
-              <img src="${before.dataUrl}" class="absolute inset-0 w-full h-full object-cover max-w-none" style="width: 100%;" />
-              <span class="absolute bottom-2 right-2 bg-black/70 px-2 py-0.5 rounded text-[10px] text-white z-10">قبل (اليوم ${before.dayNumber})</span>
-            </div>
-            <input type="range" min="0" max="100" value="50" oninput="document.getElementById('sliderClippedBox').style.width = this.value + '%'" class="slider-handle absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20" />
-            <div class="absolute top-0 bottom-0 w-0.5 bg-glow pointer-events-none" style="left: 50%;" id="sliderDividerLine"></div>
-          </div>
-        `;
+      document.getElementById('wtStatCurr').innerText = curr + ' كغ';
+      document.getElementById('wtStatAvg').innerText = avg7 + ' كغ';
+      document.getElementById('wtStatLost').innerText = lost + ' كغ';
+
+      // رسم المخطط البياني المزدوج (اليومي + المتوسط المتحرك)
+      const chartBox = document.getElementById('weightChartBox');
+      if (list.length < 2) {
+        chartBox.innerHTML = '<span class="text-xs">أضف قياسين على الأقل لرسم منحنى الوزن والمتوسط المتحرك.</span>';
       } else {
-        viewer.innerHTML = `
-          <div class="grid grid-cols-2 gap-2 w-full h-full p-2">
-            <div class="relative rounded-xl overflow-hidden h-full">
-              <img src="${before.dataUrl}" class="w-full h-full object-cover" />
-              <span class="absolute bottom-1 right-1 bg-black/70 px-1.5 py-0.5 rounded text-[9px] text-white">اليوم ${before.dayNumber}</span>
-            </div>
-            <div class="relative rounded-xl overflow-hidden h-full">
-              <img src="${after.dataUrl}" class="w-full h-full object-cover" />
-              <span class="absolute bottom-1 right-1 bg-black/70 px-1.5 py-0.5 rounded text-[9px] text-white">اليوم ${after.dayNumber}</span>
-            </div>
-          </div>
+        const W = 380, H = 135;
+        const vals = list.map(x => x.weight);
+        const minW = Math.min(...vals) - 1;
+        const maxW = Math.max(...vals) + 1;
+
+        const dailyPts = list.map((item, i) => {
+          const x = 20 + (i / (list.length - 1)) * (W - 40);
+          const y = H - 18 - ((item.weight - minW) / (maxW - minW || 1)) * (H - 36);
+          return `${x},${y}`;
+        }).join(' ');
+
+        const avgPts = list.map((item, i) => {
+          const slice = list.slice(Math.max(0, i - 6), i + 1);
+          const avg = slice.reduce((a, b) => a + b.weight, 0) / slice.length;
+          const x = 20 + (i / (list.length - 1)) * (W - 40);
+          const y = H - 18 - ((avg - minW) / (maxW - minW || 1)) * (H - 36);
+          return `${x},${y}`;
+        }).join(' ');
+
+        chartBox.innerHTML = `
+          <svg viewBox="0 0 ${W} ${H}" style="width:100%; height:100%; overflow:visible;">
+            <polyline fill="none" stroke="#E11D48" stroke-width="2.5" stroke-dasharray="4 2" points="${dailyPts}" />
+            <polyline fill="none" stroke="#10B981" stroke-width="3.2" points="${avgPts}" />
+          </svg>
         `;
       }
-    }
 
-    function setCompareMode(mode) {
-      compareMode = mode;
-      document.getElementById('btnCompSlider').className = mode === 'slider' ? 'px-2 py-0.5 rounded-lg bg-crimson text-white' : 'px-2 py-0.5 rounded-lg text-textMuted';
-      document.getElementById('btnCompSide').className = mode === 'side' ? 'px-2 py-0.5 rounded-lg bg-crimson text-white' : 'px-2 py-0.5 rounded-lg text-textMuted';
-      renderComparisonWidget();
-    }
-
-    async function deletePhotoRecord(id) {
-      await dbDelete('photos', id);
-      appState.photos = appState.photos.filter(p => p.id !== id);
-      renderPhotosView();
-      lucide.createIcons();
-    }
-
-    // ================= صالة التمارين ثلاثية الأبعاد (THREE.JS PROCEDURAL GYM) =================
-    let threeScene, threeCamera, threeRenderer, threeMannequinGroup;
-    let threeAnimReq = null;
-    let currentExerciseType = 'squat';
-    let is3DPlaying = true;
-    let workoutTimerInterval = null;
-    let workoutTimerSec = 0;
-
-    const EXERCISE_DATA = {
-      squat: {
-        name: 'القرفصاء بالدمبل (Dumbbell Squat)',
-        reps: '٣ جولات × ١٠-١٢ تكرار',
-        muscles: 'العضلات: العضلة الرباعية، الألوية، أوتار الركبة',
-        hasWeights: true,
-        instructions: ['باعد بين القدمين بعرض الكتفين مع استقامة الظهر.', 'اهبط بالحوض للخلف والأسفل كأنك تجلس على كرسي.', 'ادفع من خلال الكعبين للعودة لنقطة البداية.'],
-        mistakes: 'تقويس أسفل الظهر، أو انحناء الركبتين للداخل أثناء الصعود.'
-      },
-      press: {
-        name: 'ضغط الأكتاف بالدمبل (Shoulder Press)',
-        reps: '٣ جولات × ١٠ تكرارات',
-        muscles: 'العضلات: العضلة الدالية، الترايسبس',
-        hasWeights: true,
-        instructions: ['ارفع الدمبل لمستوى الأذن بزاوية ٩٠ درجة.', 'ادفع الأوزان لأعلى بتحكم دون قفل المفاصل بعنف.', 'انزل ببطء للتحكم في الوزن.'],
-        mistakes: 'تقويس الظهر للخلف بشكل مبالغ لرفع الوزن.'
-      },
-      curl: {
-        name: 'ثني البايسبس بالدمبل (Bicep Curl)',
-        reps: '٣ جولات × ١٢ تكرار',
-        muscles: 'العضلات: العضلة ذات الرأسين (البايسبس)',
-        hasWeights: true,
-        instructions: ['ثبت المرفقين بجانب الجذع.', 'ارفع الساعدين باتجاه الكتف مع عصر العضلة.', 'اهبط بالوزن ببطء وثبات.'],
-        mistakes: 'أرجحة الجسم واستخدام عزم الظهر.'
-      },
-      jacks: {
-        name: 'القفز الهوائي (Jumping Jacks)',
-        reps: '٣ جولات × ٣٠ ثانية',
-        muscles: 'عضلة القلب، حرق السعرات، تنشيط كامل الجسم',
-        hasWeights: false,
-        instructions: ['اقفز مع مباعدة الساقين ورفع الذراعين للأعلى.', 'اهبط بخفة على مشط القدم لحماية المفاصل.'],
-        mistakes: 'الهبوط العنيف على الكعبين.'
-      },
-      stretch: {
-        name: 'إطالة الرقبة والأكتاف',
-        reps: '٣٠ ثانية لكل جانب',
-        muscles: 'عضلات الرقبة وعضلة الترابيس العلوية',
-        hasWeights: false,
-        instructions: ['أمل رأسك برفق نحو الكتف وتنفس بعمق.', 'اثبت في الموضع دون ضغط زائد باليد.'],
-        mistakes: 'رفع الكتف للأعلى بدل إمالة الرأس.'
-      }
-    };
-
-    function initThreeGym() {
-      const container = document.getElementById('threeCanvasMount');
-      if (!container || threeRenderer) return;
-
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-
-      threeScene = new THREE.Scene();
-      threeScene.background = new THREE.Color(0x0B0A0C);
-
-      threeCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-      threeCamera.position.set(0, 1.4, 4.2);
-
-      threeRenderer = new THREE.WebGLRenderer({ antialias: true });
-      threeRenderer.setSize(width, height);
-      threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      container.appendChild(threeRenderer.domElement);
-
-      const ambLight = new THREE.AmbientLight(0xffffff, 0.8);
-      threeScene.add(ambLight);
-
-      const dirLight = new THREE.DirectionalLight(0xE11D48, 1.8);
-      dirLight.position.set(3, 5, 3);
-      threeScene.add(dirLight);
-
-      // بناء النموذج التشريحي الإجرائي
-      threeMannequinGroup = new THREE.Group();
-      const bodyMat = new THREE.MeshStandardMaterial({ color: 0xF5F3F4, roughness: 0.3 });
-      const jointMat = new THREE.MeshStandardMaterial({ color: 0xE11D48, roughness: 0.4 });
-      const weightMat = new THREE.MeshStandardMaterial({ color: 0x30262B, metalness: 0.8 });
-
-      // الجذع والرأس
-      const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.18, 0.65, 16), bodyMat);
-      torso.position.y = 1.0;
-      threeMannequinGroup.add(torso);
-
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 16, 16), jointMat);
-      head.position.y = 0.52;
-      torso.add(head);
-
-      // الذراعان
-      const lArm = new THREE.Group(); lArm.position.set(0.32, 0.25, 0);
-      const lArmMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.45, 12), bodyMat);
-      lArmMesh.position.y = -0.22; lArm.add(lArmMesh);
-      torso.add(lArm);
-
-      const rArm = new THREE.Group(); rArm.position.set(-0.32, 0.25, 0);
-      const rArmMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.45, 12), bodyMat);
-      rArmMesh.position.y = -0.22; rArm.add(rArmMesh);
-      torso.add(rArm);
-
-      // الدمبلز
-      const dbGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.22, 12);
-      const dbL = new THREE.Mesh(dbGeo, weightMat); dbL.rotation.z = Math.PI/2; dbL.position.y = -0.48; lArm.add(dbL);
-      const dbR = new THREE.Mesh(dbGeo, weightMat); dbR.rotation.z = Math.PI/2; dbR.position.y = -0.48; rArm.add(dbR);
-
-      // الساقان
-      const lLeg = new THREE.Group(); lLeg.position.set(0.15, -0.32, 0);
-      const lLegMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.07, 0.65, 12), bodyMat);
-      lLegMesh.position.y = -0.32; lLeg.add(lLegMesh);
-      torso.add(lLeg);
-
-      const rLeg = new THREE.Group(); rLeg.position.set(-0.15, -0.32, 0);
-      const rLegMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.07, 0.65, 12), bodyMat);
-      rLegMesh.position.y = -0.32; rLeg.add(rLegMesh);
-      torso.add(rLeg);
-
-      threeScene.add(threeMannequinGroup);
-
-      // دورة التحريك
-      const clock = new THREE.Clock();
-      function animate3D() {
-        threeAnimReq = requestAnimationFrame(animate3D);
-        const t = clock.getElapsedTime();
-
-        if (is3DPlaying && threeMannequinGroup) {
-          const hasDb = EXERCISE_DATA[currentExerciseType].hasWeights;
-          dbL.visible = hasDb;
-          dbR.visible = hasDb;
-
-          if (currentExerciseType === 'squat') {
-            const s = Math.sin(t * 2.5);
-            threeMannequinGroup.position.y = Math.min(0, s * 0.35);
-            lLeg.rotation.x = -Math.max(0, s * 0.7);
-            rLeg.rotation.x = -Math.max(0, s * 0.7);
-            lArm.rotation.set(0, 0, 0); rArm.rotation.set(0, 0, 0);
-          } else if (currentExerciseType === 'press') {
-            const p = (Math.sin(t * 3) + 1) / 2;
-            threeMannequinGroup.position.y = 0;
-            lArm.rotation.z = Math.PI / 4 + p * (Math.PI / 2);
-            rArm.rotation.z = -Math.PI / 4 - p * (Math.PI / 2);
-            lLeg.rotation.x = 0; rLeg.rotation.x = 0;
-          } else if (currentExerciseType === 'curl') {
-            const c = (Math.sin(t * 3.5) + 1) / 2;
-            threeMannequinGroup.position.y = 0;
-            lArm.rotation.x = c * (Math.PI / 1.4);
-            rArm.rotation.x = c * (Math.PI / 1.4);
-            lLeg.rotation.x = 0; rLeg.rotation.x = 0;
-          } else if (currentExerciseType === 'jacks') {
-            const j = (Math.sin(t * 5) + 1) / 2;
-            threeMannequinGroup.position.y = Math.abs(Math.sin(t * 5)) * 0.12;
-            lArm.rotation.z = j * (Math.PI * 0.65);
-            rArm.rotation.z = -j * (Math.PI * 0.65);
-            lLeg.rotation.z = j * 0.25;
-            rLeg.rotation.z = -j * 0.25;
-          } else {
-            threeMannequinGroup.position.y = 0;
-            lArm.rotation.set(0,0,0); rArm.rotation.set(0,0,0);
-            lLeg.rotation.set(0,0,0); rLeg.rotation.set(0,0,0);
-          }
-          threeMannequinGroup.rotation.y = Math.sin(t * 0.4) * 0.25;
-        }
-        threeRenderer.render(threeScene, threeCamera);
-      }
-      animate3D();
-    }
-
-    function selectExercise(type) {
-      currentExerciseType = type;
-      const data = EXERCISE_DATA[type];
-      document.getElementById('exBoxName').innerText = data.name;
-      document.getElementById('exBoxReps').innerText = data.reps;
-      document.getElementById('exBoxMuscles').innerText = data.muscles;
-      document.getElementById('exBoxMistakes').innerText = data.mistakes;
-
-      const instList = document.getElementById('exBoxInstructions');
-      instList.innerHTML = '';
-      data.instructions.forEach(ins => { instList.innerHTML += `<li>${ins}</li>`; });
-
-      document.querySelectorAll('.ex-tab-btn').forEach(b => {
-        b.className = 'ex-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border border-borderSubtle bg-bgSec text-textMuted';
-      });
-      event.target.className = 'ex-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border border-crimson bg-crimson text-white';
-    }
-
-    function toggleExercise3DAnimation() {
-      is3DPlaying = !is3DPlaying;
-      document.getElementById('btnPlay3D').innerHTML = `<i data-lucide="${is3DPlaying ? 'pause' : 'play'}" class="w-4 h-4"></i>`;
-      lucide.createIcons();
-    }
-    function reset3DCamera() {
-      if (threeCamera && threeMannequinGroup) {
-        threeCamera.position.set(0, 1.4, 4.2);
-        threeMannequinGroup.rotation.set(0, 0, 0);
-      }
-    }
-    function toggleWorkoutTimer() {
-      const btn = document.getElementById('btnWorkoutTimerAction');
-      if (workoutTimerInterval) {
-        clearInterval(workoutTimerInterval);
-        workoutTimerInterval = null;
-        btn.innerText = 'استئناف';
-      } else {
-        workoutTimerInterval = setInterval(() => {
-          workoutTimerSec++;
-          const m = String(Math.floor(workoutTimerSec / 60)).padStart(2, '0');
-          const s = String(workoutTimerSec % 60).padStart(2, '0');
-          document.getElementById('workoutTimerDisplay').innerText = `${m}:${s}`;
-        }, 1000);
-        btn.innerText = 'إيقاف';
-      }
-    }
-
-    // ================= الانضباط والعادات =================
-    function renderDisciplineView() {
-      const list = document.getElementById('disciplineHabitsList');
-      list.innerHTML = '';
-      appState.habits.forEach(h => {
-        const isDone = appState.todayLog.completedHabitIds.includes(h.id);
-        list.innerHTML += `
-          <div class="flex justify-between items-center p-3.5 rounded-2xl border transition-all ${
-            isDone ? 'bg-greenAcc/10 border-greenAcc/40 text-textMuted' : 'bg-bgSec border-borderSubtle text-textLight'
-          }">
-            <div onclick="toggleHabit('${h.id}')" class="flex items-center gap-3 cursor-pointer flex-1">
-              <i data-lucide="${isDone ? 'check-circle-2' : 'circle'}" class="w-5 h-5 ${isDone ? 'text-greenAcc' : 'text-textMuted'}"></i>
-              <div>
-                <span class="text-xs font-bold ${isDone ? 'line-through' : ''}">${h.title}</span>
-                <p class="text-[10px] text-textMuted mt-0.5">${h.desc}</p>
+      // سجل التاريخ
+      const hist = document.getElementById('weightHistoryContainer');
+      hist.innerHTML = '';
+      [...list].reverse().forEach(item => {
+        hist.innerHTML += `
+          <div class="card-sub flex-between">
+            <div>
+              <div class="title-md">${item.weight} كغ <span class="text-xs">(${item.date})</span></div>
+              <div class="text-xs">
+                ${item.waist ? `خصر: ${item.waist} سم • ` : ''}
+                ${item.chest ? `صدر: ${item.chest} سم • ` : ''}
+                ${item.notes || ''}
               </div>
             </div>
-            ${h.isCustom ? `
-              <button onclick="deleteCustomHabit('${h.id}')" class="text-textMuted hover:text-red-400 p-1">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            ` : ''}
+            <button onclick="deleteWeight('${item.id}')" class="btn-sec" style="padding:5px 8px; color:#FCA5A5;">🗑️</button>
           </div>
         `;
       });
-      document.getElementById('streakCurrentVal').innerText = `${appState.todayLog.completedHabitIds.length >= 3 ? 1 : 0} أيام`;
-      document.getElementById('streakLongestVal').innerText = `١ أيام`;
     }
 
-    function promptAddNewHabit() {
-      const title = prompt('أدخل اسم العادة الجديدة:');
-      if (title && title.trim()) {
-        const desc = prompt('وصف مختصر للعادة:') || 'عادة تدعم الانضباط اليومي';
-        const newHabit = { id: 'h_' + Date.now(), title: title.trim(), desc, isCustom: true };
-        dbPut('habits', newHabit).then(() => {
-          appState.habits.push(newHabit);
-          renderDisciplineView();
-          renderDashboard();
-          lucide.createIcons();
-        });
-      }
-    }
-
-    async function deleteCustomHabit(id) {
-      await dbDelete('habits', id);
-      appState.habits = appState.habits.filter(h => h.id !== id);
-      renderDisciplineView();
+    function deleteWeight(id) {
+      if (state.weights.length <= 1) return alert('يجب إبقاء قياس واحد على الأقل.');
+      state.weights = state.weights.filter(w => w.id !== id);
+      saveState();
+      renderWeightSection();
       renderDashboard();
-      lucide.createIcons();
     }
 
-    // ================= التعافي ووضع اليوم الصعب =================
-    async function toggleHardDayMode() {
-      appState.todayLog.isHardDay = !appState.todayLog.isHardDay;
-      await saveTodayLog();
-      const btn = document.getElementById('btnActivateHardDay');
-      if (appState.todayLog.isHardDay) {
-        btn.innerText = 'وضع اليوم الصعب مفعّل بنجاح ✓';
-        btn.className = 'w-full py-2.5 rounded-xl text-xs font-bold bg-greenAcc/20 text-greenAcc border border-greenAcc transition-all';
-        alert('تم تفعيل وضع اليوم الصعب: ركز اليوم على الحد الأدنى (الماء البسيط، وجبة متوازنة، ونوم كافٍ) دون لوم النفس.');
-      } else {
-        btn.innerText = 'تفعيل وضع اليوم الصعب لهذا اليوم';
-        btn.className = 'w-full py-2.5 rounded-xl text-xs font-bold bg-crimson hover:bg-glow text-white transition-all shadow-md';
-      }
+    // ================= مختبر صور قبل وبعد =================
+    let tempPhotoBase64 = null;
+    let photoCompareMode = 'slider';
+
+    function openPhotoModal() {
+      document.getElementById('modalPhoto').classList.remove('hidden');
+    }
+    function closePhotoModal() {
+      document.getElementById('modalPhoto').classList.add('hidden');
+      tempPhotoBase64 = null;
+      document.getElementById('photoPreviewWrap').classList.add('hidden');
     }
 
-    // ================= خريطة الـ ٢١٤ يومًا =================
-    function renderRoadmapView() {
-      const { currentDay } = calculateDayProgress();
-      const list = document.getElementById('roadmapPhasesList');
-      list.innerHTML = '';
-
-      PHASES.forEach(p => {
-        const isPassed = currentDay > p.end;
-        const isCurrent = currentDay >= p.start && currentDay <= p.end;
-        list.innerHTML += `
-          <div class="p-4 rounded-2xl border transition-all ${
-            isCurrent ? 'bg-crimson/15 border-crimson shadow-lg' : isPassed ? 'bg-bgSec border-greenAcc/40' : 'bg-bgSec/40 border-borderSubtle opacity-60'
-          }">
-            <div class="flex justify-between items-center mb-1.5">
-              <span class="text-xs font-bold ${isCurrent ? 'text-glow' : 'text-textLight'}">${p.title}</span>
-              <span class="text-[10px] bg-bgMain px-2 py-0.5 rounded text-textMuted">الأيام ${p.start}–${p.end}</span>
-            </div>
-            <p class="text-[11px] text-textMuted leading-relaxed mb-2">${p.desc}</p>
-            <div class="text-[10px] bg-bgMain/60 p-2 rounded-xl text-glow flex items-center gap-1">
-              <i data-lucide="award" class="w-3 h-3"></i>
-              تحدي المرحلة: ${p.challenge}
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    // ================= التغذية وحاسبة الأيض =================
-    function renderNutritionView() {
-      if (!appState.profile) return;
-      const bmr = calculateBMR(appState.profile.startWeight, appState.profile.height, appState.profile.birthYear);
-      const mults = { sedentary: 1.2, light: 1.375, moderate: 1.55, high: 1.725 };
-      const tdee = Math.round(bmr * (mults[appState.profile.activity] || 1.2));
-
-      document.getElementById('nutBmrVal').innerText = bmr;
-      document.getElementById('nutTdeeVal').innerText = tdee;
-
-      const list = document.getElementById('mealsListToday');
-      list.innerHTML = '';
-      appState.todayLog.meals.forEach((m, idx) => {
-        list.innerHTML += `
-          <div class="flex justify-between items-center p-2.5 bg-bgSec rounded-xl border border-borderSubtle text-xs">
-            <div>
-              <span class="font-bold text-textLight">${m.title}</span>
-              <span class="text-[10px] text-textMuted mr-1.5">(${m.type})</span>
-            </div>
-            <span class="text-[11px] text-glow font-bold">${m.calories || 0} سعرة</span>
-          </div>
-        `;
-      });
-    }
-
-    async function handleLogMealSubmit(e) {
-      e.preventDefault();
-      const meal = {
-        id: 'meal_' + Date.now(),
-        title: document.getElementById('mealTitle').value.trim(),
-        type: document.getElementById('mealType').value,
-        calories: parseInt(document.getElementById('mealCalories').value) || 0,
-        protein: parseInt(document.getElementById('mealProtein').value) || 0
-      };
-      appState.todayLog.meals.push(meal);
-      await saveTodayLog();
-      document.getElementById('mealTitle').value = '';
-      document.getElementById('mealCalories').value = '';
-      document.getElementById('mealProtein').value = '';
-      renderNutritionView();
-    }
-
-    // ================= مؤقت التركيز (POMODORO) =================
-    let pomoInterval = null;
-    let pomoSecondsLeft = 25 * 60;
-    function togglePomodoro() {
-      const btn = document.getElementById('btnPomoToggle');
-      if (pomoInterval) {
-        clearInterval(pomoInterval);
-        pomoInterval = null;
-        btn.innerText = 'استئناف';
-      } else {
-        pomoInterval = setInterval(() => {
-          if (pomoSecondsLeft > 0) {
-            pomoSecondsLeft--;
-            const m = String(Math.floor(pomoSecondsLeft / 60)).padStart(2, '0');
-            const s = String(pomoSecondsLeft % 60).padStart(2, '0');
-            document.getElementById('pomoTimeDisplay').innerText = `${m}:${s}`;
-          } else {
-            clearInterval(pomoInterval);
-            pomoInterval = null;
-            alert('انتهت جلسة التركيز! خذ استراحة قصيرة.');
-          }
-        }, 1000);
-        btn.innerText = 'إيقاف';
-      }
-    }
-    function resetPomodoro() {
-      if (pomoInterval) clearInterval(pomoInterval);
-      pomoInterval = null;
-      pomoSecondsLeft = 25 * 60;
-      document.getElementById('pomoTimeDisplay').innerText = '25:00';
-      document.getElementById('btnPomoToggle').innerText = 'بدء الجلسة';
-    }
-
-    // ================= مذكرات رحلتي =================
-    async function handleJournalSubmit(e) {
-      e.preventDefault();
-      const { currentDay } = calculateDayProgress();
-      const entry = {
-        id: 'jr_' + Date.now(),
-        date: getTodayStr(),
-        dayNumber: currentDay,
-        successes: document.getElementById('jrSuccesses').value.trim(),
-        difficulties: document.getElementById('jrDifficulties').value.trim(),
-        pride: document.getElementById('jrPride').value.trim(),
-        createdAt: Date.now()
-      };
-      await dbPut('journals', entry);
-      appState.journals.unshift(entry);
-      document.getElementById('jrSuccesses').value = '';
-      document.getElementById('jrDifficulties').value = '';
-      document.getElementById('jrPride').value = '';
-      renderJournalView();
-      lucide.createIcons();
-    }
-
-    function renderJournalView() {
-      const list = document.getElementById('journalEntriesList');
-      list.innerHTML = '';
-      appState.journals.forEach(j => {
-        list.innerHTML += `
-          <div class="bg-bgSec p-4 rounded-2xl border border-borderSubtle text-xs space-y-2">
-            <div class="flex justify-between items-center border-b border-borderSubtle/60 pb-1.5">
-              <span class="font-bold text-glow">اليوم ${j.dayNumber}</span>
-              <span class="text-[10px] text-textMuted">${j.date}</span>
-            </div>
-            ${j.successes ? `<div><span class="text-greenAcc font-bold block">ما نجحت فيه:</span><p class="text-textLight">${j.successes}</p></div>` : ''}
-            ${j.difficulties ? `<div><span class="text-amber-400 font-bold block">الصعوبات:</span><p class="text-textLight">${j.difficulties}</p></div>` : ''}
-            ${j.pride ? `<div class="p-2 bg-bgMain rounded-xl text-glow">لحظة فخر: ${j.pride}</div>` : ''}
-          </div>
-        `;
-      });
-    }
-
-    // ================= التقارير والإعدادات =================
-    function renderReportsView() {
-      if (appState.profile) {
-        document.getElementById('reportsPastLetter').innerText = `«${appState.profile.contract}»`;
-      }
-    }
-
-    function renderSettingsView() {
-      if (!appState.profile) return;
-      document.getElementById('setProfileName').innerText = appState.profile.name;
-      document.getElementById('setProfileStartDate').innerText = appState.profile.startDate;
-      document.getElementById('setProfileWeights').innerText = `${appState.profile.startWeight} كغ ← ${appState.profile.targetWeight} كغ`;
-    }
-
-    function exportFullBackupJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
-      const a = document.createElement('a');
-      a.href = dataStr;
-      a.download = `rehlaty_backup_${getTodayStr()}.json`;
-      a.click();
-    }
-
-    function handleImportBackupJSON(e) {
+    function previewSelectedPhoto(e) {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
+        tempPhotoBase64 = reader.result;
+        document.getElementById('photoPreviewImg').src = tempPhotoBase64;
+        document.getElementById('photoPreviewWrap').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function savePhotoRecord() {
+      if (!tempPhotoBase64) return alert('اختر الصورة أولاً');
+      const { day } = getJourneyProgress();
+      const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
+      const rec = {
+        id: 'ph_' + Date.now(),
+        day: day,
+        date: todayKey(),
+        weight: currW,
+        note: document.getElementById('photoNoteIn').value.trim(),
+        dataUrl: tempPhotoBase64
+      };
+
+      state.photos.push(rec);
+      if (db) {
+        const tx = db.transaction('photos', 'readwrite');
+        tx.objectStore('photos').put(rec);
+      }
+      addXP(25);
+      closePhotoModal();
+      renderPhotosSection();
+    }
+
+    function setPhotoMode(m) {
+      photoCompareMode = m;
+      document.getElementById('btnModeSlider').className = m === 'slider' ? 'btn-primary' : 'btn-sec';
+      document.getElementById('btnModeSide').className = m === 'side' ? 'btn-primary' : 'btn-sec';
+      renderPhotoComparison();
+    }
+
+    function renderPhotosSection() {
+      const photos = state.photos;
+      document.getElementById('photoCountLabel').innerText = photos.length;
+
+      const selB = document.getElementById('selPhotoBefore');
+      const selA = document.getElementById('selPhotoAfter');
+      selB.innerHTML = ''; selA.innerHTML = '';
+
+      photos.forEach((p, idx) => {
+        const opt1 = `<option value="${p.id}" ${idx === 0 ? 'selected' : ''}>قبل: اليوم ${p.day} (${p.weight} كغ)</option>`;
+        const opt2 = `<option value="${p.id}" ${idx === photos.length - 1 ? 'selected' : ''}>بعد: اليوم ${p.day} (${p.weight} كغ)</option>`;
+        selB.innerHTML += opt1;
+        selA.innerHTML += opt2;
+      });
+
+      const grid = document.getElementById('photosGalleryGrid');
+      grid.innerHTML = '';
+      photos.forEach(p => {
+        grid.innerHTML += `
+          <div class="card-sub" style="padding:8px;">
+            <img src="${p.dataUrl}" style="width:100%; height:170px; object-fit:cover; border-radius:10px; margin-bottom:6px;">
+            <div class="flex-between text-xs">
+              <b>اليوم ${p.day} (${p.weight} كغ)</b>
+              <button onclick="deletePhoto('${p.id}')" style="background:none; color:#FCA5A5;">🗑️</button>
+            </div>
+            <div class="text-xs">${p.date} ${p.note ? '• ' + p.note : ''}</div>
+          </div>
+        `;
+      });
+
+      renderPhotoComparison();
+    }
+
+    function renderPhotoComparison() {
+      const stage = document.getElementById('photoCompareStage');
+      if (state.photos.length < 2) {
+        stage.innerHTML = '<span class="text-xs">أضف صورتين على الأقل لتفعيل شريط المقارنة التفاعلي.</span>';
+        return;
+      }
+      const idB = document.getElementById('selPhotoBefore').value;
+      const idA = document.getElementById('selPhotoAfter').value;
+      const pBefore = state.photos.find(x => x.id === idB) || state.photos[0];
+      const pAfter = state.photos.find(x => x.id === idA) || state.photos[state.photos.length - 1];
+
+      if (photoCompareMode === 'slider') {
+        stage.innerHTML = `
+          <div style="position:relative; width:100%; height:100%;">
+            <img src="${pAfter.dataUrl}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <span class="badge" style="position:absolute; bottom:8px; left:8px; z-index:5; background:rgba(0,0,0,0.75);">بعد: يوم ${pAfter.day} (${pAfter.weight} كغ)</span>
+            <div id="clipBeforeBox" style="position:absolute; inset:0; width:50%; overflow:hidden; border-right:2px solid var(--glow);">
+              <img src="${pBefore.dataUrl}" style="width:100%; height:100%; object-fit:cover;">
+              <span class="badge" style="position:absolute; bottom:8px; right:8px; z-index:5; background:rgba(0,0,0,0.75);">قبل: يوم ${pBefore.day} (${pBefore.weight} كغ)</span>
+            </div>
+            <input type="range" min="5" max="95" value="50" oninput="document.getElementById('clipBeforeBox').style.width = this.value + '%'" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:ew-resize; z-index:10;">
+          </div>
+        `;
+      } else {
+        stage.innerHTML = `
+          <div class="grid-2" style="width:100%; height:100%; padding:6px;">
+            <div style="position:relative; height:100%;">
+              <img src="${pBefore.dataUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+              <span class="badge" style="position:absolute; bottom:6px; right:6px; background:rgba(0,0,0,0.75);">يوم ${pBefore.day}</span>
+            </div>
+            <div style="position:relative; height:100%;">
+              <img src="${pAfter.dataUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+              <span class="badge" style="position:absolute; bottom:6px; right:6px; background:rgba(0,0,0,0.75);">يوم ${pAfter.day}</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function deletePhoto(id) {
+      state.photos = state.photos.filter(p => p.id !== id);
+      if (db) {
+        const tx = db.transaction('photos', 'readwrite');
+        tx.objectStore('photos').delete(id);
+      }
+      renderPhotosSection();
+    }
+
+    // ================= صالة التمارين ثلاثية الأبعاد (100% Offline 3D Projection Engine) =================
+    const EXERCISES_LIST = [
+      { id: 'squat', title: '١. القرفصاء بالدمبل', reps: '٣ × ١٢ تكرار', muscles: 'الفخذ الأمامي، الألوية، الجذع', db: true, guide: 'قف بعرض الكتفين، امسك الدمبل بجانب الجسم واهبط بالحوض للخلف مع استقامة الظهر.', mistakes: 'تجنب تقويس الظهر. البديل المريح: قرفصاء بوزن الجسم لنصف مدى.' },
+      { id: 'press', title: '٢. ضغط الأكتاف بالدمبل', reps: '٣ × ١٠ تكرار', muscles: 'الأكتاف والترايسبس', db: true, guide: 'ارفع الدمبل من مستوى الأذنين للأعلى بهدوء دون قفل المرفقين بعنف.', mistakes: 'تجنب ميل الجذع للخلف. يمكنك أداؤه جالساً لدعم أسفل الظهر.' },
+      { id: 'curl', title: '٣. ثني الذراع للبايسبس', reps: '٣ × ١٢ تكرار', muscles: 'العضلة ذات الرأسين (البايسبس)', db: true, guide: 'ثبّت المرفقين بجانب الجذع وارفع الدمبل باتجاه الكتفين بتحكم.', mistakes: 'تجنب أرجحة الظهر لرفع الوزن.' },
+      { id: 'row', title: '٤. التجديف المنحني بالدمبل', reps: '٣ × ١٢ تكرار', muscles: 'عضلات الظهر العلوية والوسطى', db: true, guide: 'انحنِ للأمام بزاوية ٤٥ درجة مع ظهر مستقيم، واسحب الدمبل نحو الخصر.', mistakes: 'لا تحنِ الرقبة أو تقوّس أسفل الظهر.' },
+      { id: 'rdl', title: '٥. الرفعة الرومانية بالدمبل', reps: '٣ × ١٠ تكرار', muscles: 'أوتار الفخذ الخلفية وأسفل الظهر', db: true, guide: 'انزل بالدمبل بمحاذاة الساقين مع دفع الحوض للخلف وثني بسيط بالركبة.', mistakes: 'حافظ على قرب الدمبل من الساقين طوال الحركة.' },
+      { id: 'jacks', title: '٦. القفز الهوائي / الخطو الجانبي', reps: '٣ × ٤٠ ثانية', muscles: 'القلب، اللياقة العامة، الساقين', db: false, guide: 'ارفع الذراعين مع فتح الساقين بإيقاع متواصل لتنشيط الدورة الدموية.', mistakes: 'البديل المريح للمفاصل: خطو جانبي بقدم واحدة دون قفز.' },
+      { id: 'knees', title: '٧. رفع الركبتين بالتبادل', reps: '٣ × ٣٠ ثانية', muscles: 'عضلات البطن السفلية والقلب', db: false, guide: 'ارفع ركبة تلو الأخرى لمستوى الخصر مع شد عضلات البطن.', mistakes: 'يمكن أداؤها مشياً في المكان بإيقاع هادئ بدون قفز.' },
+      { id: 'stretch', title: '٨. إطالة العمود الفقري والأكتاف', reps: '٤٥ ثانية', muscles: 'الرقبة، الأكتاف، والعمود الفقري', db: false, guide: 'حرّك الأكتاف والذراعين بمدى واسع مع شهيق وزفير عميقين لإزالة التيبس.', mistakes: 'لا تحبس أنفاسك أثناء الإطالة.' }
+    ];
+
+    let activeEx = EXERCISES_LIST[0];
+    let gymRunning = false;
+    let is3dPlaying = true;
+    let camYaw = 0.35;
+    let isDragging3D = false;
+    let lastTouchX = 0;
+    let exTimerSec = 0;
+    let exTimerInt = null;
+
+    function initOffline3DGym() {
+      const bar = document.getElementById('exerciseButtonsBar');
+      if (bar.children.length === 0) {
+        EXERCISES_LIST.forEach(ex => {
+          const btn = document.createElement('button');
+          btn.id = 'exBtn_' + ex.id;
+          btn.className = ex.id === activeEx.id ? 'btn-primary' : 'btn-sec';
+          btn.style.flexShrink = '0';
+          btn.innerText = ex.title;
+          btn.onclick = () => selectEx(ex.id);
+          bar.appendChild(btn);
+        });
+      }
+      selectEx(activeEx.id);
+
+      if (gymRunning) return;
+      gymRunning = true;
+
+      const canvas = document.getElementById('gym3dCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // تدوير الكاميرا باللمس أو الماوس
+      canvas.addEventListener('pointerdown', e => { isDragging3D = true; lastTouchX = e.clientX; });
+      window.addEventListener('pointerup', () => { isDragging3D = false; });
+      window.addEventListener('pointermove', e => {
+        if (!isDragging3D) return;
+        camYaw += (e.clientX - lastTouchX) * 0.012;
+        lastTouchX = e.clientX;
+      });
+
+      function project(x, y, z, w, h) {
+        const cosY = Math.cos(camYaw), sinY = Math.sin(camYaw);
+        const rx = x * cosY - z * sinY;
+        const rz = x * sinY + z * cosY + 4.2;
+        const scale = 270 / Math.max(1, rz);
+        return { x: w / 2 + rx * scale, y: h * 0.54 - y * scale, s: scale };
+      }
+
+      function drawLimb(p1, p2, thickness, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = Math.max(2, thickness * ((p1.s + p2.s) / 2) * 0.015);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+
+      function renderLoop(time) {
+        requestAnimationFrame(renderLoop);
+        if (document.getElementById('view-exercises').classList.contains('hidden')) return;
+
+        const w = canvas.width = canvas.clientWidth;
+        const h = canvas.height = canvas.clientHeight;
+        ctx.clearRect(0, 0, w, h);
+
+        // رسم شبكة أرضية ثلاثية الأبعاد
+        ctx.strokeStyle = 'rgba(225, 29, 72, 0.18)';
+        ctx.lineWidth = 1;
+        for (let i = -2; i <= 2; i++) {
+          const g1 = project(i * 0.5, -1.1, -1, w, h);
+          const g2 = project(i * 0.5, -1.1, 1, w, h);
+          ctx.beginPath(); ctx.moveTo(g1.x, g1.y); ctx.lineTo(g2.x, g2.y); ctx.stroke();
+          const h1 = project(-1, -1.1, i * 0.5, w, h);
+          const h2 = project(1, -1.1, i * 0.5, w, h);
+          ctx.beginPath(); ctx.moveTo(h1.x, h1.y); ctx.lineTo(h2.x, h2.y); ctx.stroke();
+        }
+
+        const t = is3dPlaying ? time * 0.0032 : 1.2;
+        const wave = Math.sin(t);
+        const wavePos = (Math.sin(t) + 1) / 2;
+
+        // إحداثيات المفاصل التشريحية
+        let hipY = -0.1, torsoTopY = 0.6, torsoZ = 0;
+        let lElbow = [-0.38, 0.25, 0], lWrist = [-0.42, -0.15, 0.1];
+        let rElbow = [0.38, 0.25, 0], rWrist = [0.42, -0.15, 0.1];
+        let lKnee = [-0.2, -0.6, 0], lAnkle = [-0.2, -1.08, 0];
+        let rKnee = [0.2, -0.6, 0], rAnkle = [0.2, -1.08, 0];
+
+        if (activeEx.id === 'squat') {
+          const depth = wavePos * 0.42;
+          hipY = -0.1 - depth;
+          torsoTopY = 0.6 - depth * 0.85;
+          torsoZ = depth * 0.3;
+          lKnee = [-0.24, -0.6 - depth * 0.2, 0.28 * wavePos];
+          rKnee = [0.24, -0.6 - depth * 0.2, 0.28 * wavePos];
+          lWrist = [-0.38, hipY - 0.1, 0.1];
+          rWrist = [0.38, hipY - 0.1, 0.1];
+        } else if (activeEx.id === 'press') {
+          const lift = wavePos * 0.65;
+          lElbow = [-0.48, 0.45 + lift * 0.3, 0];
+          rElbow = [0.48, 0.45 + lift * 0.3, 0];
+          lWrist = [-0.38, 0.72 + lift, 0];
+          rWrist = [0.38, 0.72 + lift, 0];
+        } else if (activeEx.id === 'curl') {
+          const curl = wavePos * 0.55;
+          lElbow = [-0.35, 0.2, 0];
+          rElbow = [0.35, 0.2, 0];
+          lWrist = [-0.35, -0.15 + curl, 0.35 * Math.sin(wavePos * Math.PI)];
+          rWrist = [0.35, -0.15 + curl, 0.35 * Math.sin(wavePos * Math.PI)];
+        } else if (activeEx.id === 'row') {
+          torsoTopY = 0.42; torsoZ = 0.35;
+          const pull = wavePos * 0.35;
+          lElbow = [-0.36, 0.15 + pull, -0.15 * wavePos];
+          rElbow = [0.36, 0.15 + pull, -0.15 * wavePos];
+          lWrist = [-0.34, -0.25 + pull, 0.25];
+          rWrist = [0.34, -0.25 + pull, 0.25];
+        } else if (activeEx.id === 'rdl') {
+          const bend = wavePos * 0.45;
+          torsoTopY = 0.6 - bend;
+          torsoZ = bend * 0.8;
+          lWrist = [-0.3, -0.15 - bend * 0.9, 0.25];
+          rWrist = [0.3, -0.15 - bend * 0.9, 0.25];
+        } else if (activeEx.id === 'jacks') {
+          const spread = wavePos * 0.35;
+          lAnkle = [-0.18 - spread, -1.08, 0];
+          rAnkle = [0.18 + spread, -1.08, 0];
+          lElbow = [-0.4 - spread, 0.35 + spread * 1.2, 0];
+          rElbow = [0.4 + spread, 0.35 + spread * 1.2, 0];
+          lWrist = [-0.3 - spread, 0.2 + spread * 2.4, 0];
+          rWrist = [0.3 + spread, 0.2 + spread * 2.4, 0];
+        } else if (activeEx.id === 'knees') {
+          const lUp = Math.max(0, wave) * 0.45;
+          const rUp = Math.max(0, -wave) * 0.45;
+          lKnee = [-0.2, -0.6 + lUp, lUp * 0.6];
+          lAnkle = [-0.2, -1.08 + lUp * 0.8, 0];
+          rKnee = [0.2, -0.6 + rUp, rUp * 0.6];
+          rAnkle = [0.2, -1.08 + rUp * 0.8, 0];
+        } else {
+          // إطالة
+          lElbow = [-0.45, 0.45, 0];
+          rElbow = [0.45, 0.45, 0];
+          lWrist = [-0.55, 0.65 + wave * 0.15, 0];
+          rWrist = [0.55, 0.65 - wave * 0.15, 0];
+        }
+
+        const pHip = project(0, hipY, 0, w, h);
+        const pSpine = project(0, torsoTopY, torsoZ, w, h);
+        const pHead = project(0, torsoTopY + 0.26, torsoZ, w, h);
+        const pLShoulder = project(-0.28, torsoTopY - 0.05, torsoZ, w, h);
+        const pRShoulder = project(0.28, torsoTopY - 0.05, torsoZ, w, h);
+        const pLElbow = project(...lElbow, w, h);
+        const pRElbow = project(...rElbow, w, h);
+        const pLWrist = project(...lWrist, w, h);
+        const pRWrist = project(...rWrist, w, h);
+        const pLHip = project(-0.18, hipY, 0, w, h);
+        const pRHip = project(0.18, hipY, 0, w, h);
+        const pLKnee = project(...lKnee, w, h);
+        const pRKnee = project(...rKnee, w, h);
+        const pLAnkle = project(...lAnkle, w, h);
+        const pRAnkle = project(...rAnkle, w, h);
+
+        // رسم الساقين والجذع والذراعين
+        drawLimb(pLHip, pLKnee, 14, '#AAA2A7');
+        drawLimb(pLKnee, pLAnkle, 11, '#F5F3F4');
+        drawLimb(pRHip, pRKnee, 14, '#AAA2A7');
+        drawLimb(pRKnee, pRAnkle, 11, '#F5F3F4');
+        drawLimb(pLHip, pRHip, 16, '#E11D48');
+        drawLimb(pHip, pSpine, 24, '#F5F3F4');
+        drawLimb(pLShoulder, pRShoulder, 18, '#E11D48');
+        drawLimb(pLShoulder, pLElbow, 11, '#F5F3F4');
+        drawLimb(pLElbow, pLWrist, 9, '#F43F5E');
+        drawLimb(pRShoulder, pRElbow, 11, '#F5F3F4');
+        drawLimb(pRElbow, pRWrist, 9, '#F43F5E');
+
+        // رسم الرأس
+        ctx.fillStyle = '#E11D48';
+        ctx.beginPath();
+        ctx.arc(pHead.x, pHead.y, Math.max(8, pHead.s * 0.14), 0, Math.PI * 2);
+        ctx.fill();
+
+        // رسم الدمبل في اليدين عند الحاجة
+        if (activeEx.db) {
+          [pLWrist, pRWrist].forEach(pw => {
+            ctx.fillStyle = '#10B981';
+            ctx.fillRect(pw.x - 12, pw.y - 4, 24, 8);
+          });
+        }
+      }
+      requestAnimationFrame(renderLoop);
+    }
+
+    function selectEx(id) {
+      activeEx = EXERCISES_LIST.find(x => x.id === id) || EXERCISES_LIST[0];
+      document.getElementById('exTitle').innerText = activeEx.title;
+      document.getElementById('exRepsBadge').innerText = activeEx.reps;
+      document.getElementById('exMuscles').innerText = 'العضلات المستهدفة: ' + activeEx.muscles;
+      document.getElementById('exGuide').innerText = activeEx.guide;
+      document.getElementById('exMistakes').innerText = activeEx.mistakes;
+
+      EXERCISES_LIST.forEach(ex => {
+        const b = document.getElementById('exBtn_' + ex.id);
+        if (b) b.className = ex.id === id ? 'btn-primary' : 'btn-sec';
+      });
+    }
+
+    function toggle3DPlay() {
+      is3dPlaying = !is3dPlaying;
+      document.getElementById('btn3dPlay').innerText = is3dPlaying ? '⏸️ إيقاف' : '▶️ تشغيل';
+    }
+    function reset3DAngle() { camYaw = 0.35; }
+
+    function toggleExTimer() {
+      const btn = document.getElementById('btnExTimer');
+      if (exTimerInt) {
+        clearInterval(exTimerInt); exTimerInt = null;
+        btn.innerText = 'استئناف';
+      } else {
+        exTimerInt = setInterval(() => {
+          exTimerSec++;
+          const m = String(Math.floor(exTimerSec / 60)).padStart(2, '0');
+          const s = String(exTimerSec % 60).padStart(2, '0');
+          document.getElementById('exTimerText').innerText = `${m}:${s}`;
+        }, 1000);
+        btn.innerText = 'إيقاف';
+      }
+    }
+
+    function completeWorkoutSession() {
+      const log = getTodayLog();
+      log.walkMin += 20;
+      addXP(30);
+      vibrate([50, 50, 80]);
+      saveState();
+      alert('أحسنت! تم تسجيل جلسة التمرين وإضافة +30 XP لرصيدك.');
+      renderDashboard();
+    }
+
+    // ================= قسم الانضباط، الخريطة الحرارية، والمكافآت =================
+    function calculateStreaks() {
+      const keys = Object.keys(state.logs).sort();
+      let curr = 0, max = 0;
+      keys.forEach(k => {
+        const l = state.logs[k];
+        if (l.doneHabits && l.doneHabits.length >= 3) {
+          curr++;
+          if (curr > max) max = curr;
+        } else {
+          curr = 0;
+        }
+      });
+      return { curr, max };
+    }
+
+    function renderDisciplineSection() {
+      const { curr, max } = calculateStreaks();
+      document.getElementById('discCurrStreak').innerText = `${curr} يوم`;
+      document.getElementById('discMaxStreak').innerText = `${max} يوم`;
+      document.getElementById('discShieldsCount').innerText = `${state.shields || 1} 🛡️`;
+
+      const log = getTodayLog();
+      const list = document.getElementById('fullHabitsList');
+      list.innerHTML = '';
+      state.habits.forEach(h => {
+        const isDone = log.doneHabits.includes(h.id);
+        list.innerHTML += `
+          <div class="habit-row ${isDone ? 'done' : ''}">
+            <div onclick="toggleHabit('${h.id}')" class="flex-gap" style="flex:1;">
+              <div class="habit-check">${isDone ? '✓' : ''}</div>
+              <span class="title-md">${h.title}</span>
+            </div>
+            ${!h.core ? `<button onclick="deleteHabit('${h.id}')" style="background:none; color:#FCA5A5;">🗑️</button>` : '<span class="badge">أساسية</span>'}
+          </div>
+        `;
+      });
+
+      // رسم خريطة الـ 214 يوم الحرارية
+      const { day } = getJourneyProgress();
+      const grid = document.getElementById('heatmapGrid');
+      grid.innerHTML = '';
+      const startD = state.profile ? new Date(state.profile.startDate) : new Date();
+
+      for (let i = 1; i <= TOTAL_DAYS; i++) {
+        const d = new Date(startD);
+        d.setDate(d.getDate() + (i - 1));
+        const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        const l = state.logs[k];
+        const count = l && l.doneHabits ? l.doneHabits.length : 0;
+        let cls = 'heat-cell';
+        if (count >= 4) cls += ' lvl-3';
+        else if (count >= 2) cls += ' lvl-2';
+        else if (count >= 1) cls += ' lvl-1';
+        if (i === day) cls += ' today';
+        grid.innerHTML += `<div class="${cls}" title="اليوم ${i}">${i}</div>`;
+      }
+
+      // بنك المكافآت
+      const rwList = document.getElementById('rewardsListContainer');
+      rwList.innerHTML = '';
+      state.rewards.forEach(r => {
+        const canClaim = (state.xp || 0) >= r.cost && !r.claimed;
+        rwList.innerHTML += `
+          <div class="card-sub flex-between">
+            <div>
+              <div class="title-md" style="${r.claimed ? 'text-decoration:line-through; color:var(--green);' : ''}">${r.title}</div>
+              <div class="text-xs">التكلفة: ${r.cost} XP</div>
+            </div>
+            ${r.claimed
+              ? '<span class="badge badge-green">تم الاستبدال ✓</span>'
+              : `<button onclick="claimReward('${r.id}')" class="${canClaim ? 'btn-primary' : 'btn-sec'}" style="padding:6px 10px; font-size:0.72rem;">استبدال</button>`
+            }
+          </div>
+        `;
+      });
+    }
+
+    function addNewCustomHabit() {
+      const t = prompt('أدخل اسم العادة اليومية الجديدة:');
+      if (t && t.trim()) {
+        state.habits.push({ id: 'h_' + Date.now(), title: t.trim(), core: false });
+        saveState();
+        renderDisciplineSection();
+        renderDashboard();
+      }
+    }
+
+    function deleteHabit(id) {
+      state.habits = state.habits.filter(h => h.id !== id);
+      saveState();
+      renderDisciplineSection();
+      renderDashboard();
+    }
+
+    function addCustomReward() {
+      const title = prompt('ما هي المكافأة الشخصية التي تريد إضافتها؟');
+      const cost = parseInt(prompt('كم نقطة XP تتطلب هذه المكافأة؟', '400'));
+      if (title && !isNaN(cost)) {
+        state.rewards.push({ id: 'r_' + Date.now(), title: title.trim(), cost, claimed: false });
+        saveState();
+        renderDisciplineSection();
+      }
+    }
+
+    function claimReward(id) {
+      const r = state.rewards.find(x => x.id === id);
+      if (!r || r.claimed) return;
+      if ((state.xp || 0) < r.cost) return alert(`تحتاج إلى ${r.cost - state.xp} XP إضافية لفتح هذه المكافأة.`);
+      state.xp -= r.cost;
+      r.claimed = true;
+      vibrate([60, 40, 90]);
+      saveState();
+      renderHeader();
+      renderDisciplineSection();
+    }
+
+    function generateRecoveryAdvice() {
+      const val = document.getElementById('relapseReason').value;
+      const box = document.getElementById('recoveryAdviceBox');
+      if (!val) { box.classList.add('hidden'); return; }
+      const plans = {
+        sleep: 'خطة الغد: قلّل التمارين القوية إلى ١٠ دقائق إطالة فقط، واشرب الماء مبكراً، واجعل أولويتك النوم قبل ١١ مساءً.',
+        stress: 'خطة الغد: لا تضغط على نفسك بحساب السعرات؛ اكتفِ بـ ٣ وجبات مشبعة بالبروتين مع ١٥ دقيقة مشي لتفريغ التوتر.',
+        craving: 'خطة الغد: ابدأ فطورك بوجبة غنية بالبروتين (مثل البيض) مع شرب كوب ماء ٣٠٠ مل قبل كل وجبة لكسر تذبذب السكر.',
+        time: 'خطة الغد: استخدم بنك الوجبات السريعة الجاهزة، وقسّم المشي إلى ١٠ دقائق صباحاً و١٠ دقائق مساءً.'
+      };
+      box.innerText = '💡 ' + plans[val];
+      box.classList.remove('hidden');
+    }
+
+    function toggleHardDay() {
+      const log = getTodayLog();
+      log.hardMode = !log.hardMode;
+      saveState();
+      renderDashboard();
+      alert(log.hardMode
+        ? 'تم تفعيل وضع اليوم الصعب: المطلوب منك اليوم فقط ٣ عادات أساسية للحفاظ على استمراريتك دون إرهاق.'
+        : 'تم إيقاف وضع اليوم الصعب والعودة للوضع الكامل.');
+    }
+
+    // ================= التغذية وحاسبة السعرات =================
+    function renderNutritionSection() {
+      if (!state.profile) return;
+      const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
+      const age = Math.max(18, new Date().getFullYear() - state.profile.birth);
+      const bmr = Math.round(10 * currW + 6.25 * state.profile.height - 5 * age + 5);
+      const mult = { sedentary: 1.2, light: 1.375, moderate: 1.55, high: 1.725 }[state.profile.activity] || 1.3;
+      const tdee = Math.round(bmr * mult);
+      const target = Math.max(1400, tdee - 450);
+
+      document.getElementById('nutBmr').innerText = bmr + ' سعرة';
+      document.getElementById('nutTdee').innerText = tdee + ' سعرة';
+      document.getElementById('nutTargetCal').innerText = target + ' سعرة';
+
+      const log = getTodayLog();
+      const totalCal = log.meals.reduce((s, m) => s + (m.cal || 0), 0);
+      document.getElementById('mealsTotalCalLabel').innerText = `${totalCal} / ${target} سعرة`;
+
+      const list = document.getElementById('todayMealsContainer');
+      list.innerHTML = '';
+      log.meals.forEach((m, idx) => {
+        list.innerHTML += `
+          <div class="card-sub flex-between">
+            <div>
+              <div class="title-md">${m.name}</div>
+              <div class="text-xs">${m.cal} سعرة ${m.protein ? `• ${m.protein}غ بروتين` : ''}</div>
+            </div>
+            <button onclick="removeMeal(${idx})" style="background:none; color:#FCA5A5;">🗑️</button>
+          </div>
+        `;
+      });
+    }
+
+    function quickAddMeal(name, cal, protein) {
+      const log = getTodayLog();
+      log.meals.push({ name, cal, protein });
+      addXP(10);
+      vibrate(30);
+      saveState();
+      renderNutritionSection();
+    }
+
+    function submitCustomMeal(e) {
+      e.preventDefault();
+      const name = document.getElementById('mealNameIn').value.trim();
+      const cal = parseInt(document.getElementById('mealCalIn').value) || 0;
+      quickAddMeal(name, cal, 0);
+      document.getElementById('mealNameIn').value = '';
+      document.getElementById('mealCalIn').value = '';
+    }
+
+    function removeMeal(idx) {
+      const log = getTodayLog();
+      log.meals.splice(idx, 1);
+      saveState();
+      renderNutritionSection();
+    }
+
+    // ================= التركيز، حاسبة النوم، المذكرات، وبطاقة الإنجاز =================
+    let pomoSec = 25 * 60, pomoInt = null;
+    function togglePomo() {
+      const btn = document.getElementById('btnPomoStart');
+      if (pomoInt) {
+        clearInterval(pomoInt); pomoInt = null;
+        btn.innerText = 'استئناف الجلسة';
+      } else {
+        pomoInt = setInterval(() => {
+          if (pomoSec > 0) {
+            pomoSec--;
+            const m = String(Math.floor(pomoSec / 60)).padStart(2, '0');
+            const s = String(pomoSec % 60).padStart(2, '0');
+            document.getElementById('pomoClock').innerText = `${m}:${s}`;
+          } else {
+            clearInterval(pomoInt); pomoInt = null;
+            addXP(25);
+            vibrate([100, 50, 100]);
+            alert('أتممت جلسة تركيز كاملة! +25 XP');
+          }
+        }, 1000);
+        btn.innerText = 'إيقاف مؤقت';
+      }
+    }
+    function resetPomo() {
+      if (pomoInt) clearInterval(pomoInt);
+      pomoInt = null; pomoSec = 25 * 60;
+      document.getElementById('pomoClock').innerText = '25:00';
+      document.getElementById('btnPomoStart').innerText = 'بدء جلسة التركيز';
+    }
+
+    function calcSleepCycles() {
+      const val = document.getElementById('wakeUpTimeInput').value || '06:30';
+      const [h, m] = val.split(':').map(Number);
+      const wakeMins = h * 60 + m;
+      // 5 دورات (7.5 س) و 6 دورات (9 س) مع 15 دقيقة للغفو
+      const calcTime = (cycles) => {
+        let total = wakeMins - (cycles * 90 + 15);
+        if (total < 0) total += 1440;
+        const hh = String(Math.floor(total / 60)).padStart(2, '0');
+        const mm = String(total % 60).padStart(2, '0');
+        return `${hh}:${mm}`;
+      };
+      document.getElementById('sleepCyclesResult').innerHTML = `
+        للاستيقاظ بنشاط الساعة <b>${val}</b>:<br>
+        • مثالي (٦ دورات / ٩ ساعات): نَم الساعة <b class="text-green">${calcTime(6)}</b><br>
+        • جيد جداً (٥ دورات / ٧.٥ ساعة): نَم الساعة <b class="text-crimson">${calcTime(5)}</b>
+      `;
+    }
+
+    function submitJournal(e) {
+      e.preventDefault();
+      const { day } = getJourneyProgress();
+      state.journals.unshift({
+        id: 'j_' + Date.now(),
+        day,
+        date: todayKey(),
+        win: document.getElementById('jrWinIn').value.trim(),
+        challenge: document.getElementById('jrChallengeIn').value.trim()
+      });
+      document.getElementById('jrWinIn').value = '';
+      document.getElementById('jrChallengeIn').value = '';
+      addXP(20);
+      saveState();
+      renderFocusSection();
+    }
+
+    function renderFocusSection() {
+      calcSleepCycles();
+      const jList = document.getElementById('journalListContainer');
+      jList.innerHTML = '';
+      state.journals.slice(0, 15).forEach(j => {
+        jList.innerHTML += `
+          <div class="card-sub text-xs">
+            <div class="flex-between mb-1">
+              <b class="text-crimson">اليوم ${j.day}</b>
+              <span>${j.date}</span>
+            </div>
+            <div>✔️ <b>إنجازي:</b> ${j.win}</div>
+            ${j.challenge ? `<div class="mt-2">⚠️ <b>تحدي:</b> ${j.challenge}</div>` : ''}
+          </div>
+        `;
+      });
+
+      const { day } = getJourneyProgress();
+      const phContainer = document.getElementById('phasesRoadmapContainer');
+      phContainer.innerHTML = '';
+      PHASES.forEach(p => {
+        const isCurr = day >= p.start && day <= p.end;
+        phContainer.innerHTML += `
+          <div class="card-sub" style="${isCurr ? 'border-color:var(--crimson);' : ''}">
+            <div class="flex-between">
+              <span class="title-md">${p.title}</span>
+              <span class="badge">الأيام ${p.start}–${p.end}</span>
+            </div>
+            <p class="text-xs mt-2">${p.goal}</p>
+          </div>
+        `;
+      });
+    }
+
+    // توليد بطاقة الإنجاز المصورة (Canvas PNG)
+    function downloadAchievementCard() {
+      const c = document.createElement('canvas');
+      c.width = 800; c.height = 1000;
+      const ctx = c.getContext('2d');
+      const { day, pct, phase } = getJourneyProgress();
+      const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
+      const diff = (state.profile.startW - currW).toFixed(1);
+
+      ctx.fillStyle = '#0B0A0C';
+      ctx.fillRect(0, 0, 800, 1000);
+      ctx.strokeStyle = '#E11D48';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(30, 30, 740, 940);
+
+      ctx.fillStyle = '#F43F5E';
+      ctx.font = 'bold 46px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('رحلتي — ٢١٤ يومًا نحو الانضباط', 400, 130);
+
+      ctx.fillStyle = '#F5F3F4';
+      ctx.font = 'bold 90px sans-serif';
+      ctx.fillText(`اليوم ${day} / ٢١٤`, 400, 290);
+
+      ctx.fillStyle = '#10B981';
+      ctx.font = 'bold 44px sans-serif';
+      ctx.fillText(`${phase.title} (${pct}%)`, 400, 380);
+
+      ctx.fillStyle = '#F5F3F4';
+      ctx.font = 'bold 42px sans-serif';
+      ctx.fillText(`تغير الوزن: ${diff} كغ  |  الرصيد: ${state.xp} XP`, 400, 520);
+
+      ctx.fillStyle = '#AAA2A7';
+      ctx.font = '32px sans-serif';
+      ctx.fillText('«لا أحتاج إلى أن أكون مثاليًا؛ أحتاج إلى أن أستمر.»', 400, 720);
+
+      c.toBlob(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `rihlaty-day-${day}.png`;
+        a.click();
+      }, 'image/png');
+    }
+
+    // ================= نافذة الطوارئ ضد التخبيص (SOS Modal) =================
+    let breathInt = null;
+    function openSosModal() {
+      document.getElementById('modalSos').classList.remove('hidden');
+      if (state.profile) {
+        document.getElementById('sosReasonsText').innerText = state.profile.reasons || 'تحسين صحتي وانضباطي.';
+        document.getElementById('sosContractText').innerText = state.profile.contract || '';
+      }
+      const circle = document.getElementById('breathVisualizer');
+      let step = 0;
+      breathInt = setInterval(() => {
+        step = (step + 1) % 3;
+        if (step === 0) { circle.innerText = 'شهيق (٤ ث)'; circle.style.transform = 'scale(1.22)'; }
+        else if (step === 1) { circle.innerText = 'احتفاظ (٧ ث)'; }
+        else { circle.innerText = 'زفير بطيء (٨ ث)'; circle.style.transform = 'scale(0.88)'; }
+      }, 4000);
+    }
+
+    function closeSosModal() {
+      document.getElementById('modalSos').classList.add('hidden');
+      if (breathInt) clearInterval(breathInt);
+    }
+
+    function surviveCravingSuccess() {
+      addXP(25);
+      addWater(300);
+      vibrate([50, 40, 100]);
+      closeSosModal();
+      alert('بطل! تم تسجيل انتصارك على الرغبة اللحظية + إضافة ٣٠٠ مل ماء + ٢٥ نقطة XP.');
+    }
+
+    // ================= الإعدادات والنسخ الاحتياطي =================
+    function renderSettingsSection() {
+      if (!state.profile) return;
+      document.getElementById('setInfoName').innerText = state.profile.name;
+      document.getElementById('setInfoStart').innerText = state.profile.startDate;
+      document.getElementById('setInfoContract').innerText = state.profile.contract;
+      document.getElementById('setEditTargetW').value = state.profile.targetW;
+      document.getElementById('setEditWater').value = state.profile.waterGoal;
+    }
+
+    function saveQuickSettings() {
+      if (!state.profile) return;
+      state.profile.targetW = parseFloat(document.getElementById('setEditTargetW').value) || state.profile.targetW;
+      state.profile.waterGoal = parseInt(document.getElementById('setEditWater').value) || 3000;
+      saveState();
+      renderDashboard();
+      alert('تم حفظ الإعدادات بنجاح.');
+    }
+
+    function exportBackupJSON() {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = `rihlaty_backup_${todayKey()}.json`;
+      a.click();
+    }
+
+    function importBackupJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
         try {
-          const imported = JSON.parse(reader.result);
-          if (imported.profile) await dbPut('profile', { id: 'user', data: imported.profile });
-          if (Array.isArray(imported.weights)) {
-            for (const w of imported.weights) await dbPut('weights', w);
+          const parsed = JSON.parse(reader.result);
+          if (parsed && parsed.profile) {
+            state = { ...state, ...parsed };
+            saveState();
+            alert('تم استرجاع النسخة الاحتياطية بنجاح!');
+            location.reload();
           }
-          if (Array.isArray(imported.photos)) {
-            for (const p of imported.photos) await dbPut('photos', p);
-          }
-          alert('تم استيراد البيانات بنجاح!');
-          location.reload();
         } catch (err) {
           alert('ملف النسخة الاحتياطية غير صالح.');
         }
@@ -1895,53 +2377,52 @@
       reader.readAsText(file);
     }
 
-    async function handleWipeAllData() {
-      if (confirm('هل أنت متأكد من مسح جميع البيانات نهائياً؟')) {
+    function wipeAllAppData() {
+      if (confirm('تأكيد نهائي: هل تريد مسح جميع بيانات الرحلة والبدء من الصفر؟')) {
+        localStorage.removeItem('rihlaty_master_v2');
         indexedDB.deleteDatabase(DB_NAME);
-        localStorage.clear();
         location.reload();
       }
     }
 
-    function renderAllViews() {
+    function renderAll() {
       renderDashboard();
-      renderWeightView();
-      renderPhotosView();
-      renderDisciplineView();
-      renderRoadmapView();
-      renderNutritionView();
-      renderJournalView();
-      renderReportsView();
-      renderSettingsView();
+      updateFastingUI();
     }
 
-    // ================= تثبيت PWA =================
-    let deferredPrompt;
+    // ================= PWA Install & Service Worker =================
+    let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       document.getElementById('installBanner').classList.remove('hidden');
     });
-    function installPWA() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => {
-          document.getElementById('installBanner').classList.add('hidden');
-          deferredPrompt = null;
-        });
-      }
-    }
 
-    // تسجيل Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
+    function installPWA() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        document.getElementById('installBanner').classList.add('hidden');
+        deferredPrompt = null;
       });
     }
 
-    // بدء تشغيل التطبيق
-    window.addEventListener('DOMContentLoaded', () => {
-      loadAllAppState();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+
+    // بدء التشغيل
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadState();
+      if (!state.profile) {
+        document.getElementById('view-dashboard').classList.add('hidden');
+        document.querySelector('.bottom-nav').classList.add('hidden');
+        document.getElementById('view-onboarding').classList.remove('hidden');
+      } else {
+        renderAll();
+      }
     });
   </script>
 </body>
