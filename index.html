@@ -11,23 +11,29 @@
   <link rel="apple-touch-icon" href="icon-192.png">
 
   <style>
-    /* ================= نظام التصميم المحلي المتكامل (100% Offline CSS) ================= */
+    /* ================= 1. نظام التصميم الشامل المستقل (100% Offline Pure CSS) ================= */
     :root {
       --bg-main: #0B0A0C;
       --bg-card: #121013;
       --bg-sec: #1A181C;
+      --bg-elevated: #242027;
       --crimson: #E11D48;
       --glow: #F43F5E;
       --green: #10B981;
+      --green-dark: #065F46;
       --amber: #F59E0B;
       --blue: #3B82F6;
       --purple: #8B5CF6;
       --text-main: #F5F3F4;
       --text-muted: #AAA2A7;
+      --text-dim: #756D72;
       --border: #30262B;
-      --radius-lg: 22px;
-      --radius-md: 14px;
-      --radius-sm: 10px;
+      --border-focus: #F43F5E;
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --font-stack: 'Segoe UI', Tahoma, system-ui, -apple-system, sans-serif;
     }
 
     * {
@@ -35,39 +41,50 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      font-family: 'Segoe UI', Tahoma, system-ui, -apple-system, sans-serif;
+      font-family: var(--font-stack);
     }
 
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
-      line-height: 1.5;
+      line-height: 1.6;
       overflow-x: hidden;
       user-select: none;
-      padding-bottom: 90px;
+      padding-bottom: 95px;
     }
 
-    /* التخطيط والحاويات */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
+
     .container {
-      max-width: 520px;
+      max-width: 540px;
       margin: 0 auto;
-      padding: 14px;
+      padding: 14px 14px 20px;
     }
 
+    /* البطاقات والحاويات */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-xl);
       padding: 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      margin-bottom: 15px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
       position: relative;
       overflow: hidden;
+      transition: border-color 0.25s ease;
     }
 
     .card-hero {
-      background: linear-gradient(135deg, #121013 0%, #1F1218 65%, rgba(225, 29, 72, 0.18) 100%);
+      background: linear-gradient(135deg, #121013 0%, #1D1117 60%, rgba(225, 29, 72, 0.18) 100%);
       border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+
+    .card-ai {
+      background: linear-gradient(135deg, #121013 0%, #151020 60%, rgba(139, 92, 246, 0.18) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.4);
     }
 
     .card-sub {
@@ -77,50 +94,43 @@
       padding: 12px;
     }
 
-    /* الشبكات والمرونة */
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
     .flex-between { display: flex; align-items: center; justify-content: space-between; }
     .flex-center { display: flex; align-items: center; justify-content: center; }
     .flex-gap { display: flex; align-items: center; gap: 8px; }
     .space-y > * + * { margin-top: 10px; }
 
-    /* النصوص والأرقام */
-    .title-xl { font-size: 1.45rem; font-weight: 900; color: var(--text-main); }
-    .title-lg { font-size: 1.1rem; font-weight: 800; color: var(--text-main); }
-    .title-md { font-size: 0.92rem; font-weight: 700; color: var(--text-main); }
-    .text-sm { font-size: 0.8rem; color: var(--text-muted); }
+    /* الطباعة والنصوص */
+    .title-xl { font-size: 1.45rem; font-weight: 900; color: var(--text-main); line-height: 1.2; }
+    .title-lg { font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
+    .title-md { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+    .text-sm { font-size: 0.82rem; color: var(--text-muted); }
     .text-xs { font-size: 0.72rem; color: var(--text-muted); }
-    .stat-num { font-size: 1.65rem; font-weight: 900; color: var(--text-main); line-height: 1.1; }
+    .stat-num { font-size: 1.7rem; font-weight: 900; color: var(--text-main); line-height: 1; }
     .text-crimson { color: var(--glow); }
     .text-green { color: var(--green); }
     .text-amber { color: var(--amber); }
     .text-blue { color: var(--blue); }
+    .text-purple { color: #A78BFA; }
 
-    /* الشارات (Badges) */
+    /* الشارات والأوسمة */
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 3px 10px;
+      padding: 4px 10px;
       border-radius: 999px;
       font-size: 0.7rem;
-      font-weight: 700;
+      font-weight: 800;
       background: rgba(225, 29, 72, 0.16);
       color: var(--glow);
       border: 1px solid rgba(225, 29, 72, 0.35);
     }
-    .badge-green {
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--green);
-      border-color: rgba(16, 185, 129, 0.35);
-    }
-    .badge-amber {
-      background: rgba(245, 158, 11, 0.15);
-      color: var(--amber);
-      border-color: rgba(245, 158, 11, 0.35);
-    }
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: var(--green); border-color: rgba(16, 185, 129, 0.35); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--amber); border-color: rgba(245, 158, 11, 0.35); }
+    .badge-purple { background: rgba(139, 92, 246, 0.18); color: #C4B5FD; border-color: rgba(139, 92, 246, 0.4); }
 
     /* أشرطة التقدم */
     .progress-track {
@@ -137,16 +147,16 @@
       border-radius: 999px;
       transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .progress-fill-green {
-      background: linear-gradient(90deg, #059669, var(--green));
-    }
+    .progress-fill-green { background: linear-gradient(90deg, #059669, var(--green)); }
+    .progress-fill-purple { background: linear-gradient(90deg, #6D28D9, var(--purple)); }
 
     /* الأزرار والمدخلات */
     button {
       cursor: pointer;
       border: none;
       outline: none;
-      transition: all 0.18s ease;
+      transition: all 0.2s ease;
+      font-family: inherit;
     }
     button:active { transform: scale(0.96); }
 
@@ -157,12 +167,28 @@
       font-size: 0.82rem;
       padding: 11px 16px;
       border-radius: var(--radius-md);
-      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.35);
+      box-shadow: 0 4px 16px rgba(225, 29, 72, 0.35);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
     }
+    .btn-primary:hover { opacity: 0.95; }
+
+    .btn-ai {
+      background: linear-gradient(135deg, #4338CA, #8B5CF6);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 11px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 18px rgba(139, 92, 246, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
     .btn-sec {
       background: var(--bg-sec);
       color: var(--text-main);
@@ -176,22 +202,23 @@
       justify-content: center;
       gap: 6px;
     }
-    .btn-sec:hover { border-color: var(--glow); }
+    .btn-sec:hover { border-color: var(--border-focus); }
+
     .btn-sos {
-      background: linear-gradient(135deg, #991B1B, #E11D48);
+      background: linear-gradient(135deg, #7F1D1D, #E11D48);
       color: #fff;
       font-weight: 900;
-      font-size: 0.8rem;
-      padding: 10px 14px;
+      font-size: 0.78rem;
+      padding: 8px 12px;
       border-radius: var(--radius-md);
       border: 1px solid #FCA5A5;
-      box-shadow: 0 0 18px rgba(225, 29, 72, 0.5);
+      box-shadow: 0 0 16px rgba(225, 29, 72, 0.5);
       animation: pulse-sos 2.2s infinite;
     }
 
     @keyframes pulse-sos {
-      0%, 100% { box-shadow: 0 0 10px rgba(225, 29, 72, 0.4); }
-      50% { box-shadow: 0 0 22px rgba(244, 63, 94, 0.85); }
+      0%, 100% { box-shadow: 0 0 10px rgba(225, 29, 72, 0.35); }
+      50% { box-shadow: 0 0 24px rgba(244, 63, 94, 0.8); }
     }
 
     input, select, textarea {
@@ -199,21 +226,20 @@
       background: var(--bg-sec);
       border: 1px solid var(--border);
       color: var(--text-main);
-      padding: 10px 12px;
+      padding: 11px 13px;
       border-radius: var(--radius-sm);
       font-size: 0.85rem;
       outline: none;
+      font-family: inherit;
     }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--crimson);
-    }
+    input:focus, select:focus, textarea:focus { border-color: var(--border-focus); }
 
-    /* العادات وعناصر القوائم */
+    /* صفوف العادات */
     .habit-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 14px;
+      padding: 13px 15px;
       background: var(--bg-sec);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
@@ -221,7 +247,7 @@
       transition: all 0.2s;
     }
     .habit-row.done {
-      background: rgba(16, 185, 129, 0.08);
+      background: rgba(16, 185, 129, 0.09);
       border-color: rgba(16, 185, 129, 0.45);
     }
     .habit-check {
@@ -233,6 +259,8 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      font-size: 0.75rem;
+      font-weight: 900;
     }
     .habit-row.done .habit-check {
       background: var(--green);
@@ -240,20 +268,20 @@
       color: #000;
     }
 
-    /* شريط التنقل السفلي */
+    /* شريط التنقل السفلي الثابت */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       background: rgba(18, 16, 19, 0.96);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border-top: 1px solid var(--border);
       z-index: 100;
       padding: 6px 8px 10px;
     }
     .bottom-nav-inner {
-      max-width: 520px;
+      max-width: 540px;
       margin: 0 auto;
       display: flex;
       justify-content: space-around;
@@ -265,23 +293,28 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 600;
       gap: 3px;
-      padding: 4px 8px;
+      padding: 4px 6px;
       border-radius: 10px;
+      flex: 1;
     }
     .nav-btn.active {
       color: var(--glow);
       font-weight: 800;
     }
+    .nav-btn-ai.active {
+      color: #A78BFA;
+    }
+    .nav-btn svg { width: 20px; height: 20px; stroke-width: 2; }
 
-    /* النوافذ المنبثقة (Modals) */
+    /* النوافذ المنبثقة */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.84);
-      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
       z-index: 200;
       display: flex;
       align-items: center;
@@ -291,27 +324,27 @@
     .modal-box {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
+      border-radius: var(--radius-xl);
+      padding: 22px;
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       max-height: 90vh;
       overflow-y: auto;
     }
 
-    /* خريطة الالتزام الحرارية (Heatmap) */
+    /* خريطة الالتزام الحرارية (214 Blocks) */
     .heatmap-grid {
       display: grid;
       grid-template-columns: repeat(15, 1fr);
       gap: 4px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
     .heat-cell {
       aspect-ratio: 1;
       border-radius: 4px;
       background: var(--bg-sec);
       border: 1px solid var(--border);
-      font-size: 0.55rem;
+      font-size: 0.52rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -322,7 +355,41 @@
     .heat-cell.lvl-3 { background: var(--green); border-color: #34D399; color: #000; font-weight: 800; }
     .heat-cell.today { outline: 2px solid var(--glow); }
 
-    /* دائرة التنفس في نافذة الطوارئ */
+    /* شات الذكاء الاصطناعي (Gemini AI UI) */
+    .ai-chat-box {
+      height: 280px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      background: var(--bg-main);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-bubble {
+      max-width: 86%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .chat-user {
+      align-self: flex-start;
+      background: var(--bg-sec);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-bottom-right-radius: 4px;
+    }
+    .chat-gemini {
+      align-self: flex-end;
+      background: linear-gradient(135deg, rgba(67, 56, 202, 0.35), rgba(139, 92, 246, 0.25));
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #EDE9FE;
+      border-bottom-left-radius: 4px;
+    }
+
     .breath-circle {
       width: 120px;
       height: 120px;
@@ -346,7 +413,6 @@
     .mb-3 { margin-bottom: 12px; }
     .text-center { text-align: center; }
 
-    /* شريط التمرير الأفقي */
     .scroll-x {
       display: flex;
       gap: 8px;
@@ -360,21 +426,21 @@
 
   <div class="container">
 
-    <!-- شريط تثبيت التطبيق PWA -->
+    <!-- شريط تثبيت PWA الذكي -->
     <div id="installBanner" class="card card-hero hidden" style="padding: 12px 16px;">
       <div class="flex-between">
         <div>
-          <div class="title-md">تثبيت تطبيق «رحلتي» على الهاتف</div>
-          <div class="text-xs">يعمل ١٠٠٪ بدون إنترنت وبشاشة كاملة</div>
+          <div class="title-md">تثبيت تطبيق «رحلتي» على هاتفك</div>
+          <div class="text-xs">يعمل بنسبة ١٠٠٪ بدون إنترنت كبرنامج مستقل</div>
         </div>
         <button onclick="installPWA()" class="btn-primary">تثبيت الآن</button>
       </div>
     </div>
 
-    <!-- الشريط العلوي الدائم (Header + XP + SOS) -->
+    <!-- الشريط العلوي الدائم (Header + XP + SOS + Level) -->
     <header class="flex-between mb-3" style="padding-bottom:10px; border-bottom:1px solid var(--border);">
       <div class="flex-gap">
-        <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, var(--crimson), var(--glow)); display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; box-shadow: 0 4px 12px rgba(225,29,72,0.4);">
+        <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, var(--crimson), var(--glow)); display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; box-shadow: 0 4px 14px rgba(225,29,72,0.45);">
           ٢١٤
         </div>
         <div>
@@ -387,7 +453,7 @@
       </div>
 
       <div class="flex-gap">
-        <button onclick="openSosModal()" class="btn-sos" title="زر الطوارئ عند الرغبة بالتخبيص">
+        <button onclick="openSosModal()" class="btn-sos" title="درع الطوارئ عند الرغبة بالتخبيص">
           🚨 إنقاذ سريع
         </button>
         <button onclick="switchTab('settings')" class="btn-sec" style="padding:8px 10px;">
@@ -402,7 +468,7 @@
         <div class="text-center mb-3">
           <span class="badge mb-2">إعداد الرحلة لأول مرة</span>
           <h1 class="title-xl">ميثاق الـ ٢١٤ يومًا</h1>
-          <p class="text-sm">أدخل بياناتك الواقعية لتخصيص حسابات الأيض والمراحل بدقة.</p>
+          <p class="text-sm">أدخل بياناتك الواقعية لضبط الأهداف والمراحل بدقة.</p>
         </div>
 
         <form onsubmit="submitOnboarding(event)" class="space-y">
@@ -448,17 +514,17 @@
             <label class="text-xs">مستوى النشاط اليومي</label>
             <select id="obActivity">
               <option value="sedentary">قليل الحركة (عمل أو دراسة مكتبية)</option>
-              <option value="light" selected>نشاط خفيف (مشي ١-٣ أيام أسبوعيًا)</option>
-              <option value="moderate">نشاط متوسط (تمرين ٣-٥ أيام أسبوعيًا)</option>
-              <option value="high">نشاط عالٍ (جهد بدني يومي مكثف)</option>
+              <option value="light" selected>نشاط خفيف (مشي معتدل ١-٣ أيام)</option>
+              <option value="moderate">نشاط متوسط (حركة ٣-٥ أيام)</option>
+              <option value="high">نشاط عالٍ (جهد بدني مكثف)</option>
             </select>
           </div>
           <div>
-            <label class="text-xs">لماذا أبدأ هذه الرحلة؟ (يظهر لك في لحظات الضعف)</label>
-            <textarea id="obReasons" rows="2">لأستعيد خفة حركتي، وأبني انضباطاً قوياً ينعكس على دراستي وصحتي ومستقبلي.</textarea>
+            <label class="text-xs">لماذا تبدأ هذه الرحلة؟ (يُذكّرك به Gemini عند التردد)</label>
+            <textarea id="obReasons" rows="2">لأستعيد خفة حركتي، وأبني انضباطاً حقيقياً ينعكس على دراستي وصحتي ومستقبلي.</textarea>
           </div>
           <div>
-            <label class="text-xs">عهدي مع نفسي (رسالة لليوم ٢١٤)</label>
+            <label class="text-xs">عهدي مع نفسي (رسالة تفتح في اليوم ٢١٤)</label>
             <textarea id="obContract" rows="3">أتعهد بأن أعمل على تحسين صحتي وانضباطي يومًا بعد يوم. إذا تعثرت، سأعود إلى الطريق فوراً دون أن أعتبر التعثر نهاية الرحلة.</textarea>
           </div>
           <button type="submit" class="btn-primary w-full mt-3" style="padding:14px;">
@@ -470,7 +536,7 @@
 
     <!-- ================= 2. لوحة التحكم الرئيسية (DASHBOARD) ================= -->
     <section id="view-dashboard">
-      <!-- بطاقة التقدم الكبرى -->
+      <!-- بطاقة الرحلة الكبرى -->
       <div class="card card-hero">
         <div class="flex-between mb-2">
           <span id="dashPhaseName" class="badge">المرحلة ١: بناء الأساس</span>
@@ -480,7 +546,7 @@
         <div class="flex-between mb-2">
           <div>
             <div class="title-xl">اليوم <span id="dashDayNum">1</span> <span class="text-sm">من ٢١٤</span></div>
-            <div class="text-xs">متبقي <span id="dashDaysLeft">213</span> يومًا • البداية: <span id="dashStartDate">--</span></div>
+            <div class="text-xs">متبقي <span id="dashDaysLeft">213</span> يومًا • الانطلاق: <span id="dashStartDate">--</span></div>
           </div>
           <div class="text-center">
             <div id="dashPct" class="stat-num text-crimson">0%</div>
@@ -501,7 +567,7 @@
       <div class="card">
         <div class="flex-between mb-2">
           <div class="flex-gap">
-            <span style="font-size:1.1rem;">⏱️</span>
+            <span style="font-size:1.15rem;">⏱️</span>
             <div>
               <div class="title-md">مؤقت الصيام المتقطع (<span id="fastProtocolLabel">16:8</span>)</div>
               <div id="fastStatusLabel" class="text-xs text-green">جاهز لبدء نافذة الصيام</div>
@@ -523,9 +589,8 @@
         </div>
       </div>
 
-      <!-- ملخص الوزن والانضباط اليومي -->
+      <!-- مؤشرات الوزن والانضباط السريع -->
       <div class="grid-2 mb-3">
-        <!-- بطاقة الوزن -->
         <div class="card" style="margin-bottom:0;">
           <div class="flex-between mb-2">
             <span class="text-xs">الوزن الحالي</span>
@@ -541,7 +606,6 @@
           </div>
         </div>
 
-        <!-- بطاقة الانضباط -->
         <div class="card" style="margin-bottom:0;">
           <div class="flex-between mb-2">
             <span class="text-xs">انضباط اليوم</span>
@@ -557,9 +621,8 @@
         </div>
       </div>
 
-      <!-- عدادات الرعاية اليومية (الماء مع كوب 300 مل، المشي، النوم، الطاقة) -->
+      <!-- عدادات الرعاية اليومية (ماء، مشي، نوم، طاقة) -->
       <div class="grid-2 mb-3">
-        <!-- شرب الماء -->
         <div class="card" style="margin-bottom:0;">
           <div class="flex-between text-xs mb-1">
             <span class="text-blue" style="font-weight:700;">💧 شرب الماء</span>
@@ -567,16 +630,15 @@
           </div>
           <div id="dashWaterCurrent" class="title-lg mb-2">0 مل</div>
           <div class="grid-3">
-            <button onclick="addWater(200)" class="btn-sec" style="padding:6px 4px; font-size:0.68rem;">+٢٠٠</button>
-            <button onclick="addWater(300)" class="btn-sec" style="padding:6px 4px; font-size:0.68rem; border-color:var(--blue);">+٣٠٠ كوب</button>
-            <button onclick="addWater(500)" class="btn-sec" style="padding:6px 4px; font-size:0.68rem;">+٥٠٠</button>
+            <button onclick="addWater(200)" class="btn-sec" style="padding:6px 2px; font-size:0.68rem;">+٢٠٠</button>
+            <button onclick="addWater(300)" class="btn-sec" style="padding:6px 2px; font-size:0.68rem; border-color:var(--blue);">+٣٠٠ كوب</button>
+            <button onclick="addWater(500)" class="btn-sec" style="padding:6px 2px; font-size:0.68rem;">+٥٠٠</button>
           </div>
         </div>
 
-        <!-- دقائق المشي والنشاط البدني الدقيق -->
         <div class="card" style="margin-bottom:0;">
           <div class="flex-between text-xs mb-1">
-            <span class="text-green" style="font-weight:700;">🚶 المشي والحركة</span>
+            <span class="text-green" style="font-weight:700;">🚶 النشاط البدني</span>
             <span>هدف ٣٠ د</span>
           </div>
           <div class="flex-between mb-2">
@@ -584,58 +646,29 @@
             <span id="dashWalkKm" class="text-xs text-green">~ 0.0 كم</span>
           </div>
           <div class="grid-2">
-            <button onclick="addWalkMinutes(10)" class="btn-sec" style="padding:6px; font-size:0.7rem;">+١٠ دقائق</button>
-            <button onclick="addWalkMinutes(20)" class="btn-sec" style="padding:6px; font-size:0.7rem;">+٢٠ دقيقة</button>
+            <button onclick="addWalkMinutes(10)" class="btn-sec" style="padding:6px; font-size:0.7rem;">+١٠ د</button>
+            <button onclick="addWalkMinutes(20)" class="btn-sec" style="padding:6px; font-size:0.7rem;">+٢٠ د</button>
           </div>
         </div>
       </div>
 
-      <!-- النوم ومستوى الطاقة -->
-      <div class="grid-2 mb-3">
-        <div class="card" style="margin-bottom:0;">
-          <div class="flex-between text-xs mb-1">
-            <span>🌙 ساعات النوم</span>
-            <button onclick="switchTab('focus')" class="text-xs text-crimson" style="background:none;">حاسبة النوم</button>
-          </div>
-          <div class="flex-between mt-2">
-            <button onclick="adjustSleep(-0.5)" class="btn-sec" style="padding:4px 12px;">-</button>
-            <span id="dashSleepHours" class="title-lg">7.0 س</span>
-            <button onclick="adjustSleep(0.5)" class="btn-sec" style="padding:4px 12px;">+</button>
-          </div>
-        </div>
-
-        <div class="card" style="margin-bottom:0;">
-          <div class="flex-between text-xs mb-1">
-            <span>⚡ طاقتي اليوم</span>
-            <span id="dashEnergyVal" class="text-amber">3 / 5</span>
-          </div>
-          <div class="grid-4 mt-2" style="grid-template-columns: repeat(5, 1fr);">
-            <button onclick="setEnergy(1)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">1</button>
-            <button onclick="setEnergy(2)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">2</button>
-            <button onclick="setEnergy(3)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">3</button>
-            <button onclick="setEnergy(4)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">4</button>
-            <button onclick="setEnergy(5)" class="btn-sec" style="padding:5px 0; font-size:0.7rem;">5</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- قائمة عادات اليوم على الرئيسية -->
+      <!-- قائمة عادات اليوم -->
       <div class="card">
         <div class="flex-between mb-3">
-          <span class="title-md">✅ عادات اليوم الأساسية (+15 XP لكل عادة)</span>
+          <span class="title-md">✅ عادات اليوم الأساسية (+15 XP)</span>
           <button onclick="switchTab('discipline')" class="text-xs text-crimson" style="background:none;">إدارة العادات</button>
         </div>
         <div id="dashHabitsContainer" class="space-y"></div>
       </div>
     </section>
 
-    <!-- ================= 3. قسم الوزن والمتوسط المتحرك (WEIGHT & MOVING AVG) ================= -->
+    <!-- ================= 3. قسم الوزن والمتوسط المتحرك (WEIGHT TRACKER) ================= -->
     <section id="view-weight" class="hidden">
       <div class="card">
         <div class="flex-between mb-2">
           <div>
             <h2 class="title-lg">⚖️ سجل الوزن والمتوسط المتحرك</h2>
-            <p class="text-xs">الخط الأخضر يوضح المتوسط الحقيقي لآخر ٧ قياسات لتجاهل احتباس السوائل.</p>
+            <p class="text-xs">الخط الأخضر يوضح متوسط آخر ٧ قياسات لإلغاء احتباس السوائل.</p>
           </div>
         </div>
 
@@ -654,7 +687,6 @@
           </div>
         </div>
 
-        <!-- المخطط البياني المزدوج (SVG) -->
         <div class="card-sub mb-3">
           <div class="flex-between text-xs mb-2">
             <span>🔴 الوزن اليومي</span>
@@ -663,7 +695,6 @@
           <div id="weightChartBox" style="width:100%; height:150px; display:flex; align-items:center; justify-content:center;"></div>
         </div>
 
-        <!-- نموذج إضافة وزن وقياسات الجسم -->
         <form onsubmit="submitWeightRecord(event)" class="card-sub space-y">
           <div class="title-md">تسجيل قياس جديد (+20 XP)</div>
           <div class="grid-2">
@@ -691,8 +722,8 @@
             </div>
           </div>
           <div>
-            <label class="text-xs">ملاحظات الظروف (مثل: بعد التمرين، نوم قليل، وجبة مالحة)</label>
-            <input type="text" id="wtFormNotes" placeholder="صباحاً قبل الفطور">
+            <label class="text-xs">ملاحظات (نوم قليل، بعد تمرين، صيام...)</label>
+            <input type="text" id="wtFormNotes" placeholder="صباحاً بعد الاستيقاظ">
           </div>
           <button type="submit" class="btn-primary w-full">حفظ القياس في السجل</button>
         </form>
@@ -710,12 +741,11 @@
         <div class="flex-between mb-3">
           <div>
             <h2 class="title-lg">📸 مختبر صور قبل وبعد</h2>
-            <p class="text-xs">محفوظة محلياً داخل هاتفك (IndexedDB) ولا تغادر جهازك أبداً.</p>
+            <p class="text-xs">تُحفظ محلياً في ذاكرة الهاتف بخصوصية كاملة.</p>
           </div>
           <button onclick="openPhotoModal()" class="btn-primary">+ صورة جديدة</button>
         </div>
 
-        <!-- أداة المقارنة التفاعلية -->
         <div class="card-sub mb-3">
           <div class="flex-between mb-2">
             <span class="title-md">مقارنة التحول البصري</span>
@@ -725,7 +755,7 @@
             </div>
           </div>
 
-          <div class="grid-2 mb-2" id="photoPickersRow">
+          <div class="grid-2 mb-2">
             <select id="selPhotoBefore" onchange="renderPhotoComparison()"></select>
             <select id="selPhotoAfter" onchange="renderPhotoComparison()"></select>
           </div>
@@ -740,67 +770,137 @@
       </div>
     </section>
 
-    <!-- ================= 5. صالة التمارين ثلاثية الأبعاد (100% OFFLINE 3D GYM) ================= -->
-    <section id="view-exercises" class="hidden">
-      <div class="card">
+    <!-- ================= 5. خانة الذكاء الاصطناعي المستقلة (GEMINI AI TAB) ================= -->
+    <section id="view-ai" class="hidden">
+      <div class="card card-ai">
         <div class="flex-between mb-2">
-          <div>
-            <h2 class="title-lg">🏋️ صالة التمارين ثلاثية الأبعاد (Offline 3D)</h2>
-            <p class="text-xs">اسحب يميناً ويساراً على المجسم لتدوير الكاميرا بزاوية ٣٦٠ درجة.</p>
+          <div class="flex-gap">
+            <span style="font-size:1.3rem;">✨</span>
+            <div>
+              <h2 class="title-lg" style="color:#C4B5FD;">ذكاء رحلتي (Gemini AI)</h2>
+              <p class="text-xs">مدربك الشخصي ومحلل وجباتك الذكي المربوط ببياناتك.</p>
+            </div>
           </div>
-          <span class="badge badge-green">يعمل بدون إنترنت</span>
+          <button onclick="toggleAiKeyBox()" class="btn-sec" style="padding:5px 9px; font-size:0.7rem;">
+            🔑 المفتاح
+          </button>
         </div>
 
-        <!-- شاشة العرض ثلاثية الأبعاد المدمجة -->
-        <div style="position:relative; width:100%; height:290px; background:#080709; border-radius:16px; border:1px solid var(--border); overflow:hidden; margin-bottom:12px;">
-          <canvas id="gym3dCanvas" style="width:100%; height:100%; display:block; cursor:grab;"></canvas>
-
-          <!-- أزرار التحكم فوق الكانفاس -->
-          <div style="position:absolute; bottom:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center;">
-            <div class="flex-gap">
-              <button onclick="toggle3DPlay()" id="btn3dPlay" class="btn-sec" style="background:rgba(18,16,19,0.85);">⏸️ إيقاف</button>
-              <button onclick="reset3DAngle()" class="btn-sec" style="background:rgba(18,16,19,0.85);">🔄 زاوية أمامية</button>
-            </div>
-            <div class="card-sub flex-gap" style="padding:6px 10px; background:rgba(18,16,19,0.9);">
-              <span id="exTimerText" style="font-family:monospace; font-weight:900; font-size:0.9rem;">00:00</span>
-              <button onclick="toggleExTimer()" id="btnExTimer" class="text-xs text-crimson" style="background:none; font-weight:800;">بدء</button>
-            </div>
+        <!-- صندوق إعداد وحفظ المفتاح السري -->
+        <div id="aiKeyBox" class="card-sub space-y hidden mb-3">
+          <div class="text-xs">أدخل مفتاح Google Gemini API المجاني (يُحفظ في هاتفك فقط):</div>
+          <div class="flex-gap">
+            <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy...">
+            <button onclick="saveGeminiKey()" class="btn-ai" style="white-space:nowrap;">حفظ المفتاح</button>
           </div>
         </div>
 
-        <!-- شريط اختيار التمارين -->
-        <div class="scroll-x mb-3" id="exerciseButtonsBar"></div>
+        <!-- التبويبات الداخلية للذكاء الاصطناعي -->
+        <div class="scroll-x mb-3" style="border-bottom:1px solid var(--border); padding-bottom:8px;">
+          <button onclick="switchAiSubTab('chat')" id="subTabAiChat" class="btn-ai" style="padding:6px 12px; font-size:0.75rem;">💬 المدرب الشخصي</button>
+          <button onclick="switchAiSubTab('meal')" id="subTabAiMeal" class="btn-sec" style="padding:6px 12px; font-size:0.75rem;">🍽️ حاسبة الوجبات الذكية</button>
+          <button onclick="switchAiSubTab('workout')" id="subTabAiWorkout" class="btn-sec" style="padding:6px 12px; font-size:0.75rem;">📋 مولد التمارين</button>
+          <button onclick="switchAiSubTab('plateau')" id="subTabAiPlateau" class="btn-sec" style="padding:6px 12px; font-size:0.75rem;">⚡ كسر ثبات الوزن</button>
+        </div>
 
-        <!-- تفاصيل التمرين المختار -->
-        <div class="card-sub space-y">
-          <div class="flex-between">
-            <span id="exTitle" class="title-md">--</span>
-            <span id="exRepsBadge" class="badge">--</span>
+        <!-- 1. شات المدرب الشخصي -->
+        <div id="aiSubSectionChat" class="space-y">
+          <div class="ai-chat-box" id="aiChatMessages">
+            <div class="chat-bubble chat-gemini">
+              أهلاً بك يا بطل! أنا مدربك الذكي داخل تطبيق «رحلتي». أنا على دراية تامة ببياناتك وتقدمك اليوم. كيف يمكنني مساعدتك الآن؟
+            </div>
           </div>
-          <div id="exMuscles" class="text-xs text-crimson"></div>
-          <div class="text-xs">
-            <b class="text-green">✔️ الأداء الصحيح:</b>
-            <p id="exGuide" class="mt-2"></p>
+
+          <div class="flex-gap">
+            <input type="text" id="aiUserMsgInput" placeholder="اسأل مدربك أو اطلب خطة لما تبقى من يومك..." onkeydown="if(event.key==='Enter') sendAiChatMessage()">
+            <button onclick="sendAiChatMessage()" id="btnSendAiChat" class="btn-ai" style="padding:10px 14px;">إرسال</button>
           </div>
-          <div class="text-xs">
-            <b class="text-amber">⚠️ أخطاء شائعة والبديل المريح:</b>
-            <p id="exMistakes" class="mt-2"></p>
+
+          <!-- أزرار مطالبات سريعة -->
+          <div class="scroll-x pt-1">
+            <button onclick="quickPrompt('حلل وضعي اليوم واقترح خطة لبقية اليوم')" class="btn-sec text-xs" style="flex-shrink:0;">📊 تحليل وضعي اليوم</button>
+            <button onclick="quickPrompt('أشعر برغبة في السكريات، كيف أتصرف؟')" class="btn-sec text-xs" style="flex-shrink:0;">🚨 مواجهة الرغبة المفاجئة</button>
+            <button onclick="quickPrompt('أعطني وجبة غداء صحية وسريعة مشبعة بالبروتين')" class="btn-sec text-xs" style="flex-shrink:0;">🍗 اقتراح غداء بروتيني</button>
           </div>
-          <button onclick="completeWorkoutSession()" class="btn-primary w-full">+ تسجيل إتمام جلسة التمرين (+30 XP)</button>
+        </div>
+
+        <!-- 2. محلل الوجبات الذكي بالصورة أو النص -->
+        <div id="aiSubSectionMeal" class="space-y hidden">
+          <div class="card-sub space-y">
+            <div class="title-md text-purple">🍽️ تحليل الوجبة وحساب السعرات التلقائي</div>
+            <p class="text-xs">اكتب مكونات وجبتك أو التقط لها صورة بالكاميرا ليحسب جيميناي السعرات والماكروز:</p>
+
+            <textarea id="aiMealTextDesc" rows="2" placeholder="مثال: صحن تمن مع مرق بامية وقطعة لحم وسلطة خضراء..."></textarea>
+
+            <div class="flex-between">
+              <label class="btn-sec text-xs" style="cursor:pointer;">
+                📷 التقاط صورة أو اختيارها
+                <input type="file" id="aiMealPhotoInput" accept="image/*" class="hidden" onchange="handleAiMealImgSelect(event)">
+              </label>
+              <span id="aiMealImgAttachedBadge" class="badge badge-green hidden">✓ تم إرفاق الصورة</span>
+            </div>
+
+            <button onclick="analyzeMealWithAi()" id="btnRunMealAi" class="btn-ai w-full">
+              ✨ تحليل الوجبة وإضافتها لسجل اليوم
+            </button>
+
+            <div id="aiMealOutputCard" class="card-sub text-xs space-y hidden" style="background:#0B0A0C; border-color:var(--green);"></div>
+          </div>
+        </div>
+
+        <!-- 3. مولد التمارين المخصصة الذكي -->
+        <div id="aiSubSectionWorkout" class="space-y hidden">
+          <div class="card-sub space-y">
+            <div class="title-md text-purple">📋 مولد التمارين اليومية الذكية</div>
+            <p class="text-xs">اختر حالتك وسيقوم الذكاء الاصطناعي بتوليد جدول تمارين نصي مرتب ومخصص:</p>
+            <div class="grid-2">
+              <div>
+                <label class="text-xs">المعدات المتوفرة:</label>
+                <select id="aiWorkoutEquip">
+                  <option value="bodyweight">وزن الجسم فقط (بدون أدوات)</option>
+                  <option value="dumbbells">دمبلز (أوزان يدوية)</option>
+                  <option value="pullup_bar">عقلة + وزن الجسم</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs">الوقت المتاح:</label>
+                <select id="aiWorkoutDuration">
+                  <option value="15">١٥ دقيقة (جلسة سريعة)</option>
+                  <option value="30" selected>٣٠ دقيقة (جلسة نموذجية)</option>
+                  <option value="45">٤٥ دقيقة (جلسة مكثفة)</option>
+                </select>
+              </div>
+            </div>
+            <button onclick="generateCustomAiWorkout()" id="btnGenWorkout" class="btn-ai w-full">
+              ⚡ توليد برنامج التمرين المناسب الآن
+            </button>
+            <div id="aiWorkoutOutput" class="card-sub text-xs space-y hidden" style="background:#0B0A0C; white-space:pre-wrap;"></div>
+          </div>
+        </div>
+
+        <!-- 4. استراتيجية كسر ثبات الوزن -->
+        <div id="aiSubSectionPlateau" class="space-y hidden">
+          <div class="card-sub space-y">
+            <div class="title-md text-purple">⚡ استراتيجية كسر ثبات الوزن</div>
+            <p class="text-xs">يقرأ جيميناي أوزانك وخطواتك وعاداتك الأخيرة ويحدد سبب الثبات ويقترح خطة لكسره:</p>
+            <button onclick="diagnosePlateauWithAi()" id="btnDiagnosePlateau" class="btn-ai w-full">
+              🔍 تشخيص وزني وتوليد استراتيجية الكسر
+            </button>
+            <div id="aiPlateauOutput" class="card-sub text-xs space-y hidden" style="background:#0B0A0C; white-space:pre-wrap;"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= 6. الانضباط وخريطة الـ ٢١٤ يومًا وبنك المكافآت ================= -->
+    <!-- ================= 6. الانضباط والخريطة وبنك المكافآت (DISCIPLINE) ================= -->
     <section id="view-discipline" class="hidden">
-      <!-- السلاسل والدروع -->
       <div class="card">
         <div class="flex-between mb-3">
           <div>
             <h2 class="title-lg">🔥 نظام الانضباط وبنك المكافآت</h2>
-            <p class="text-xs">الالتزام التراكمي وبناء الهوية الجديدة.</p>
+            <p class="text-xs">الالتزام التراكمي وتثبيت الهوية الجديدة.</p>
           </div>
-          <button onclick="addNewCustomHabit()" class="btn-primary" style="padding:7px 12px;">+ عادة جديدة</button>
+          <button onclick="addNewCustomHabit()" class="btn-primary" style="padding:7px 12px;">+ عادة</button>
         </div>
 
         <div class="grid-3 mb-3 text-center">
@@ -820,7 +920,7 @@
 
         <div id="fullHabitsList" class="space-y mb-3"></div>
 
-        <!-- خريطة الالتزام الحرارية لـ 214 يوم -->
+        <!-- خريطة الـ 214 يوم الحرارية -->
         <div class="card-sub">
           <div class="flex-between">
             <span class="title-md">خريطة الالتزام الحرارية (٢١٤ يومًا)</span>
@@ -835,20 +935,20 @@
         <div class="flex-between mb-2">
           <div>
             <h3 class="title-md">🎁 بنك المكافآت الذاتية</h3>
-            <p class="text-xs">كافئ نفسك بمكافآت صحية غير غذائية عند جمع نقاط XP.</p>
+            <p class="text-xs">كافئ نفسك بمكافآت صحية عند جمع نقاط XP.</p>
           </div>
           <button onclick="addCustomReward()" class="btn-sec">+ مكافأة</button>
         </div>
         <div id="rewardsListContainer" class="space-y mt-2"></div>
       </div>
 
-      <!-- قسم التعافي ووضع اليوم الصعب -->
+      <!-- التعافي ووضع اليوم الصعب -->
       <div class="card">
         <h3 class="title-md mb-1">❤️‍🩹 التعافي من الانتكاسات ووضع اليوم الصعب</h3>
-        <p class="text-xs mb-3">إذا مررت بيوم مرهق أو انقطعت، لا تصفّر عدادك. شخّص السبب وفعّل خطة الحد الأدنى.</p>
+        <p class="text-xs mb-3">إذا مررت بيوم صعب، لا تصفّر عدادك. فعّل خطة الحد الأدنى.</p>
 
         <select id="relapseReason" class="mb-2" onchange="generateRecoveryAdvice()">
-          <option value="">-- اختر ما الذي يواجهك اليوم؟ --</option>
+          <option value="">-- اختر ما الذي أربكك اليوم؟ --</option>
           <option value="sleep">قلة النوم والإرهاق البدني</option>
           <option value="stress">ضغط الدراسة أو العمل والتوتر</option>
           <option value="craving">جوع عاطفي أو رغبة شديدة بالسكريات</option>
@@ -862,11 +962,11 @@
       </div>
     </section>
 
-    <!-- ================= 7. التغذية، الأيض، وبنك الوجبات السريعة ================= -->
+    <!-- ================= 7. التغذية وبنك الوجبات (NUTRITION) ================= -->
     <section id="view-nutrition" class="hidden">
       <div class="card">
-        <h2 class="title-lg mb-1">🥗 تغذيتي وبنك الوجبات السريعة</h2>
-        <p class="text-xs mb-3">حسابات تقديرية مرنة لمساعدتك على الوعي بكمياتك دون حرمان قاسٍ.</p>
+        <h2 class="title-lg mb-1">🥗 تغذيتي وبنك الوجبات</h2>
+        <p class="text-xs mb-3">حسابات تقديرية لضبط احتياجك دون قيود قاسية.</p>
 
         <div class="grid-3 mb-3 text-center">
           <div class="card-sub">
@@ -883,25 +983,24 @@
           </div>
         </div>
 
-        <!-- بنك الوجبات المتكررة السريعة -->
+        <!-- بنك الوجبات السريعة -->
         <div class="card-sub mb-3">
-          <div class="title-md mb-2">⚡ تسجيل سريع من بنك الوجبات المعتادة</div>
-          <div class="grid-2" id="quickMealsBank">
+          <div class="title-md mb-2">⚡ تسجيل سريع من بنك الوجبات الشائعة</div>
+          <div class="grid-2">
             <button onclick="quickAddMeal('٣ بيضات مسلوقة + خيار', 240, 20)" class="btn-sec text-xs">🥚 فطور بيض (240 سعرة)</button>
-            <button onclick="quickAddMeal('صدر دجاج مشوي + سلطة', 350, 42)" class="btn-sec text-xs">🍗 دجاج وسلطة (350 سعرة)</button>
+            <button onclick="quickAddMeal('صدر دجاج مشوي + سلطة خضراء', 350, 42)" class="btn-sec text-xs">🍗 دجاج وسلطة (350 سعرة)</button>
             <button onclick="quickAddMeal('علبة تونة مصفاة + خبز أسمر', 280, 28)" class="btn-sec text-xs">🐟 وجبة تونة (280 سعرة)</button>
-            <button onclick="quickAddMeal('زبادي يوناني + حفنة مكسرات', 210, 15)" class="btn-sec text-xs">🥣 سناك صحي (210 سعرة)</button>
+            <button onclick="quickAddMeal('زبادي يوناني + مكسرات', 210, 15)" class="btn-sec text-xs">🥣 سناك صحي (210 سعرة)</button>
           </div>
         </div>
 
-        <!-- إضافة وجبة مخصصة -->
         <form onsubmit="submitCustomMeal(event)" class="card-sub space-y mb-3">
-          <div class="title-md">إضافة وجبة مخصصة</div>
+          <div class="title-md">إضافة وجبة يدوية</div>
           <div class="grid-2">
-            <input type="text" id="mealNameIn" required placeholder="اسم الطعام والكمية">
+            <input type="text" id="mealNameIn" required placeholder="اسم الطعام">
             <input type="number" id="mealCalIn" required placeholder="السعرات التقديرية">
           </div>
-          <button type="submit" class="btn-primary w-full">إضافة لسجل اليوم</button>
+          <button type="submit" class="btn-primary w-full">إضافة للسجل</button>
         </form>
 
         <div class="flex-between mb-2">
@@ -912,28 +1011,17 @@
       </div>
     </section>
 
-    <!-- ================= 8. إدارة الوقت، حاسبة النوم، المذكرات، وبطاقة الإنجاز ================= -->
+    <!-- ================= 8. التركيز، المذكرات، وبطاقة الإنجاز (FOCUS & JOURNAL) ================= -->
     <section id="view-focus" class="hidden">
       <!-- مؤقت بومودورو للتركيز -->
       <div class="card text-center">
         <h2 class="title-lg mb-1">⏳ مؤقت التركيز ومنع التشتت</h2>
-        <p class="text-xs mb-3">جلسة ٢٥ دقيقة للتركيز في الدراسة أو المشي بعيداً عن تصفح الهاتف.</p>
+        <p class="text-xs mb-3">جلسة ٢٥ دقيقة لإنجاز مهمة أو مشي دون شاشات.</p>
         <div id="pomoClock" style="font-size:2.6rem; font-weight:900; font-family:monospace; margin:12px 0;">25:00</div>
         <div class="flex-center flex-gap">
-          <button onclick="togglePomo()" id="btnPomoStart" class="btn-primary">بدء جلسة التركيز</button>
+          <button onclick="togglePomo()" id="btnPomoStart" class="btn-primary">بدء الجلسة</button>
           <button onclick="resetPomo()" class="btn-sec">إعادة ضبط</button>
         </div>
-      </div>
-
-      <!-- حاسبة دورات النوم الذكية (90 دقيقة) -->
-      <div class="card">
-        <h3 class="title-md mb-1">🛌 حاسبة دورات النوم الصحية (٩٠ دقيقة)</h3>
-        <p class="text-xs mb-2">حدد متى تريد الاستيقاظ غداً لنقترح عليك أفضل وقت للنوم للاستيقاظ بنشاط.</p>
-        <div class="flex-gap">
-          <input type="time" id="wakeUpTimeInput" value="06:30" onchange="calcSleepCycles()">
-          <button onclick="calcSleepCycles()" class="btn-primary">احسب</button>
-        </div>
-        <div id="sleepCyclesResult" class="card-sub text-xs mt-2"></div>
       </div>
 
       <!-- مذكرات الرحلة -->
@@ -941,18 +1029,17 @@
         <h3 class="title-md mb-2">📓 مذكرات رحلتي والمراجعة الذاتية (+20 XP)</h3>
         <form onsubmit="submitJournal(event)" class="space-y mb-3">
           <input type="text" id="jrWinIn" required placeholder="أهم إنجاز نجحت فيه اليوم...">
-          <input type="text" id="jrChallengeIn" placeholder="أبرز صعوبة واجهتني وكيف سأتجنبها غداً...">
+          <input type="text" id="jrChallengeIn" placeholder="صعوبة واجهتني وكيف سأتجاوزها غداً...">
           <button type="submit" class="btn-primary w-full">حفظ في المذكرات</button>
         </form>
         <div id="journalListContainer" class="space-y"></div>
       </div>
 
-      <!-- مولد بطاقة الإنجاز المصورة وخريطة المراحل -->
+      <!-- بطاقة الإنجاز المصورة والمراحل -->
       <div class="card">
-        <h3 class="title-md mb-1">🏆 بطاقة إنجازي المصورة وخريطة الـ ٢١٤ يومًا</h3>
-        <p class="text-xs mb-3">أنشئ صورة أنيقة تلخص تقدمك الحالي لحفظها في ألبوم هاتفك.</p>
-        <button onclick="downloadAchievementCard()" class="btn-primary w-full mb-3">📥 توليد وتنزيل بطاقة إنجازي (PNG)</button>
-
+        <h3 class="title-md mb-1">🏆 بطاقة إنجازي ومراحل الـ ٢١٤ يومًا</h3>
+        <p class="text-xs mb-3">أنشئ صورة ملخصة لمسارك وحفظها في هاتفك.</p>
+        <button onclick="downloadAchievementCard()" class="btn-primary w-full mb-3">📥 تنزيل بطاقة إنجازي المصورة (PNG)</button>
         <div class="title-md mb-2">مراحل الرحلة الثماني</div>
         <div id="phasesRoadmapContainer" class="space-y"></div>
       </div>
@@ -961,8 +1048,8 @@
     <!-- ================= 9. الإعدادات والنسخ الاحتياطي (SETTINGS) ================= -->
     <section id="view-settings" class="hidden">
       <div class="card space-y">
-        <h2 class="title-lg">⚙️ الإعدادات والخصوصية والنسخ الاحتياطي</h2>
-        <p class="text-xs">جميع بياناتك وصورك محفوظة محلياً على جهازك. احتفظ بنسخة احتياطية دورياً.</p>
+        <h2 class="title-lg">⚙️ الإعدادات والنسخ الاحتياطي</h2>
+        <p class="text-xs">بياناتك محفوظة محلياً على جهازك؛ صدّر نسخة احتياطية لحمايتها.</p>
 
         <div class="card-sub text-xs space-y">
           <div><b>الاسم:</b> <span id="setInfoName">--</span></div>
@@ -1000,17 +1087,15 @@
 
   </div>
 
-  <!-- ================= نافذة الطوارئ ضد التخبيص (SOS CRAVING MODAL) ================= -->
+  <!-- نافذة الطوارئ ضد التخبيص (SOS MODAL) -->
   <div id="modalSos" class="modal-backdrop hidden">
     <div class="modal-box text-center space-y">
       <span class="badge">🚨 درع الطوارئ اللحظي</span>
       <h3 class="title-lg">تمهّل ١٥ دقيقة قبل أي قرار عشوائي!</h3>
-      <p class="text-xs">الرغبة الملحّة في الأكل العشوائي أو الكسل هي موجة عصبية مؤقتة تنكسر خلال دقائق.</p>
+      <p class="text-xs">الرغبة الملحّة هي إشارة عصبية عابرة تتلاشى خلال دقائق.</p>
 
-      <!-- دائرة التنفس 4-7-8 -->
-      <div id="breathVisualizer" class="breath-circle">تنفّس بعمق</div>
+      <div id="breathVisualizer" class="breath-circle">تنفّس بهدوء</div>
 
-      <!-- تذكير بأسباب المستخدم وعقده الشخصي -->
       <div class="card-sub text-xs" style="text-align:right;">
         <div class="text-crimson font-bold mb-1">تذكّر لماذا بدأت هذه الرحلة:</div>
         <div id="sosReasonsText" class="mb-2">--</div>
@@ -1018,24 +1103,17 @@
         <div id="sosContractText">--</div>
       </div>
 
-      <div class="card-sub text-xs" style="text-align:right;">
-        <div>1️⃣ اشرب الآن كوب ماء كامل (٣٠٠ مل).</div>
-        <div>2️⃣ ابتعد عن المطبخ أو الشاشة لمدة ٥ دقائق.</div>
-        <div>3️⃣ تذكر أن لذة الطعام العشوائي تدوم ٣ دقائق، وفخر الانضباط يدوم طوال اليوم.</div>
-      </div>
-
       <div class="grid-2">
-        <button onclick="surviveCravingSuccess()" class="btn-primary">💪 تغلبت على الرغبة (+25 XP)</button>
+        <button onclick="surviveCravingSuccess()" class="btn-primary">💪 صمدت وتغلبت (+25 XP)</button>
         <button onclick="closeSosModal()" class="btn-sec">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= نافذة رفع صورة جديدة (PHOTO UPLOAD MODAL) ================= -->
+  <!-- نافذة رفع صورة جديدة (PHOTO MODAL) -->
   <div id="modalPhoto" class="modal-backdrop hidden">
     <div class="modal-box space-y">
-      <h3 class="title-md">📸 إضافة صورة توثيق جديدة</h3>
-      <p class="text-xs">نصيحة: التقط الصورة بنفس الإضاءة والمسافة لمقارنة عادلة.</p>
+      <h3 class="title-md">📸 إضافة صورة جديدة للرحلة</h3>
       <input type="file" id="photoInputFile" accept="image/*" onchange="previewSelectedPhoto(event)">
       <div id="photoPreviewWrap" class="hidden text-center">
         <img id="photoPreviewImg" src="" style="max-height:180px; border-radius:12px; margin:8px auto; border:1px solid var(--border);">
@@ -1048,50 +1126,57 @@
     </div>
   </div>
 
-  <!-- ================= شريط التنقل السفلي (BOTTOM NAVIGATION) ================= -->
+  <!-- شريط التنقل السفلي الثابت (7 أقسام بما فيها Gemini AI) -->
   <nav class="bottom-nav">
     <div class="bottom-nav-inner">
       <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active">
-        <span style="font-size:1.15rem;">🏠</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         <span>الرئيسية</span>
       </button>
+
       <button onclick="switchTab('weight')" id="nav-weight" class="nav-btn">
-        <span style="font-size:1.15rem;">⚖️</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"></path><path d="M7 21h10M12 3v18"></path></svg>
         <span>الوزن</span>
       </button>
+
       <button onclick="switchTab('photos')" id="nav-photos" class="nav-btn">
-        <span style="font-size:1.15rem;">📸</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
         <span>الصور</span>
       </button>
-      <button onclick="switchTab('exercises')" id="nav-exercises" class="nav-btn">
-        <span style="font-size:1.15rem;">🏋️</span>
-        <span>التمارين 3D</span>
+
+      <!-- زر الذكاء الاصطناعي المميز -->
+      <button onclick="switchTab('ai')" id="nav-ai" class="nav-btn nav-btn-ai" style="color:#C4B5FD; font-weight:800;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+        <span>ذكاء رحلتي</span>
       </button>
+
       <button onclick="switchTab('discipline')" id="nav-discipline" class="nav-btn">
-        <span style="font-size:1.15rem;">🔥</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
         <span>انضباطي</span>
       </button>
+
       <button onclick="switchTab('nutrition')" id="nav-nutrition" class="nav-btn">
-        <span style="font-size:1.15rem;">🥗</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
         <span>تغذيتي</span>
       </button>
+
       <button onclick="switchTab('focus')" id="nav-focus" class="nav-btn">
-        <span style="font-size:1.15rem;">📓</span>
-        <span>وقتي ومذكراتي</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>المزيد</span>
       </button>
     </div>
   </nav>
 
-  <!-- ================= المحرك البرمجي الشامل (100% OFFLINE ENGINE) ================= -->
+  <!-- ================= 2. المحرك البرمجي المتكامل (JAVASCRIPT LOGIC) ================= -->
   <script>
     const TOTAL_DAYS = 214;
-    const DB_NAME = 'RihlatyOfflineDB_v2';
+    const DB_NAME = 'RihlatyGeminiProDB_v1';
     const DB_VERSION = 1;
 
     const QUOTES = [
       '«لا أحتاج إلى أن أكون مثاليًا؛ أحتاج إلى أن أستمر.»',
       '«الانضباط هو أن تختار بين ما تريده الآن وما تريده أكثر في النهاية.»',
-      '«كل كوب ماء وكل دقيقة مشي هي تصويت لهويتك الجديدة.»',
+      '«كل كوب ماء وكل دقيقة مشي هي تصويت لصالح هويتك الجديدة.»',
       '«إذا تعثرت في وجبة، فلا تجعلها يومًا؛ وإذا تعثرت في يوم، فلا تجعله أسبوعًا.»',
       '«الأرقام تتبع العادات؛ ركّز على إتمام عادات اليوم وسيأتي الوزن تلقائيًا.»'
     ];
@@ -1099,11 +1184,11 @@
     const PHASES = [
       { id: 1, title: 'المرحلة ١: بناء الأساس', start: 1, end: 30, goal: 'تثبيت شرب الماء، المشي اليومي، وتسجيل الوزن بانتظام.' },
       { id: 2, title: 'المرحلة ٢: تثبيت العادات', start: 31, end: 60, goal: 'تقليل الأكل العشوائي الليلي والالتزام بنوم متوازن.' },
-      { id: 3, title: 'المرحلة ٣: تحسين الاستمرارية', start: 61, end: 90, goal: 'التعامل الهادئ مع ثبات الوزن وإدخال تمارين القوة.' },
+      { id: 3, title: 'المرحلة ٣: تحسين الاستمرارية', start: 61, end: 90, goal: 'التعامل الهادئ مع ثبات الوزن وإدخال النشاط المقاوم.' },
       { id: 4, title: 'المرحلة ٤: رفع الانضباط', start: 91, end: 120, goal: 'رفع جودة البروتين في الوجبات ومقاومة التسويف.' },
-      { id: 5, title: 'المرحلة ٥: تقوية الروتين', start: 121, end: 150, goal: 'تحويل النشاط والحركة إلى عادة تلقائية لا تحتاج لمجهود ذهني.' },
-      { id: 6, title: 'المرحلة ٦: مواجهة التحديات', start: 151, end: 180, goal: 'الحفاظ على الأساسيات حتى في أيام الامتحانات أو الانشغال.' },
-      { id: 7, title: 'المرحلة ٧: ترسيخ الاستقلالية', start: 181, end: 210, goal: 'قيادة الذات بثقة تامة وفهم إشارات الجوع والشبع.' },
+      { id: 5, title: 'المرحلة ٥: تقوية الروتين', start: 121, end: 150, goal: 'تحويل النشاط والحركة إلى عادة تلقائية غير مجهدة ذهنياً.' },
+      { id: 6, title: 'المرحلة ٦: مواجهة التحديات', start: 151, end: 180, goal: 'الحفاظ على الأساسيات حتى في أوقات الامتحانات والانشغال.' },
+      { id: 7, title: 'المرحلة ٧: ترسيخ الاستقلالية', start: 181, end: 210, goal: 'الوعي الحقيقي بإشارات الجوع والشبع وتنظيم اليوم باستقلالية.' },
       { id: 8, title: 'المرحلة ٨: التخرج والاستمرار', start: 211, end: 214, goal: 'توثيق قصة التحول والانطلاق في نمط حياة دائم.' }
     ];
 
@@ -1111,14 +1196,14 @@
       { id: 'h1', title: 'شرب الماء الكافي موزّعاً على اليوم', core: true },
       { id: 'h2', title: 'مشي أو نشاط بدني ٢٠-٣٠ دقيقة', core: true },
       { id: 'h3', title: 'وجبات متوازنة بدون أكل عشوائي', core: true },
-      { id: 'h4', title: 'أداء تمرين القوة أو الإطالة المقرر', core: false },
+      { id: 'h4', title: 'أداء نشاط القوة أو الإطالة المقرر', core: false },
       { id: 'h5', title: 'النوم في وقت مبكر وإبعاد الهاتف', core: false }
     ];
 
     const DEFAULT_REWARDS = [
-      { id: 'r1', title: 'شراء قميص أو ملابس رياضية جديدة', cost: 300, claimed: false },
-      { id: 'r2', title: 'يوم مفتوح للترفيه أو نزهة مع الأصدقاء', cost: 500, claimed: false },
-      { id: 'r3', title: 'شراء أداة أو جهاز مفيد كنت أؤجله', cost: 1000, claimed: false }
+      { id: 'r1', title: 'شراء ملابس أو حذاء رياضي جديد', cost: 300, claimed: false },
+      { id: 'r2', title: 'رحلة ترفيهية أو نزهة خاصة مع الأصدقاء', cost: 600, claimed: false },
+      { id: 'r3', title: 'شراء أداة أو جهاز كنت أؤجله لنفسي', cost: 1200, claimed: false }
     ];
 
     let state = {
@@ -1131,10 +1216,10 @@
       weights: [],
       photos: [],
       logs: {},
-      journals: []
+      journals: [],
+      aiChatHistory: []
     };
 
-    // ================= IndexedDB Wrapper =================
     let db = null;
     function openDB() {
       return new Promise((resolve) => {
@@ -1151,7 +1236,7 @@
 
     function saveState() {
       const copy = { ...state, photos: [] };
-      localStorage.setItem('rihlaty_master_v2', JSON.stringify(copy));
+      localStorage.setItem('rihlaty_master_v3', JSON.stringify(copy));
       if (db) {
         const tx = db.transaction('kv', 'readwrite');
         tx.objectStore('kv').put(copy, 'mainState');
@@ -1160,7 +1245,7 @@
 
     async function loadState() {
       await openDB();
-      const localRaw = localStorage.getItem('rihlaty_master_v2');
+      const localRaw = localStorage.getItem('rihlaty_master_v3');
       if (localRaw) {
         try { state = { ...state, ...JSON.parse(localRaw) }; } catch (e) {}
       }
@@ -1228,7 +1313,7 @@
       if (navigator.vibrate) navigator.vibrate(ms);
     }
 
-    // ================= الإعداد الأولي (Onboarding) =================
+    // ================= معالجة الإعداد الأولي =================
     function submitOnboarding(e) {
       e.preventDefault();
       const startW = parseFloat(document.getElementById('obStartW').value);
@@ -1265,9 +1350,9 @@
       renderAll();
     }
 
-    // ================= التنقل بين الأقسام =================
+    // ================= التنقل بين الواجهات =================
     function switchTab(tab) {
-      const sections = ['dashboard', 'weight', 'photos', 'exercises', 'discipline', 'nutrition', 'focus', 'settings'];
+      const sections = ['dashboard', 'weight', 'photos', 'ai', 'discipline', 'nutrition', 'focus', 'settings'];
       sections.forEach(s => {
         const el = document.getElementById('view-' + s);
         if (el) el.classList.add('hidden');
@@ -1280,9 +1365,9 @@
       const activeNav = document.getElementById('nav-' + tab);
       if (activeNav) activeNav.classList.add('active');
 
-      if (tab === 'exercises') initOffline3DGym();
       if (tab === 'weight') renderWeightSection();
       if (tab === 'photos') renderPhotosSection();
+      if (tab === 'ai') renderAiSection();
       if (tab === 'discipline') renderDisciplineSection();
       if (tab === 'nutrition') renderNutritionSection();
       if (tab === 'focus') renderFocusSection();
@@ -1291,7 +1376,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ================= الرأس ولوحة التحكم =================
+    // ================= لوحة التحكم والرأس =================
     function renderHeader() {
       const lvl = Math.floor((state.xp || 0) / 150) + 1;
       document.getElementById('hdrLevelBadge').innerText = `مستوى ${lvl}`;
@@ -1317,14 +1402,12 @@
       if (log.hardMode) hardBadge.classList.remove('hidden');
       else hardBadge.classList.add('hidden');
 
-      // الوزن
       const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
       const delta = (currW - state.profile.startW).toFixed(1);
       document.getElementById('dashCurrWeight').innerText = currW;
       document.getElementById('dashTargetWeight').innerText = state.profile.targetW + ' كغ';
       document.getElementById('dashWeightDelta').innerText = (delta <= 0 ? delta : '+' + delta) + ' كغ';
 
-      // العادات
       const activeHabits = log.hardMode ? state.habits.filter(h => h.core) : state.habits;
       const doneCount = activeHabits.filter(h => log.doneHabits.includes(h.id)).length;
       const discPct = activeHabits.length > 0 ? Math.round((doneCount / activeHabits.length) * 100) : 0;
@@ -1334,15 +1417,11 @@
       document.getElementById('dashHabitsTotalCount').innerText = activeHabits.length;
       document.getElementById('dashDisciplineBar').style.width = discPct + '%';
 
-      // الماء والمشي والنوم والطاقة
       document.getElementById('dashWaterTarget').innerText = `${state.profile.waterGoal} مل`;
       document.getElementById('dashWaterCurrent').innerText = `${log.water} مل`;
       document.getElementById('dashWalkMinutes').innerText = `${log.walkMin} دقيقة`;
       document.getElementById('dashWalkKm').innerText = `~ ${(log.walkMin * 0.08).toFixed(1)} كم`;
-      document.getElementById('dashSleepHours').innerText = `${log.sleep.toFixed(1)} س`;
-      document.getElementById('dashEnergyVal').innerText = `${log.energy} / 5`;
 
-      // قائمة عادات اليوم
       const container = document.getElementById('dashHabitsContainer');
       container.innerHTML = '';
       activeHabits.forEach(h => {
@@ -1396,28 +1475,10 @@
       renderDashboard();
     }
 
-    function adjustSleep(delta) {
-      const log = getTodayLog();
-      log.sleep = Math.min(14, Math.max(3, log.sleep + delta));
-      saveState();
-      renderDashboard();
-    }
-
-    function setEnergy(val) {
-      const log = getTodayLog();
-      log.energy = val;
-      saveState();
-      renderDashboard();
-    }
-
-    // ================= مؤقت الصيام المتقطع =================
+    // ================= الصيام المتقطع =================
     function toggleFastingTimer() {
-      if (state.fastingStart) {
-        state.fastingStart = null;
-      } else {
-        state.fastingStart = Date.now();
-        vibrate(50);
-      }
+      if (state.fastingStart) state.fastingStart = null;
+      else { state.fastingStart = Date.now(); vibrate(50); }
       saveState();
       updateFastingUI();
     }
@@ -1453,19 +1514,14 @@
     }
     setInterval(updateFastingUI, 1000);
 
-    // ================= قسم الوزن والمتوسط المتحرك (7-Day Moving Average) =================
+    // ================= قسم الوزن والمخطط =================
     function quickWeightModal() {
       const curr = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
       const val = prompt('أدخل وزنك اليوم بالكيلوغرام:', curr);
       if (val && !isNaN(val)) {
         const w = parseFloat(val);
         if (w > 30 && w < 300) {
-          state.weights.push({
-            id: 'w_' + Date.now(),
-            date: todayKey(),
-            weight: w,
-            notes: 'قياس سريع من اللوحة الرئيسية'
-          });
+          state.weights.push({ id: 'w_' + Date.now(), date: todayKey(), weight: w, notes: 'تسجيل سريع' });
           state.weights.sort((a,b) => a.date.localeCompare(b.date));
           addXP(20);
           saveState();
@@ -1510,10 +1566,9 @@
       document.getElementById('wtStatAvg').innerText = avg7 + ' كغ';
       document.getElementById('wtStatLost').innerText = lost + ' كغ';
 
-      // رسم المخطط البياني المزدوج (اليومي + المتوسط المتحرك)
       const chartBox = document.getElementById('weightChartBox');
       if (list.length < 2) {
-        chartBox.innerHTML = '<span class="text-xs">أضف قياسين على الأقل لرسم منحنى الوزن والمتوسط المتحرك.</span>';
+        chartBox.innerHTML = '<span class="text-xs">سجل قياسين على الأقل لرسم منحنى الوزن والمتوسط المتحرك.</span>';
       } else {
         const W = 380, H = 135;
         const vals = list.map(x => x.weight);
@@ -1542,7 +1597,6 @@
         `;
       }
 
-      // سجل التاريخ
       const hist = document.getElementById('weightHistoryContainer');
       hist.innerHTML = '';
       [...list].reverse().forEach(item => {
@@ -1574,9 +1628,7 @@
     let tempPhotoBase64 = null;
     let photoCompareMode = 'slider';
 
-    function openPhotoModal() {
-      document.getElementById('modalPhoto').classList.remove('hidden');
-    }
+    function openPhotoModal() { document.getElementById('modalPhoto').classList.remove('hidden'); }
     function closePhotoModal() {
       document.getElementById('modalPhoto').classList.add('hidden');
       tempPhotoBase64 = null;
@@ -1596,7 +1648,7 @@
     }
 
     function savePhotoRecord() {
-      if (!tempPhotoBase64) return alert('اختر الصورة أولاً');
+      if (!tempPhotoBase64) return alert('يرجى اختيار الصورة أولاً.');
       const { day } = getJourneyProgress();
       const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
       const rec = {
@@ -1628,16 +1680,13 @@
     function renderPhotosSection() {
       const photos = state.photos;
       document.getElementById('photoCountLabel').innerText = photos.length;
-
       const selB = document.getElementById('selPhotoBefore');
       const selA = document.getElementById('selPhotoAfter');
       selB.innerHTML = ''; selA.innerHTML = '';
 
       photos.forEach((p, idx) => {
-        const opt1 = `<option value="${p.id}" ${idx === 0 ? 'selected' : ''}>قبل: اليوم ${p.day} (${p.weight} كغ)</option>`;
-        const opt2 = `<option value="${p.id}" ${idx === photos.length - 1 ? 'selected' : ''}>بعد: اليوم ${p.day} (${p.weight} كغ)</option>`;
-        selB.innerHTML += opt1;
-        selA.innerHTML += opt2;
+        selB.innerHTML += `<option value="${p.id}" ${idx === 0 ? 'selected' : ''}>قبل: يوم ${p.day} (${p.weight} كغ)</option>`;
+        selA.innerHTML += `<option value="${p.id}" ${idx === photos.length - 1 ? 'selected' : ''}>بعد: يوم ${p.day} (${p.weight} كغ)</option>`;
       });
 
       const grid = document.getElementById('photosGalleryGrid');
@@ -1650,18 +1699,16 @@
               <b>اليوم ${p.day} (${p.weight} كغ)</b>
               <button onclick="deletePhoto('${p.id}')" style="background:none; color:#FCA5A5;">🗑️</button>
             </div>
-            <div class="text-xs">${p.date} ${p.note ? '• ' + p.note : ''}</div>
           </div>
         `;
       });
-
       renderPhotoComparison();
     }
 
     function renderPhotoComparison() {
       const stage = document.getElementById('photoCompareStage');
       if (state.photos.length < 2) {
-        stage.innerHTML = '<span class="text-xs">أضف صورتين على الأقل لتفعيل شريط المقارنة التفاعلي.</span>';
+        stage.innerHTML = '<span class="text-xs">أضف صورتين على الأقل لتفعيل المقارنة التفاعلية.</span>';
         return;
       }
       const idB = document.getElementById('selPhotoBefore').value;
@@ -1684,14 +1731,8 @@
       } else {
         stage.innerHTML = `
           <div class="grid-2" style="width:100%; height:100%; padding:6px;">
-            <div style="position:relative; height:100%;">
-              <img src="${pBefore.dataUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
-              <span class="badge" style="position:absolute; bottom:6px; right:6px; background:rgba(0,0,0,0.75);">يوم ${pBefore.day}</span>
-            </div>
-            <div style="position:relative; height:100%;">
-              <img src="${pAfter.dataUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
-              <span class="badge" style="position:absolute; bottom:6px; right:6px; background:rgba(0,0,0,0.75);">يوم ${pAfter.day}</span>
-            </div>
+            <img src="${pBefore.dataUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+            <img src="${pAfter.dataUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
           </div>
         `;
       }
@@ -1706,256 +1747,223 @@
       renderPhotosSection();
     }
 
-    // ================= صالة التمارين ثلاثية الأبعاد (100% Offline 3D Projection Engine) =================
-    const EXERCISES_LIST = [
-      { id: 'squat', title: '١. القرفصاء بالدمبل', reps: '٣ × ١٢ تكرار', muscles: 'الفخذ الأمامي، الألوية، الجذع', db: true, guide: 'قف بعرض الكتفين، امسك الدمبل بجانب الجسم واهبط بالحوض للخلف مع استقامة الظهر.', mistakes: 'تجنب تقويس الظهر. البديل المريح: قرفصاء بوزن الجسم لنصف مدى.' },
-      { id: 'press', title: '٢. ضغط الأكتاف بالدمبل', reps: '٣ × ١٠ تكرار', muscles: 'الأكتاف والترايسبس', db: true, guide: 'ارفع الدمبل من مستوى الأذنين للأعلى بهدوء دون قفل المرفقين بعنف.', mistakes: 'تجنب ميل الجذع للخلف. يمكنك أداؤه جالساً لدعم أسفل الظهر.' },
-      { id: 'curl', title: '٣. ثني الذراع للبايسبس', reps: '٣ × ١٢ تكرار', muscles: 'العضلة ذات الرأسين (البايسبس)', db: true, guide: 'ثبّت المرفقين بجانب الجذع وارفع الدمبل باتجاه الكتفين بتحكم.', mistakes: 'تجنب أرجحة الظهر لرفع الوزن.' },
-      { id: 'row', title: '٤. التجديف المنحني بالدمبل', reps: '٣ × ١٢ تكرار', muscles: 'عضلات الظهر العلوية والوسطى', db: true, guide: 'انحنِ للأمام بزاوية ٤٥ درجة مع ظهر مستقيم، واسحب الدمبل نحو الخصر.', mistakes: 'لا تحنِ الرقبة أو تقوّس أسفل الظهر.' },
-      { id: 'rdl', title: '٥. الرفعة الرومانية بالدمبل', reps: '٣ × ١٠ تكرار', muscles: 'أوتار الفخذ الخلفية وأسفل الظهر', db: true, guide: 'انزل بالدمبل بمحاذاة الساقين مع دفع الحوض للخلف وثني بسيط بالركبة.', mistakes: 'حافظ على قرب الدمبل من الساقين طوال الحركة.' },
-      { id: 'jacks', title: '٦. القفز الهوائي / الخطو الجانبي', reps: '٣ × ٤٠ ثانية', muscles: 'القلب، اللياقة العامة، الساقين', db: false, guide: 'ارفع الذراعين مع فتح الساقين بإيقاع متواصل لتنشيط الدورة الدموية.', mistakes: 'البديل المريح للمفاصل: خطو جانبي بقدم واحدة دون قفز.' },
-      { id: 'knees', title: '٧. رفع الركبتين بالتبادل', reps: '٣ × ٣٠ ثانية', muscles: 'عضلات البطن السفلية والقلب', db: false, guide: 'ارفع ركبة تلو الأخرى لمستوى الخصر مع شد عضلات البطن.', mistakes: 'يمكن أداؤها مشياً في المكان بإيقاع هادئ بدون قفز.' },
-      { id: 'stretch', title: '٨. إطالة العمود الفقري والأكتاف', reps: '٤٥ ثانية', muscles: 'الرقبة، الأكتاف، والعمود الفقري', db: false, guide: 'حرّك الأكتاف والذراعين بمدى واسع مع شهيق وزفير عميقين لإزالة التيبس.', mistakes: 'لا تحبس أنفاسك أثناء الإطالة.' }
-    ];
+    // ================= 5. محرك وميزات الذكاء الاصطناعي (GEMINI AI ENGINE) =================
+    let aiMealBase64 = null;
+    let aiMealMime = 'image/jpeg';
 
-    let activeEx = EXERCISES_LIST[0];
-    let gymRunning = false;
-    let is3dPlaying = true;
-    let camYaw = 0.35;
-    let isDragging3D = false;
-    let lastTouchX = 0;
-    let exTimerSec = 0;
-    let exTimerInt = null;
+    function renderAiSection() {
+      const savedKey = localStorage.getItem('rihlaty_gemini_key');
+      if (savedKey) document.getElementById('geminiApiKeyInput').value = savedKey;
+      else document.getElementById('aiKeyBox').classList.remove('hidden');
+    }
 
-    function initOffline3DGym() {
-      const bar = document.getElementById('exerciseButtonsBar');
-      if (bar.children.length === 0) {
-        EXERCISES_LIST.forEach(ex => {
-          const btn = document.createElement('button');
-          btn.id = 'exBtn_' + ex.id;
-          btn.className = ex.id === activeEx.id ? 'btn-primary' : 'btn-sec';
-          btn.style.flexShrink = '0';
-          btn.innerText = ex.title;
-          btn.onclick = () => selectEx(ex.id);
-          bar.appendChild(btn);
-        });
+    function toggleAiKeyBox() {
+      const box = document.getElementById('aiKeyBox');
+      box.classList.toggle('hidden');
+    }
+
+    function saveGeminiKey() {
+      const k = document.getElementById('geminiApiKeyInput').value.trim();
+      if (!k) return alert('يرجى إدخال مفتاح API صحيح.');
+      localStorage.setItem('rihlaty_gemini_key', k);
+      alert('تم حفظ المفتاح بأمان في ذاكرة هاتفك!');
+      document.getElementById('aiKeyBox').classList.add('hidden');
+    }
+
+    function switchAiSubTab(sub) {
+      ['chat', 'meal', 'workout', 'plateau'].forEach(s => {
+        document.getElementById('aiSubSection' + s.charAt(0).toUpperCase() + s.slice(1)).classList.add('hidden');
+        document.getElementById('subTabAi' + s.charAt(0).toUpperCase() + s.slice(1)).className = 'btn-sec';
+      });
+      document.getElementById('aiSubSection' + sub.charAt(0).toUpperCase() + sub.slice(1)).classList.remove('hidden');
+      document.getElementById('subTabAi' + sub.charAt(0).toUpperCase() + sub.slice(1)).className = 'btn-ai';
+    }
+
+    async function callGeminiApi(promptText, inlineImage = null) {
+      const key = localStorage.getItem('rihlaty_gemini_key');
+      if (!key) throw new Error('يرجى حفظ مفتاح Gemini API أولاً من زر المفتاح.');
+      if (!navigator.onLine) throw new Error('هذه الميزة تتطلب اتصالاً بالإنترنت.');
+
+      const parts = [{ text: promptText }];
+      if (inlineImage) {
+        parts.push({ inline_data: { mime_type: inlineImage.mime, data: inlineImage.data } });
       }
-      selectEx(activeEx.id);
 
-      if (gymRunning) return;
-      gymRunning = true;
-
-      const canvas = document.getElementById('gym3dCanvas');
-      const ctx = canvas.getContext('2d');
-
-      // تدوير الكاميرا باللمس أو الماوس
-      canvas.addEventListener('pointerdown', e => { isDragging3D = true; lastTouchX = e.clientX; });
-      window.addEventListener('pointerup', () => { isDragging3D = false; });
-      window.addEventListener('pointermove', e => {
-        if (!isDragging3D) return;
-        camYaw += (e.clientX - lastTouchX) * 0.012;
-        lastTouchX = e.clientX;
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts }] })
       });
 
-      function project(x, y, z, w, h) {
-        const cosY = Math.cos(camYaw), sinY = Math.sin(camYaw);
-        const rx = x * cosY - z * sinY;
-        const rz = x * sinY + z * cosY + 4.2;
-        const scale = 270 / Math.max(1, rz);
-        return { x: w / 2 + rx * scale, y: h * 0.54 - y * scale, s: scale };
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || 'فشل الاتصال بجيميناي. تأكد من صحة المفتاح.');
       }
 
-      function drawLimb(p1, p2, thickness, color) {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = Math.max(2, thickness * ((p1.s + p2.s) / 2) * 0.015);
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    }
+
+    // شات المدرب الذكي
+    async function sendAiChatMessage(userText = null) {
+      const input = document.getElementById('aiUserMsgInput');
+      const text = userText || input.value.trim();
+      if (!text) return;
+
+      const chatBox = document.getElementById('aiChatMessages');
+      chatBox.innerHTML += `<div class="chat-bubble chat-user">${text}</div>`;
+      if (!userText) input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const loadingId = 'aiLoad_' + Date.now();
+      chatBox.innerHTML += `<div id="${loadingId}" class="chat-bubble chat-gemini">جاري كتابة الرد... ⏳</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const { day, phase } = getJourneyProgress();
+        const log = getTodayLog();
+        const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile?.startW;
+
+        const systemTelemetry = `أنت المدرب الشخصي المتكامل داخل تطبيق «رحلتي — ٢١٤ يومًا».
+        بيانات المتدرب الحالية:
+        - الاسم: ${state.profile?.name || 'البطل'}
+        - اليوم الحالي: ${day} من ٢١٤ (${phase.title})
+        - الوزن الابتدائي: ${state.profile?.startW} كغ | الحالي: ${currW} كغ | المستهدف: ${state.profile?.targetW} كغ
+        - شرب الماء اليوم: ${log.water} مل من هدف ${state.profile?.waterGoal} مل
+        - دقائق المشي اليوم: ${log.walkMin} دقيقة
+        - العادات المكتملة: ${log.doneHabits.length} من ${state.habits.length}
+        - وضع اليوم الصعب: ${log.hardMode ? 'مفعّل' : 'غير مفعّل'}
+        - سياق اليوم: الساعة تشير إلى منتصف النهار (وقت الغداء)، راعِ طبيعة التغذية والنشاط المناسب لهذا الوقت.
+        
+        سؤال المتدرب: "${text}"
+        أجب باللغة العربية الفصحى بأسلوب عملي، واقعي، مشجع، وقصير في نقاط واضحة دون مقدمات زائدة.`;
+
+        const reply = await callGeminiApi(systemTelemetry);
+        document.getElementById(loadingId).innerText = reply;
+        addXP(10);
+      } catch (err) {
+        document.getElementById(loadingId).innerText = '⚠️ خطأ: ' + err.message;
       }
-
-      function renderLoop(time) {
-        requestAnimationFrame(renderLoop);
-        if (document.getElementById('view-exercises').classList.contains('hidden')) return;
-
-        const w = canvas.width = canvas.clientWidth;
-        const h = canvas.height = canvas.clientHeight;
-        ctx.clearRect(0, 0, w, h);
-
-        // رسم شبكة أرضية ثلاثية الأبعاد
-        ctx.strokeStyle = 'rgba(225, 29, 72, 0.18)';
-        ctx.lineWidth = 1;
-        for (let i = -2; i <= 2; i++) {
-          const g1 = project(i * 0.5, -1.1, -1, w, h);
-          const g2 = project(i * 0.5, -1.1, 1, w, h);
-          ctx.beginPath(); ctx.moveTo(g1.x, g1.y); ctx.lineTo(g2.x, g2.y); ctx.stroke();
-          const h1 = project(-1, -1.1, i * 0.5, w, h);
-          const h2 = project(1, -1.1, i * 0.5, w, h);
-          ctx.beginPath(); ctx.moveTo(h1.x, h1.y); ctx.lineTo(h2.x, h2.y); ctx.stroke();
-        }
-
-        const t = is3dPlaying ? time * 0.0032 : 1.2;
-        const wave = Math.sin(t);
-        const wavePos = (Math.sin(t) + 1) / 2;
-
-        // إحداثيات المفاصل التشريحية
-        let hipY = -0.1, torsoTopY = 0.6, torsoZ = 0;
-        let lElbow = [-0.38, 0.25, 0], lWrist = [-0.42, -0.15, 0.1];
-        let rElbow = [0.38, 0.25, 0], rWrist = [0.42, -0.15, 0.1];
-        let lKnee = [-0.2, -0.6, 0], lAnkle = [-0.2, -1.08, 0];
-        let rKnee = [0.2, -0.6, 0], rAnkle = [0.2, -1.08, 0];
-
-        if (activeEx.id === 'squat') {
-          const depth = wavePos * 0.42;
-          hipY = -0.1 - depth;
-          torsoTopY = 0.6 - depth * 0.85;
-          torsoZ = depth * 0.3;
-          lKnee = [-0.24, -0.6 - depth * 0.2, 0.28 * wavePos];
-          rKnee = [0.24, -0.6 - depth * 0.2, 0.28 * wavePos];
-          lWrist = [-0.38, hipY - 0.1, 0.1];
-          rWrist = [0.38, hipY - 0.1, 0.1];
-        } else if (activeEx.id === 'press') {
-          const lift = wavePos * 0.65;
-          lElbow = [-0.48, 0.45 + lift * 0.3, 0];
-          rElbow = [0.48, 0.45 + lift * 0.3, 0];
-          lWrist = [-0.38, 0.72 + lift, 0];
-          rWrist = [0.38, 0.72 + lift, 0];
-        } else if (activeEx.id === 'curl') {
-          const curl = wavePos * 0.55;
-          lElbow = [-0.35, 0.2, 0];
-          rElbow = [0.35, 0.2, 0];
-          lWrist = [-0.35, -0.15 + curl, 0.35 * Math.sin(wavePos * Math.PI)];
-          rWrist = [0.35, -0.15 + curl, 0.35 * Math.sin(wavePos * Math.PI)];
-        } else if (activeEx.id === 'row') {
-          torsoTopY = 0.42; torsoZ = 0.35;
-          const pull = wavePos * 0.35;
-          lElbow = [-0.36, 0.15 + pull, -0.15 * wavePos];
-          rElbow = [0.36, 0.15 + pull, -0.15 * wavePos];
-          lWrist = [-0.34, -0.25 + pull, 0.25];
-          rWrist = [0.34, -0.25 + pull, 0.25];
-        } else if (activeEx.id === 'rdl') {
-          const bend = wavePos * 0.45;
-          torsoTopY = 0.6 - bend;
-          torsoZ = bend * 0.8;
-          lWrist = [-0.3, -0.15 - bend * 0.9, 0.25];
-          rWrist = [0.3, -0.15 - bend * 0.9, 0.25];
-        } else if (activeEx.id === 'jacks') {
-          const spread = wavePos * 0.35;
-          lAnkle = [-0.18 - spread, -1.08, 0];
-          rAnkle = [0.18 + spread, -1.08, 0];
-          lElbow = [-0.4 - spread, 0.35 + spread * 1.2, 0];
-          rElbow = [0.4 + spread, 0.35 + spread * 1.2, 0];
-          lWrist = [-0.3 - spread, 0.2 + spread * 2.4, 0];
-          rWrist = [0.3 + spread, 0.2 + spread * 2.4, 0];
-        } else if (activeEx.id === 'knees') {
-          const lUp = Math.max(0, wave) * 0.45;
-          const rUp = Math.max(0, -wave) * 0.45;
-          lKnee = [-0.2, -0.6 + lUp, lUp * 0.6];
-          lAnkle = [-0.2, -1.08 + lUp * 0.8, 0];
-          rKnee = [0.2, -0.6 + rUp, rUp * 0.6];
-          rAnkle = [0.2, -1.08 + rUp * 0.8, 0];
-        } else {
-          // إطالة
-          lElbow = [-0.45, 0.45, 0];
-          rElbow = [0.45, 0.45, 0];
-          lWrist = [-0.55, 0.65 + wave * 0.15, 0];
-          rWrist = [0.55, 0.65 - wave * 0.15, 0];
-        }
-
-        const pHip = project(0, hipY, 0, w, h);
-        const pSpine = project(0, torsoTopY, torsoZ, w, h);
-        const pHead = project(0, torsoTopY + 0.26, torsoZ, w, h);
-        const pLShoulder = project(-0.28, torsoTopY - 0.05, torsoZ, w, h);
-        const pRShoulder = project(0.28, torsoTopY - 0.05, torsoZ, w, h);
-        const pLElbow = project(...lElbow, w, h);
-        const pRElbow = project(...rElbow, w, h);
-        const pLWrist = project(...lWrist, w, h);
-        const pRWrist = project(...rWrist, w, h);
-        const pLHip = project(-0.18, hipY, 0, w, h);
-        const pRHip = project(0.18, hipY, 0, w, h);
-        const pLKnee = project(...lKnee, w, h);
-        const pRKnee = project(...rKnee, w, h);
-        const pLAnkle = project(...lAnkle, w, h);
-        const pRAnkle = project(...rAnkle, w, h);
-
-        // رسم الساقين والجذع والذراعين
-        drawLimb(pLHip, pLKnee, 14, '#AAA2A7');
-        drawLimb(pLKnee, pLAnkle, 11, '#F5F3F4');
-        drawLimb(pRHip, pRKnee, 14, '#AAA2A7');
-        drawLimb(pRKnee, pRAnkle, 11, '#F5F3F4');
-        drawLimb(pLHip, pRHip, 16, '#E11D48');
-        drawLimb(pHip, pSpine, 24, '#F5F3F4');
-        drawLimb(pLShoulder, pRShoulder, 18, '#E11D48');
-        drawLimb(pLShoulder, pLElbow, 11, '#F5F3F4');
-        drawLimb(pLElbow, pLWrist, 9, '#F43F5E');
-        drawLimb(pRShoulder, pRElbow, 11, '#F5F3F4');
-        drawLimb(pRElbow, pRWrist, 9, '#F43F5E');
-
-        // رسم الرأس
-        ctx.fillStyle = '#E11D48';
-        ctx.beginPath();
-        ctx.arc(pHead.x, pHead.y, Math.max(8, pHead.s * 0.14), 0, Math.PI * 2);
-        ctx.fill();
-
-        // رسم الدمبل في اليدين عند الحاجة
-        if (activeEx.db) {
-          [pLWrist, pRWrist].forEach(pw => {
-            ctx.fillStyle = '#10B981';
-            ctx.fillRect(pw.x - 12, pw.y - 4, 24, 8);
-          });
-        }
-      }
-      requestAnimationFrame(renderLoop);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function selectEx(id) {
-      activeEx = EXERCISES_LIST.find(x => x.id === id) || EXERCISES_LIST[0];
-      document.getElementById('exTitle').innerText = activeEx.title;
-      document.getElementById('exRepsBadge').innerText = activeEx.reps;
-      document.getElementById('exMuscles').innerText = 'العضلات المستهدفة: ' + activeEx.muscles;
-      document.getElementById('exGuide').innerText = activeEx.guide;
-      document.getElementById('exMistakes').innerText = activeEx.mistakes;
-
-      EXERCISES_LIST.forEach(ex => {
-        const b = document.getElementById('exBtn_' + ex.id);
-        if (b) b.className = ex.id === id ? 'btn-primary' : 'btn-sec';
-      });
+    function quickPrompt(txt) {
+      sendAiChatMessage(txt);
     }
 
-    function toggle3DPlay() {
-      is3dPlaying = !is3dPlaying;
-      document.getElementById('btn3dPlay').innerText = is3dPlaying ? '⏸️ إيقاف' : '▶️ تشغيل';
+    // محلل الوجبات الذكي
+    function handleAiMealImgSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      aiMealMime = file.type || 'image/jpeg';
+      const reader = new FileReader();
+      reader.onload = () => {
+        aiMealBase64 = reader.result.split(',')[1];
+        document.getElementById('aiMealImgAttachedBadge').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
     }
-    function reset3DAngle() { camYaw = 0.35; }
 
-    function toggleExTimer() {
-      const btn = document.getElementById('btnExTimer');
-      if (exTimerInt) {
-        clearInterval(exTimerInt); exTimerInt = null;
-        btn.innerText = 'استئناف';
-      } else {
-        exTimerInt = setInterval(() => {
-          exTimerSec++;
-          const m = String(Math.floor(exTimerSec / 60)).padStart(2, '0');
-          const s = String(exTimerSec % 60).padStart(2, '0');
-          document.getElementById('exTimerText').innerText = `${m}:${s}`;
-        }, 1000);
-        btn.innerText = 'إيقاف';
+    async function analyzeMealWithAi() {
+      const desc = document.getElementById('aiMealTextDesc').value.trim();
+      if (!desc && !aiMealBase64) return alert('اكتب وصف الوجبة أو أرفق صورتها أولاً.');
+
+      const btn = document.getElementById('btnRunMealAi');
+      const out = document.getElementById('aiMealOutputCard');
+      btn.innerText = '⏳ جاري التحليل الدقيق...';
+      btn.disabled = true;
+
+      try {
+        const prompt = `أنت أخصائي تغذية محترف. حلل هذه الوجبة: "${desc || 'الوجبة في الصورة'}".
+        أجب بصيغة JSON فقط وبدون علامات markdown، بهذا النمط الصريح:
+        {"name": "اسم الوجبة", "calories": 420, "protein": 28, "carbs": 45, "fat": 12, "advice": "نصيحة غذائية بسطر واحد"}`;
+
+        const imgPayload = aiMealBase64 ? { mime: aiMealMime, data: aiMealBase64 } : null;
+        const raw = await callGeminiApi(prompt, imgPayload);
+        const clean = raw.replace(/```json|```/g, '').trim();
+        const meal = JSON.parse(clean);
+
+        quickAddMeal(meal.name, Number(meal.calories) || 300, Number(meal.protein) || 15);
+
+        out.innerHTML = `
+          <div class="title-md text-green">✅ تمت الإضافة لتغذية اليوم بنجاح:</div>
+          <div><b>الوجبة:</b> ${meal.name}</div>
+          <div class="grid-3 text-center mt-2">
+            <div class="card-sub"><b>${meal.calories}</b> سعرة</div>
+            <div class="card-sub"><b>${meal.protein}غ</b> بروتين</div>
+            <div class="card-sub"><b>${meal.carbs}غ</b> كربوهيدرات</div>
+          </div>
+          <div class="mt-2 text-amber">💡 ${meal.advice}</div>
+        `;
+        out.classList.remove('hidden');
+        document.getElementById('aiMealTextDesc').value = '';
+        aiMealBase64 = null;
+        document.getElementById('aiMealImgAttachedBadge').classList.add('hidden');
+      } catch (err) {
+        alert('تعذر التحليل: ' + err.message);
+      } finally {
+        btn.innerText = '✨ تحليل الوجبة وإضافتها لسجل اليوم';
+        btn.disabled = false;
       }
     }
 
-    function completeWorkoutSession() {
-      const log = getTodayLog();
-      log.walkMin += 20;
-      addXP(30);
-      vibrate([50, 50, 80]);
-      saveState();
-      alert('أحسنت! تم تسجيل جلسة التمرين وإضافة +30 XP لرصيدك.');
-      renderDashboard();
+    // مولد التمارين الذكي
+    async function generateCustomAiWorkout() {
+      const equip = document.getElementById('aiWorkoutEquip').value;
+      const dur = document.getElementById('aiWorkoutDuration').value;
+      const btn = document.getElementById('btnGenWorkout');
+      const out = document.getElementById('aiWorkoutOutput');
+
+      btn.innerText = '⏳ جاري تصميم البرنامج الرياضي...';
+      btn.disabled = true;
+
+      try {
+        const prompt = `صمم برنامج تمرين منزلي مدته ${dur} دقيقة باستخدام ${equip}.
+        المتدرب في منتصف يومه ويريد تمريناً فعالاً يحرق الدهون ويشد العضلات دون إجهاد زائد.
+        نسّق البرنامج بوضوح في:
+        ١. إحماء (٣ دقائق)
+        ٢. الجولات الأساسية (اسم التمرين، التكرارات، الراحة)
+        ٣. تهدئة وإطالة (٣ دقائق)
+        اجعله مباشراً وقابلاً للتطبيق الفوري.`;
+
+        const res = await callGeminiApi(prompt);
+        out.innerText = res;
+        out.classList.remove('hidden');
+        addXP(15);
+      } catch (err) {
+        alert('خطأ: ' + err.message);
+      } finally {
+        btn.innerText = '⚡ توليد برنامج التمرين المناسب الآن';
+        btn.disabled = false;
+      }
     }
 
-    // ================= قسم الانضباط، الخريطة الحرارية، والمكافآت =================
+    // تشخيص ثبات الوزن
+    async function diagnosePlateauWithAi() {
+      const btn = document.getElementById('btnDiagnosePlateau');
+      const out = document.getElementById('aiPlateauOutput');
+      btn.innerText = '⏳ جاري فحص السجلات والبيانات...';
+      btn.disabled = true;
+
+      try {
+        const weightsStr = state.weights.slice(-10).map(w => `${w.date}: ${w.weight}kg`).join(', ');
+        const prompt = `أنا في رحلة مدتها ٢١٤ يوماً. بيانات أوزاني الأخيرة: [${weightsStr}].
+        وزني الابتدائي كان ${state.profile?.startW} كغ والمستهدف ${state.profile?.targetW} كغ.
+        أشعر بثبات في الوزن. حلل الأسباب الفسيولوجية المحتملة (احتباس ماء، تكيف أيضي، عدم دقة السعرات) وقدّم لي استراتيجية عملية من ٣ خطوات لكسر الثبات خلال الأيام القادمة.`;
+
+        const res = await callGeminiApi(prompt);
+        out.innerText = res;
+        out.classList.remove('hidden');
+        addXP(20);
+      } catch (err) {
+        alert('خطأ: ' + err.message);
+      } finally {
+        btn.innerText = '🔍 تشخيص وزني وتوليد استراتيجية الكسر';
+        btn.disabled = false;
+      }
+    }
+
+    // ================= الانضباط والمكافآت =================
     function calculateStreaks() {
       const keys = Object.keys(state.logs).sort();
       let curr = 0, max = 0;
@@ -1993,7 +2001,7 @@
         `;
       });
 
-      // رسم خريطة الـ 214 يوم الحرارية
+      // خريطة الـ 214 يوم
       const { day } = getJourneyProgress();
       const grid = document.getElementById('heatmapGrid');
       grid.innerHTML = '';
@@ -2034,7 +2042,7 @@
     }
 
     function addNewCustomHabit() {
-      const t = prompt('أدخل اسم العادة اليومية الجديدة:');
+      const t = prompt('أدخل اسم العادة الجديدة:');
       if (t && t.trim()) {
         state.habits.push({ id: 'h_' + Date.now(), title: t.trim(), core: false });
         saveState();
@@ -2051,8 +2059,8 @@
     }
 
     function addCustomReward() {
-      const title = prompt('ما هي المكافأة الشخصية التي تريد إضافتها؟');
-      const cost = parseInt(prompt('كم نقطة XP تتطلب هذه المكافأة؟', '400'));
+      const title = prompt('ما هي المكافأة التي تود إضافتها؟');
+      const cost = parseInt(prompt('كم نقطة XP تتطلب؟', '500'));
       if (title && !isNaN(cost)) {
         state.rewards.push({ id: 'r_' + Date.now(), title: title.trim(), cost, claimed: false });
         saveState();
@@ -2063,7 +2071,7 @@
     function claimReward(id) {
       const r = state.rewards.find(x => x.id === id);
       if (!r || r.claimed) return;
-      if ((state.xp || 0) < r.cost) return alert(`تحتاج إلى ${r.cost - state.xp} XP إضافية لفتح هذه المكافأة.`);
+      if ((state.xp || 0) < r.cost) return alert(`تحتاج إلى ${r.cost - state.xp} XP إضافية.`);
       state.xp -= r.cost;
       r.claimed = true;
       vibrate([60, 40, 90]);
@@ -2077,10 +2085,10 @@
       const box = document.getElementById('recoveryAdviceBox');
       if (!val) { box.classList.add('hidden'); return; }
       const plans = {
-        sleep: 'خطة الغد: قلّل التمارين القوية إلى ١٠ دقائق إطالة فقط، واشرب الماء مبكراً، واجعل أولويتك النوم قبل ١١ مساءً.',
-        stress: 'خطة الغد: لا تضغط على نفسك بحساب السعرات؛ اكتفِ بـ ٣ وجبات مشبعة بالبروتين مع ١٥ دقيقة مشي لتفريغ التوتر.',
-        craving: 'خطة الغد: ابدأ فطورك بوجبة غنية بالبروتين (مثل البيض) مع شرب كوب ماء ٣٠٠ مل قبل كل وجبة لكسر تذبذب السكر.',
-        time: 'خطة الغد: استخدم بنك الوجبات السريعة الجاهزة، وقسّم المشي إلى ١٠ دقائق صباحاً و١٠ دقائق مساءً.'
+        sleep: 'خطة اليوم: قلّل أي نشاط مجهد، اشرب لترين ماء، واجعل أولويتك النوم قبل ١١ مساءً لترميم طاقتك.',
+        stress: 'خطة اليوم: لا تنشغل بحساب السعرات الدقيق؛ ركز على وجبات مشبعة بالبروتين مع ١٥ دقيقة مشي لتصفية الذهن.',
+        craving: 'خطة اليوم: اشرب كوب ماء ٣٠٠ مل فوراً، وتناول وجبة غنية بالبروتين لمنع تذبذب سكر الدم.',
+        time: 'خطة اليوم: استخدم بنك الوجبات السريعة، واكتفِ بـ ٣ عادات أساسية تحافظ بها على السلسلة.'
       };
       box.innerText = '💡 ' + plans[val];
       box.classList.remove('hidden');
@@ -2092,11 +2100,11 @@
       saveState();
       renderDashboard();
       alert(log.hardMode
-        ? 'تم تفعيل وضع اليوم الصعب: المطلوب منك اليوم فقط ٣ عادات أساسية للحفاظ على استمراريتك دون إرهاق.'
-        : 'تم إيقاف وضع اليوم الصعب والعودة للوضع الكامل.');
+        ? 'تم تفعيل وضع اليوم الصعب: المطلوب منك اليوم فقط ٣ عادات أساسية للاستمرار دون لوم النفس.'
+        : 'تم إلغاء وضع اليوم الصعب والعودة للوضع الكامل.');
     }
 
-    // ================= التغذية وحاسبة السعرات =================
+    // ================= التغذية والسعرات =================
     function renderNutritionSection() {
       if (!state.profile) return;
       const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
@@ -2154,7 +2162,7 @@
       renderNutritionSection();
     }
 
-    // ================= التركيز، حاسبة النوم، المذكرات، وبطاقة الإنجاز =================
+    // ================= التركيز والمذكرات وبطاقة الإنجاز =================
     let pomoSec = 25 * 60, pomoInt = null;
     function togglePomo() {
       const btn = document.getElementById('btnPomoStart');
@@ -2182,26 +2190,7 @@
       if (pomoInt) clearInterval(pomoInt);
       pomoInt = null; pomoSec = 25 * 60;
       document.getElementById('pomoClock').innerText = '25:00';
-      document.getElementById('btnPomoStart').innerText = 'بدء جلسة التركيز';
-    }
-
-    function calcSleepCycles() {
-      const val = document.getElementById('wakeUpTimeInput').value || '06:30';
-      const [h, m] = val.split(':').map(Number);
-      const wakeMins = h * 60 + m;
-      // 5 دورات (7.5 س) و 6 دورات (9 س) مع 15 دقيقة للغفو
-      const calcTime = (cycles) => {
-        let total = wakeMins - (cycles * 90 + 15);
-        if (total < 0) total += 1440;
-        const hh = String(Math.floor(total / 60)).padStart(2, '0');
-        const mm = String(total % 60).padStart(2, '0');
-        return `${hh}:${mm}`;
-      };
-      document.getElementById('sleepCyclesResult').innerHTML = `
-        للاستيقاظ بنشاط الساعة <b>${val}</b>:<br>
-        • مثالي (٦ دورات / ٩ ساعات): نَم الساعة <b class="text-green">${calcTime(6)}</b><br>
-        • جيد جداً (٥ دورات / ٧.٥ ساعة): نَم الساعة <b class="text-crimson">${calcTime(5)}</b>
-      `;
+      document.getElementById('btnPomoStart').innerText = 'بدء الجلسة';
     }
 
     function submitJournal(e) {
@@ -2222,7 +2211,6 @@
     }
 
     function renderFocusSection() {
-      calcSleepCycles();
       const jList = document.getElementById('journalListContainer');
       jList.innerHTML = '';
       state.journals.slice(0, 15).forEach(j => {
@@ -2255,7 +2243,6 @@
       });
     }
 
-    // توليد بطاقة الإنجاز المصورة (Canvas PNG)
     function downloadAchievementCard() {
       const c = document.createElement('canvas');
       c.width = 800; c.height = 1000;
@@ -2299,7 +2286,7 @@
       }, 'image/png');
     }
 
-    // ================= نافذة الطوارئ ضد التخبيص (SOS Modal) =================
+    // ================= نافذة الطوارئ (SOS) =================
     let breathInt = null;
     function openSosModal() {
       document.getElementById('modalSos').classList.remove('hidden');
@@ -2327,7 +2314,7 @@
       addWater(300);
       vibrate([50, 40, 100]);
       closeSosModal();
-      alert('بطل! تم تسجيل انتصارك على الرغبة اللحظية + إضافة ٣٠٠ مل ماء + ٢٥ نقطة XP.');
+      alert('بطل! صمدت بنجاح + أضفنا ٣٠٠ مل ماء + ٢٥ XP لرصيدك.');
     }
 
     // ================= الإعدادات والنسخ الاحتياطي =================
@@ -2378,8 +2365,8 @@
     }
 
     function wipeAllAppData() {
-      if (confirm('تأكيد نهائي: هل تريد مسح جميع بيانات الرحلة والبدء من الصفر؟')) {
-        localStorage.removeItem('rihlaty_master_v2');
+      if (confirm('تأكيد نهائي: هل تريد مسح كافة بيانات الرحلة والبدء من الصفر؟')) {
+        localStorage.removeItem('rihlaty_master_v3');
         indexedDB.deleteDatabase(DB_NAME);
         location.reload();
       }
@@ -2390,7 +2377,7 @@
       updateFastingUI();
     }
 
-    // ================= PWA Install & Service Worker =================
+    // ================= PWA Setup =================
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -2413,7 +2400,7 @@
       });
     }
 
-    // بدء التشغيل
+    // بدء تشغيل التطبيق
     window.addEventListener('DOMContentLoaded', async () => {
       await loadState();
       if (!state.profile) {
@@ -2425,199 +2412,5 @@
       }
     });
   </script>
-  <!-- ================= إضافة المدرب الذكي وحاسبة الوجبات (Gemini AI Module) ================= -->
-<div id="geminiFloatingBtn" onclick="openGeminiModal()" style="position:fixed; bottom:82px; left:16px; z-index:150; background:linear-gradient(135deg, #2563EB, #8B5CF6); color:#fff; padding:10px 14px; border-radius:999px; font-weight:800; font-size:0.78rem; box-shadow:0 6px 20px rgba(139,92,246,0.5); cursor:pointer; display:flex; align-items:center; gap:6px; border:1px solid rgba(255,255,255,0.25);">
-  <span>✨ مدرب Gemini</span>
-</div>
-
-<div id="modalGemini" class="modal-backdrop hidden">
-  <div class="modal-box space-y" style="border-color:#8B5CF6;">
-    <div class="flex-between">
-      <div class="flex-gap">
-        <span style="font-size:1.2rem;">✨</span>
-        <h3 class="title-lg">المدرب الذكي وحاسبة الغداء (Gemini)</h3>
-      </div>
-      <button onclick="closeGeminiModal()" class="btn-sec" style="padding:4px 10px;">✕</button>
-    </div>
-
-    <!-- إعداد المفتاح السري (يحفظ في الهاتف فقط) -->
-    <div id="geminiKeySetupBox" class="card-sub space-y">
-      <label class="text-xs">🔑 مفتاح Gemini API (يُحفظ في هاتفك فقط ولا يظهر في GitHub):</label>
-      <div class="flex-gap">
-        <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy...">
-        <button onclick="saveGeminiKey()" class="btn-primary" style="white-space:nowrap;">حفظ المفتاح</button>
-      </div>
-    </div>
-
-    <!-- ١. حاسبة الوجبات الذكية (نص + صورة) -->
-    <div class="card-sub space-y">
-      <div class="title-md" style="color:#A78BFA;">🍽️ احسب سعرات وجبة الغداء بالذكاء الاصطناعي</div>
-      <textarea id="aiMealPrompt" rows="2" placeholder="اكتب ماذا أكلت في الغداء؟ (مثلاً: صحن تمن ومرق بامية مع قطعة لحم وسلطة)..."></textarea>
-      
-      <div class="flex-between">
-        <label class="btn-sec text-xs" style="cursor:pointer;">
-          📷 أو صوّر صحن الغداء
-          <input type="file" id="aiMealImageIn" accept="image/*" class="hidden" onchange="previewAiMealImg(event)">
-        </label>
-        <span id="aiMealImgStatus" class="text-xs text-green hidden">✓ تم إرفاق الصورة</span>
-      </div>
-
-      <button onclick="analyzeMealWithGemini()" id="btnAiAnalyzeMeal" class="btn-primary w-full" style="background:linear-gradient(135deg, #2563EB, #8B5CF6);">
-        ✨ تحليل الوجبة وإضافتها لسجل اليوم
-      </button>
-      <div id="aiMealResultBox" class="text-xs hidden" style="padding:8px; background:rgba(16,185,129,0.1); border:1px solid var(--green); border-radius:8px;"></div>
-    </div>
-
-    <!-- ٢. المدرب الشخصي الذكي المربوط ببياناتك -->
-    <div class="card-sub space-y">
-      <div class="title-md" style="color:#38BDF8;">🧠 استشارة المدرب الذكي لحالتك الآن</div>
-      <p class="text-xs">يقرأ Gemini تقدمك اليوم (وزنك، الماء، العادات) ويعطيك توجيهات عملية.</p>
-      <input type="text" id="aiCoachQuestion" placeholder="اسأل مدربك (أو اتركه فارغاً لتحليل وضعك اليوم)...">
-      <button onclick="askGeminiCoach()" id="btnAiCoach" class="btn-sec w-full" style="border-color:#38BDF8; color:#38BDF8;">
-        📊 حلّل يومي وانصحني الآن
-      </button>
-      <div id="aiCoachReplyBox" class="text-xs hidden" style="padding:10px; background:#0B0A0C; border:1px solid var(--border); border-radius:10px; white-space:pre-wrap; line-height:1.6; color:var(--text-main);"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-  let aiMealBase64Data = null;
-  let aiMealMimeType = 'image/jpeg';
-
-  function openGeminiModal() {
-    document.getElementById('modalGemini').classList.remove('hidden');
-    const savedKey = localStorage.getItem('rihlaty_gemini_key');
-    if (savedKey) {
-      document.getElementById('geminiApiKeyInput').value = savedKey;
-    }
-  }
-
-  function closeGeminiModal() {
-    document.getElementById('modalGemini').classList.add('hidden');
-  }
-
-  function saveGeminiKey() {
-    const k = document.getElementById('geminiApiKeyInput').value.trim();
-    if (!k) return alert('الرجاء إدخال مفتاح API الصحيح.');
-    localStorage.setItem('rihlaty_gemini_key', k);
-    alert('تم حفظ المفتاح في ذاكرة هاتفك بأمان!');
-  }
-
-  function previewAiMealImg(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    aiMealMimeType = file.type || 'image/jpeg';
-    const reader = new FileReader();
-    reader.onload = () => {
-      aiMealBase64Data = reader.result.split(',')[1];
-      document.getElementById('aiMealImgStatus').classList.remove('hidden');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // ١. دالة تحليل الوجبة وإضافتها تلقائياً للسجل
-  async function analyzeMealWithGemini() {
-    const apiKey = localStorage.getItem('rihlaty_gemini_key') || document.getElementById('geminiApiKeyInput').value.trim();
-    if (!apiKey) return alert('يرجى إدخال وحفظ مفتاح Gemini API أولاً.');
-    if (!navigator.onLine) return alert('هذه الميزة تتطلب اتصالاً بالإنترنت.');
-
-    const textPrompt = document.getElementById('aiMealPrompt').value.trim();
-    if (!textPrompt && !aiMealBase64Data) return alert('اكتب مكونات الوجبة أو أرفق صورتها أولاً.');
-
-    const btn = document.getElementById('btnAiAnalyzeMeal');
-    const resBox = document.getElementById('aiMealResultBox');
-    btn.innerText = '⏳ جاري حساب السعرات والبروتين...';
-    btn.disabled = true;
-
-    try {
-      const parts = [{
-        text: `أنت خبير تغذية دقيق. حلل هذه الوجبة: "${textPrompt || 'الوجبة الموجودة في الصورة'}".
-        أعطني الرد بصيغة JSON فقط بدون أي كلام إضافي وبدون علامات markdown، بهذا الشكل الدقيق:
-        {"name": "اسم مختصر للوجبة", "calories": 450, "protein": 25, "tip": "نصيحة قصيرة جداً من سطر واحد"}`
-      }];
-
-      if (aiMealBase64Data) {
-        parts.push({ inline_data: { mime_type: aiMealMimeType, data: aiMealBase64Data } });
-      }
-
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts }] })
-      });
-
-      const data = await response.json();
-      const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      const cleanJson = rawText.replace(/```json|```/g, '').trim();
-      const mealObj = JSON.parse(cleanJson);
-
-      // إضافة الوجبة مباشرة إلى سجل اليوم في التطبيق
-      quickAddMeal(mealObj.name, Number(mealObj.calories) || 300, Number(mealObj.protein) || 15);
-
-      resBox.innerHTML = `✅ <b>تمت الإضافة للسجل:</b> ${mealObj.name}<br>🔥 السعرات: <b>${mealObj.calories} سعرة</b> | 💪 البروتين: <b>${mealObj.protein} غرام</b><br>💡 ${mealObj.tip}`;
-      resBox.classList.remove('hidden');
-
-      document.getElementById('aiMealPrompt').value = '';
-      aiMealBase64Data = null;
-      document.getElementById('aiMealImgStatus').classList.add('hidden');
-      renderDashboard();
-    } catch (err) {
-      alert('تعذر تحليل الوجبة. تأكد من صحة مفتاح الـ API أو اتصالك بالإنترنت.');
-    } finally {
-      btn.innerText = '✨ تحليل الوجبة وإضافتها لسجل اليوم';
-      btn.disabled = false;
-    }
-  }
-
-  // ٢. دالة المدرب الشخصي المربوط ببيانات التطبيق
-  async function askGeminiCoach() {
-    const apiKey = localStorage.getItem('rihlaty_gemini_key') || document.getElementById('geminiApiKeyInput').value.trim();
-    if (!apiKey) return alert('يرجى إدخال وحفظ مفتاح Gemini API أولاً.');
-    if (!navigator.onLine) return alert('هذه الميزة تتطلب اتصالاً بالإنترنت.');
-
-    const btn = document.getElementById('btnAiCoach');
-    const replyBox = document.getElementById('aiCoachReplyBox');
-    const userQ = document.getElementById('aiCoachQuestion').value.trim();
-
-    btn.innerText = '⏳ جاري قراءة بياناتك وتحليلها...';
-    btn.disabled = true;
-
-    try {
-      const { day, phase } = getJourneyProgress();
-      const log = getTodayLog();
-      const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : (state.profile?.startW || 85);
-
-      const contextPrompt = `أنت مدرب لياقة وانضباط شخصي داخل تطبيق "رحلتي — ٢١٤ يومًا".
-      بيانات المتدرب الحالية:
-      - الاسم: ${state.profile?.name || 'بطل رحلتي'}
-      - اليوم الحالي: ${day} من أصل 214 (${phase.title})
-      - الوزن الابتدائي: ${state.profile?.startW} كغ | الوزن الحالي: ${currW} كغ | الهدف: ${state.profile?.targetW} كغ
-      - شرب الماء اليوم: ${log.water} مل من أصل ${state.profile?.waterGoal} مل
-      - دقائق المشي اليوم: ${log.walkMin} دقيقة
-      - العادات المكتملة اليوم: ${log.doneHabits.length} من ${state.habits.length}
-      - سؤال المتدرب: "${userQ || 'حلل وضعي اليوم وأعطني خطة عملية مركزة لما تبقى من اليوم'}"
-      
-      أجب باللغة العربية الفصحى بأسلوب قوي، مشجع، ومختصر في ٣ نقاط عملية واضحة دون مقدمات طويلة.`;
-
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: contextPrompt }] }] })
-      });
-
-      const data = await response.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'لم أتمكن من توليد الرد، حاول مرة أخرى.';
-      replyBox.innerText = reply;
-      replyBox.classList.remove('hidden');
-    } catch (err) {
-      alert('حدث خطأ في الاتصال بـ Gemini. تأكد من صحة المفتاح.');
-    } finally {
-      btn.innerText = '📊 حلّل يومي وانصحني الآن';
-      btn.disabled = false;
-    }
-  }
-</script>
-
 </body>
 </html>
