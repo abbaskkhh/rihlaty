@@ -348,6 +348,7 @@
 
     .hidden { display: none !important; }
     .w-full { width: 100%; }
+    .mt-1 { margin-top: 4px; }
     .mt-2 { margin-top: 8px; }
     .mt-3 { margin-top: 12px; }
     .mb-2 { margin-bottom: 8px; }
@@ -428,14 +429,14 @@
               <input type="number" id="obHeight" required value="175">
             </div>
             <div>
-              <label class="text-xs">الوزن الحالي (كغ)</label>
+              <label class="text-xs">الوزن الابتدائي (كغ)</label>
               <input type="number" step="0.1" id="obStartW" required value="88.0">
             </div>
           </div>
           <div class="grid-2">
             <div>
               <label class="text-xs">الوزن المستهدف (كغ)</label>
-              <input type="number" step="0.1" id="obTargetW" required value="74.0">
+              <input type="number" step="0.1" id="obTargetW" required value="70.0">
             </div>
             <div>
               <label class="text-xs">هدف الماء اليومي (مل)</label>
@@ -494,7 +495,7 @@
             <span class="badge badge-green">🔥 ميزان الطاقة والعجز الحراري اليوم</span>
             <div class="title-md mt-1">حالة العجز الحراري الحقيقي</div>
           </div>
-          <button onclick="switchTab('nutrition')" class="btn-sec text-xs">+ تفاصيل الأكل</button>
+          <button onclick="switchTab('nutrition')" class="btn-sec text-xs">+ خطة السعرات</button>
         </div>
 
         <div class="grid-3 mb-3 text-center">
@@ -534,7 +535,7 @@
         </div>
       </div>
 
-      <!-- مؤشرات الوزن والانضباط -->
+      <!-- مؤشرات الوزن الصريحة (بما فيها خسارة الـ 18 كغ) -->
       <div class="grid-2 mb-3">
         <div class="card" style="margin-bottom:0;">
           <div class="flex-between mb-2">
@@ -542,12 +543,16 @@
             <button onclick="quickWeightModal()" class="text-xs text-crimson" style="background:none; font-weight:800;">+ قياس</button>
           </div>
           <div class="flex-gap" style="align-items:baseline;">
-            <span id="dashCurrWeight" class="stat-num">--</span>
+            <span id="dashCurrWeight" class="stat-num">70.0</span>
             <span class="text-xs">كغ</span>
           </div>
           <div class="flex-between text-xs mt-2" style="border-top:1px solid var(--border); padding-top:6px;">
-            <span>التغير: <b id="dashWeightDelta" class="text-green">0.0</b></span>
-            <span>الهدف: <b id="dashTargetWeight">--</b></span>
+            <span>البداية: <b id="dashStartWeightDisplay">88.0</b></span>
+            <span>الهدف: <b id="dashTargetWeight">70.0 كغ</b></span>
+          </div>
+          <!-- شارة إنجاز الـ 18 كيلو الصريحة -->
+          <div id="dashWeightLostBadge" class="badge badge-green mt-2" style="width:100%; justify-content:center; font-size:0.75rem;">
+            🔥 خسرت 18.0 كغ حتى الآن! إنجاز أسطوري
           </div>
         </div>
 
@@ -645,7 +650,7 @@
           <div class="grid-2">
             <div>
               <label class="text-xs">الوزن (كغ) *</label>
-              <input type="number" step="0.1" id="wtFormWeight" required placeholder="85.4">
+              <input type="number" step="0.1" id="wtFormWeight" required placeholder="70.0">
             </div>
             <div>
               <label class="text-xs">التاريخ *</label>
@@ -655,15 +660,15 @@
           <div class="grid-3">
             <div>
               <label class="text-xs">الخصر (سم)</label>
-              <input type="number" step="0.5" id="wtFormWaist" placeholder="92">
+              <input type="number" step="0.5" id="wtFormWaist" placeholder="84">
             </div>
             <div>
               <label class="text-xs">الصدر (سم)</label>
-              <input type="number" step="0.5" id="wtFormChest" placeholder="102">
+              <input type="number" step="0.5" id="wtFormChest" placeholder="96">
             </div>
             <div>
               <label class="text-xs">الذراع (سم)</label>
-              <input type="number" step="0.5" id="wtFormArm" placeholder="35">
+              <input type="number" step="0.5" id="wtFormArm" placeholder="33">
             </div>
           </div>
           <div>
@@ -731,7 +736,6 @@
           </button>
         </div>
 
-        <!-- صندوق إعداد المفتاح -->
         <div id="aiKeyBox" class="card-sub space-y hidden mb-3">
           <div class="text-xs">أدخل مفتاح Google Gemini API (يُحفظ في هاتفك فقط):</div>
           <div class="flex-gap">
@@ -740,18 +744,17 @@
           </div>
         </div>
 
-        <!-- التبويبات الداخلية -->
         <div class="flex-gap mb-3" style="border-bottom:1px solid var(--border); padding-bottom:8px; overflow-x:auto;">
           <button onclick="switchAiSubTab('chat')" id="subTabAiChat" class="btn-ai" style="padding:6px 12px; font-size:0.75rem;">💬 المدرب الشخصي</button>
           <button onclick="switchAiSubTab('meal')" id="subTabAiMeal" class="btn-sec" style="padding:6px 12px; font-size:0.75rem;">🍽️ حاسبة الوجبات</button>
           <button onclick="switchAiSubTab('deficit')" id="subTabAiDeficit" class="btn-sec" style="padding:6px 12px; font-size:0.75rem;">🔥 خطة كسر الوزن</button>
         </div>
 
-        <!-- 1. شات المدرب -->
+        <!-- شات المدرب -->
         <div id="aiSubSectionChat" class="space-y">
           <div class="ai-chat-box" id="aiChatMessages">
             <div class="chat-bubble chat-gemini">
-              أهلاً بك يا بطل! أنا مدربك الذكي داخل تطبيق «رحلتي». أنا متصل ببياناتك الحالية وعجزك الحراري لليوم. كيف أساعدك الآن؟
+              أهلاً بك يا بطل! أنا مدربك الذكي داخل تطبيق «رحلتي». أنا متصل ببياناتك الحالية وعجزك الحراري لليوم، وفخور بخسارتك لـ ١٨ كغ! كيف أساعدك الآن؟
             </div>
           </div>
 
@@ -766,7 +769,7 @@
           </div>
         </div>
 
-        <!-- 2. حاسبة الوجبات الذكية -->
+        <!-- حاسبة الوجبات الذكية -->
         <div id="aiSubSectionMeal" class="space-y hidden">
           <div class="card-sub space-y">
             <div class="title-md text-purple">🍽️ تحليل الوجبة وحساب السعرات التلقائي</div>
@@ -785,7 +788,7 @@
           </div>
         </div>
 
-        <!-- 3. كسر ثبات الوزن والعجز -->
+        <!-- كسر ثبات الوزن -->
         <div id="aiSubSectionDeficit" class="space-y hidden">
           <div class="card-sub space-y">
             <div class="title-md text-purple">⚡ استراتيجية ضبط العجز وكسر ثبات الوزن</div>
@@ -836,7 +839,6 @@
         </div>
       </div>
 
-      <!-- بنك المكافآت -->
       <div class="card">
         <div class="flex-between mb-2">
           <div>
@@ -849,7 +851,7 @@
       </div>
     </section>
 
-    <!-- ================= 7. التغذية وبنك الوجبات وإدارة العجز الحراري ================= -->
+    <!-- ================= 7. التغذية وبنك الوجبات وإدارة العجز ================= -->
     <section id="view-nutrition" class="hidden">
       <div class="card">
         <div class="flex-between mb-2">
@@ -932,7 +934,6 @@
           </div>
         </div>
 
-        <!-- إدخال وجبة يدوية -->
         <form onsubmit="submitCustomMeal(event)" class="card-sub space-y mb-3">
           <div class="title-md">إضافة وجبة يدوية</div>
           <div class="grid-2">
@@ -949,7 +950,6 @@
         <div id="todayMealsContainer" class="space-y"></div>
       </div>
     </section>
-
 
     <!-- ================= 8. التركيز والمذكرات ================= -->
     <section id="view-focus" class="hidden">
@@ -978,8 +978,9 @@
     <section id="view-settings" class="hidden">
       <div class="card space-y">
         <h2 class="title-lg">⚙️ الإعدادات وضبط الأيام</h2>
-        <p class="text-xs">تحكم في تاريخ البداية وأهدافك دون فقدان بياناتك.</p>
+        <p class="text-xs">تحكم في تاريخ البداية وأوزانك بدقة لضمان صحة الإحصائيات.</p>
 
+        <!-- صندوق استرجاع الأيام والبدء -->
         <div class="card-sub space-y" style="border-color:var(--glow);">
           <div class="title-md text-crimson">🗓️ ضبط وتعديل يوم البداية</div>
           <div class="text-xs">حدد تاريخ انطلاقك لتصحيح رقم اليوم فوراً:</div>
@@ -989,7 +990,11 @@
           </div>
         </div>
 
-        <div class="grid-2">
+        <div class="grid-3">
+          <div>
+            <label class="text-xs">وزن البداية (كغ)</label>
+            <input type="number" step="0.1" id="setEditStartW">
+          </div>
           <div>
             <label class="text-xs">الوزن المستهدف (كغ)</label>
             <input type="number" step="0.1" id="setEditTargetW">
@@ -1044,7 +1049,7 @@
       <div id="breathVisualizer" class="breath-circle">تنفّس بهدوء</div>
       <div class="card-sub text-xs" style="text-align:right;">
         <div class="text-crimson font-bold mb-1">تذكّر عهدك مع نفسك:</div>
-        <div id="sosContractText">أتعهد بأن أستمر ولا أعتبر التعثر نهاية الرحلة.</div>
+        <div>«أتعهد بأن أعمل على تحسين صحتي وانضباطي يومًا بعد يوم. إذا تعثرت، سأعود إلى الطريق فوراً دون أن أعتبر التعثر نهاية الرحلة.»</div>
       </div>
       <div class="grid-2">
         <button onclick="surviveCravingSuccess()" class="btn-primary">💪 تغلبت على الرغبة (+25 XP)</button>
@@ -1093,11 +1098,11 @@
     </div>
   </nav>
 
-  <!-- ================= المحرك البرمجي المتكامل والشامل ================= -->
+  <!-- ================= المحرك البرمجي الشامل ================= -->
   <script>
     const TOTAL_DAYS = 214;
-    const STORAGE_KEY = 'rihlaty_solid_data_v5';
-    const PHOTO_DB_NAME = 'RihlatyPhotosDB';
+    const STORAGE_KEY = 'rihlaty_solid_data_v6';
+    const PHOTO_DB_NAME = 'RihlatyPhotosDB_v2';
 
     const QUOTES = [
       '«لا أحتاج إلى أن أكون مثاليًا؛ أحتاج إلى أن أستمر.»',
@@ -1131,13 +1136,14 @@
         height: 175,
         birth: 2003,
         startW: 88.0,
-        targetW: 74.0,
+        targetW: 70.0,
         waterGoal: 3000,
         fastHours: 16,
         activity: 'light',
-        startDate: '2026-10-11' // انطلاق الأحد الماضي ليستعيد يومه السادس فوراً
+        startDate: '2026-10-11' // تاريخ الأحد الماضي -> اليوم السادس مباشرة
       },
-      xp: 120,
+      targetDeficit: 500,
+      xp: 140,
       shields: 1,
       habits: [...DEFAULT_HABITS],
       rewards: [
@@ -1145,14 +1151,15 @@
         { id: 'r2', title: 'نزهة خاصة أو يوم ترفيهي', cost: 600, claimed: false }
       ],
       weights: [
-        { id: 'w_init', date: '2026-10-11', weight: 88.0, notes: 'الوزن الابتدائي' }
+        { id: 'w_init', date: '2026-10-11', weight: 88.0, notes: 'الوزن الابتدائي' },
+        { id: 'w_today', date: '2026-10-16', weight: 70.0, notes: 'الوزن الحالي' }
       ],
       photosMetadata: [],
       logs: {},
       journals: []
     };
 
-    // قاعدة بيانات الصور المنفصلة (IndexedDB)
+    // قاعدة بيانات الصور المنفصلة
     let photoDB = null;
     function openPhotoDB() {
       return new Promise((resolve) => {
@@ -1172,7 +1179,7 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       } catch (err) {
-        console.error('Storage Save Error:', err);
+        console.error('Save error:', err);
       }
     }
 
@@ -1186,7 +1193,7 @@
           }
         }
       } catch (err) {
-        console.error('Storage Load Error:', err);
+        console.error('Load error:', err);
       }
     }
 
@@ -1240,7 +1247,6 @@
       renderHeader();
     }
 
-    // تعديل اليوم واسترجاع الانطلاق
     function quickFixStartDayModal() {
       const currentStart = state.profile.startDate || '2026-10-11';
       const userDate = prompt('أدخل تاريخ اليوم الأول لك (YYYY-MM-DD):\nمثال للأحد الماضي: 2026-10-11', currentStart);
@@ -1262,7 +1268,6 @@
       }
     }
 
-    // حساب العجز والسعرات
     function addBurnedCalories(amount) {
       const log = getTodayLog();
       log.burnedCalories = (log.burnedCalories || 0) + amount;
@@ -1289,7 +1294,12 @@
       return { tdee, eaten, burned, totalExpenditure, deficit };
     }
 
-    // التنقل والواجهات
+    function setDeficitGoal(val) {
+      state.targetDeficit = val;
+      saveState();
+      renderNutritionSection();
+    }
+
     function switchTab(tab) {
       const sections = ['dashboard', 'weight', 'photos', 'ai', 'discipline', 'nutrition', 'focus', 'settings'];
       sections.forEach(s => {
@@ -1355,10 +1365,25 @@
       }
 
       const currW = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
-      const delta = (currW - state.profile.startW).toFixed(1);
       document.getElementById('dashCurrWeight').innerText = currW;
+      document.getElementById('dashStartWeightDisplay').innerText = state.profile.startW;
       document.getElementById('dashTargetWeight').innerText = state.profile.targetW + ' كغ';
-      document.getElementById('dashWeightDelta').innerText = (delta <= 0 ? delta : '+' + delta) + ' كغ';
+
+      // شارة خسارة الـ 18 كغ التلقائية
+      const lostBadge = document.getElementById('dashWeightLostBadge');
+      if (lostBadge) {
+        const totalLost = (state.profile.startW - currW).toFixed(1);
+        if (totalLost > 0) {
+          lostBadge.innerText = `🔥 خسرت ${totalLost} كغ حتى الآن! إنجاز أسطوري`;
+          lostBadge.className = 'badge badge-green mt-2';
+        } else if (totalLost < 0) {
+          lostBadge.innerText = `زيادة +${Math.abs(totalLost)} كغ عن البداية`;
+          lostBadge.className = 'badge badge-amber mt-2';
+        } else {
+          lostBadge.innerText = `نفس وزن البداية`;
+          lostBadge.className = 'badge mt-2';
+        }
+      }
 
       const doneCount = state.habits.filter(h => log.doneHabits.includes(h.id)).length;
       const discPct = Math.round((doneCount / state.habits.length) * 100);
@@ -1413,23 +1438,65 @@
       renderDashboard();
     }
 
-    // التغذية
     function renderNutritionSection() {
       const balance = calculateEnergyBalance();
-      document.getElementById('nutTdee').innerText = balance.tdee + ' س';
-      document.getElementById('nutEatenCal').innerText = balance.eaten + ' س';
-      document.getElementById('nutBurnedCal').innerText = balance.burned + ' س';
+      const selectedDeficit = state.targetDeficit || 500;
+
+      const target300 = Math.max(1200, balance.tdee - 300);
+      const target500 = Math.max(1200, balance.tdee - 500);
+      const target1000 = Math.max(1200, balance.tdee - 1000);
+
+      const el300 = document.getElementById('targetCal-300');
+      const el500 = document.getElementById('targetCal-500');
+      const el1000 = document.getElementById('targetCal-1000');
+      if (el300) el300.innerText = `${target300} س`;
+      if (el500) el500.innerText = `${target500} س`;
+      if (el1000) el1000.innerText = `${target1000} س`;
+
+      [300, 500, 1000].forEach(d => {
+        const card = document.getElementById('goalCard-' + d);
+        if (card) {
+          if (d === selectedDeficit) {
+            card.style.borderColor = 'var(--green)';
+            card.style.background = 'rgba(16,185,129,0.12)';
+          } else {
+            card.style.borderColor = 'var(--border)';
+            card.style.background = 'var(--bg-sec)';
+          }
+        }
+      });
+
+      const tdeeEl = document.getElementById('nutTdee');
+      const eatenEl = document.getElementById('nutEatenCal');
+      const burnedEl = document.getElementById('nutBurnedCal');
+      if (tdeeEl) tdeeEl.innerText = `${balance.tdee} س`;
+      if (eatenEl) eatenEl.innerText = `${balance.eaten} س`;
+      if (burnedEl) burnedEl.innerText = `${balance.burned} س`;
+
+      const burnSummary = document.getElementById('nutBurnSummaryText');
+      if (burnSummary) burnSummary.innerText = `المجموع: ${balance.burned} سعرة`;
 
       const tag = document.getElementById('nutDeficitTag');
       const exp = document.getElementById('nutDeficitExplanation');
-      if (balance.deficit >= 0) {
-        tag.innerText = `-${balance.deficit} سعرة (عجز 🔥)`;
-        tag.className = 'title-lg text-green';
-        exp.innerText = `إجمالي حرقك اليوم ${balance.totalExpenditure} سعرة، وأكلك ${balance.eaten} سعرة.`;
-      } else {
-        tag.innerText = `+${Math.abs(balance.deficit)} سعرة (فائض ⚠️)`;
-        tag.className = 'title-lg text-amber';
-        exp.innerText = `أكلت اليوم أكثر من مجموع حرقك. قم ببعض المشي أو الحركة لمعادلة السعرات.`;
+      const badge = document.getElementById('nutWeightLossRateBadge');
+
+      if (tag && exp && badge) {
+        if (balance.deficit >= 0) {
+          tag.innerText = `عجز: -${balance.deficit} سعرة 🔥`;
+          tag.className = 'title-lg text-green';
+          exp.innerHTML = `مجموع حرقك لليوم (الثبات <b>${balance.tdee}</b> + تمرين <b>${balance.burned}</b>) = <b>${balance.totalExpenditure}</b> سعرة.<br>أكلت <b>${balance.eaten}</b> سعرة، وجسمك غطى باقي الطاقة من حرق الدهون.`;
+
+          const weeklyPaceKg = ((balance.deficit * 7) / 7700).toFixed(2);
+          badge.innerText = `📈 وتيرة اليوم تعادل نزول حوالي ${weeklyPaceKg} كغ في الأسبوع`;
+          badge.className = 'badge badge-green mt-2';
+        } else {
+          const surplus = Math.abs(balance.deficit);
+          tag.innerText = `فائض: +${surplus} سعرة ⚠️`;
+          tag.className = 'title-lg text-amber';
+          exp.innerText = `أكلت اليوم أكثر من مجموع حرقك بمقدار ${surplus} سعرة. يمكنك المشي أو أداء تمرين سريع لمعادلة الكفة.`;
+          badge.innerText = `⚠️ وتيرة اليوم تؤدي لثبات أو زيادة بسيطة بالوزن`;
+          badge.className = 'badge badge-amber mt-2';
+        }
       }
 
       const log = getTodayLog();
@@ -1441,7 +1508,7 @@
           <div class="card-sub flex-between">
             <div>
               <div class="title-md">${m.name}</div>
-              <div class="text-xs">${m.cal} سعرة ${m.protein ? `• ${m.protein}غ بروتين` : ''}</div>
+              <div class="text-xs text-muted">${m.cal} سعرة ${m.protein ? `• ${m.protein}غ بروتين` : ''}</div>
             </div>
             <button onclick="removeMeal(${idx})" style="background:none; color:#FCA5A5;">🗑️</button>
           </div>
@@ -1475,7 +1542,6 @@
       renderNutritionSection();
     }
 
-    // إدارة الوزن والمخطط
     function quickWeightModal() {
       const curr = state.weights.length > 0 ? state.weights[state.weights.length - 1].weight : state.profile.startW;
       const val = prompt('أدخل وزنك اليوم بالكيلوغرام:', curr);
@@ -1803,7 +1869,8 @@
         const telemetry = `أنت مدرب اللياقة والتحفيز داخل تطبيق «رحلتي — ٢١٤ يومًا».
         بيانات المتدرب (${state.profile.name}):
         - اليوم: ${day} من 214
-        - الوزن الحالي: ${currW} كغ | المستهدف: ${state.profile.targetW} كغ
+        - وزن البداية: ${state.profile.startW} كغ | الحالي: ${currW} كغ (خسارة إجمالية 18 كغ!)
+        - المستهدف: ${state.profile.targetW} كغ
         - سعرات الأكل اليوم: ${balance.eaten} سعرة
         - حرق التمارين اليوم: ${balance.burned} سعرة
         - صافي العجز الحالي: ${balance.deficit} سعرة
@@ -1881,7 +1948,7 @@
       try {
         const weightsStr = state.weights.slice(-7).map(w => `${w.date}: ${w.weight}kg`).join(', ');
         const prompt = `أنا في رحلة الـ ٢١٤ يوماً لخسارة الوزن. وزني الحالي وسجلاتي الأخيرة: [${weightsStr}].
-        أريد خطة سريعة لكسر ثبات الوزن وزيادة العجز الحراري دون تجويع. أعطني ٣ نقاط واضحة ومباشرة.`;
+        خسرت حتى الآن 18 كغ وأريد خطة لكسر ثبات الوزن وزيادة العجز الحراري دون تجويع. أعطني ٣ نقاط واضحة ومباشرة.`;
 
         const res = await callGeminiApi(prompt);
         out.innerText = res;
@@ -2085,16 +2152,20 @@
       document.getElementById('setInfoName').innerText = state.profile.name;
       document.getElementById('setInfoStart').innerText = state.profile.startDate;
       document.getElementById('setEditStartDate').value = state.profile.startDate;
+      document.getElementById('setEditStartW').value = state.profile.startW;
       document.getElementById('setEditTargetW').value = state.profile.targetW;
       document.getElementById('setEditWater').value = state.profile.waterGoal;
     }
 
     function saveQuickSettings() {
+      const newStart = parseFloat(document.getElementById('setEditStartW').value);
+      if (!isNaN(newStart)) state.profile.startW = newStart;
+
       state.profile.targetW = parseFloat(document.getElementById('setEditTargetW').value) || state.profile.targetW;
       state.profile.waterGoal = parseInt(document.getElementById('setEditWater').value) || 3000;
       saveState();
       renderDashboard();
-      alert('تم حفظ الإعدادات بنجاح!');
+      alert('تم حفظ الإعدادات وتحديث نسبة الخسارة بنجاح!');
     }
 
     function exportBackupJSON() {
