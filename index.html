@@ -849,50 +849,95 @@
       </div>
     </section>
 
-    <!-- ================= 7. التغذية وبنك الوجبات وحساب العجز ================= -->
+    <!-- ================= 7. التغذية وبنك الوجبات وإدارة العجز الحراري ================= -->
     <section id="view-nutrition" class="hidden">
       <div class="card">
-        <h2 class="title-lg mb-1">🥗 تغذيتي وإدارة العجز الحراري</h2>
-        <p class="text-xs mb-3">حسابات السعرات المأكولة والمحروقة والاحتياج بدقة.</p>
+        <div class="flex-between mb-2">
+          <div>
+            <h2 class="title-lg">🥗 خطة خسارة الوزن وإدارة العجز</h2>
+            <p class="text-xs">اختر خطة النزول وشاهد حرق تمارينك وعجزك الحقيقي نهاية اليوم.</p>
+          </div>
+        </div>
 
+        <!-- بطاقات خيارات خسارة الوزن المقترحة -->
+        <div class="space-y mb-3">
+          <div class="text-xs font-bold" style="color:var(--text-main);">🎯 اختر هدف النزول اليومي:</div>
+          <div class="grid-3 text-center">
+            <div onclick="setDeficitGoal(300)" id="goalCard-300" class="card-sub" style="cursor:pointer; border:1px solid var(--border);">
+              <span class="text-xs text-blue">خسارة هادئة</span>
+              <div id="targetCal-300" class="title-md mt-1">--</div>
+              <span class="text-xs text-muted">~ ٠.٣ كغ/أسبوع</span>
+            </div>
+            <div onclick="setDeficitGoal(500)" id="goalCard-500" class="card-sub" style="cursor:pointer; border:2px solid var(--green); background:rgba(16,185,129,0.08);">
+              <span class="text-xs text-green font-bold">نزول متوازن ⭐</span>
+              <div id="targetCal-500" class="title-md mt-1 text-green">--</div>
+              <span class="text-xs text-muted">~ ٠.٥ كغ/أسبوع</span>
+            </div>
+            <div onclick="setDeficitGoal(1000)" id="goalCard-1000" class="card-sub" style="cursor:pointer; border:1px solid var(--border);">
+              <span class="text-xs text-crimson">نزول سريع 🔥</span>
+              <div id="targetCal-1000" class="title-md mt-1">--</div>
+              <span class="text-xs text-muted">~ ١ كغ/أسبوع</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ملخص أرقام الطاقة والحرق اليومي -->
         <div class="grid-3 mb-3 text-center">
           <div class="card-sub">
-            <span class="text-xs">احتياج الثبات TDEE</span>
-            <div id="nutTdee" class="title-md mt-2">--</div>
+            <span class="text-xs">سعرات الثبات (TDEE)</span>
+            <div id="nutTdee" class="title-md mt-1">--</div>
           </div>
           <div class="card-sub">
-            <span class="text-xs">مجموع الأكل</span>
-            <div id="nutEatenCal" class="title-md text-amber mt-2">0</div>
+            <span class="text-xs">أكلته اليوم</span>
+            <div id="nutEatenCal" class="title-md text-amber mt-1">0</div>
           </div>
           <div class="card-sub">
-            <span class="text-xs">حرق النشاط</span>
-            <div id="nutBurnedCal" class="title-md text-crimson mt-2">0</div>
+            <span class="text-xs">حرق النشاط/تمرين</span>
+            <div id="nutBurnedCal" class="title-md text-crimson mt-1">0</div>
           </div>
         </div>
 
-        <div class="card-sub mb-3" style="border-color: rgba(16,185,129,0.5);">
+        <!-- بطاقة الحصيلة والعجز الفعلي نهاية اليوم -->
+        <div class="card-sub mb-3" style="border:1px solid rgba(16,185,129,0.45); background:rgba(16,185,129,0.08);">
           <div class="flex-between">
-            <span class="title-md">صافي العجز لليوم:</span>
+            <span class="title-md">الحصيلة الفعلية اليوم:</span>
             <span id="nutDeficitTag" class="title-lg text-green">--</span>
           </div>
-          <p id="nutDeficitExplanation" class="text-xs text-muted mt-1">--</p>
+          <p id="nutDeficitExplanation" class="text-xs mt-1" style="color:var(--text-main);">--</p>
+          <div id="nutWeightLossRateBadge" class="badge badge-green mt-2">--</div>
         </div>
 
+        <!-- تسجيل حرق التمارين السريع -->
         <div class="card-sub mb-3">
-          <div class="title-md mb-2">⚡ تسجيل سريع من بنك الوجبات المعتادة</div>
-          <div class="grid-2">
-            <button onclick="quickAddMeal('٣ بيضات مسلوقة + خيار', 240, 20)" class="btn-sec text-xs">🥚 فطور بيض (240 س)</button>
-            <button onclick="quickAddMeal('صدر دجاج مشوي + سلطة', 350, 42)" class="btn-sec text-xs">🍗 دجاج وسلطة (350 س)</button>
-            <button onclick="quickAddMeal('علبة تونة + رغيف أسمر', 280, 28)" class="btn-sec text-xs">🐟 وجبة تونة (280 س)</button>
-            <button onclick="quickAddMeal('زبادي يوناني + مكسرات', 210, 15)" class="btn-sec text-xs">🥣 سناك صحي (210 س)</button>
+          <div class="flex-between text-xs mb-2">
+            <span class="font-bold text-crimson">🔥 إضافة حرق تمرين أو حركة لليوم:</span>
+            <span id="nutBurnSummaryText" class="text-xs text-muted">المجموع: 0 سعرة</span>
+          </div>
+          <div class="grid-4">
+            <button type="button" onclick="addBurnedCalories(150)" class="btn-sec text-xs">+١٥٠ مشي</button>
+            <button type="button" onclick="addBurnedCalories(300)" class="btn-sec text-xs">+٣٠٠ كارديو</button>
+            <button type="button" onclick="addBurnedCalories(500)" class="btn-sec text-xs">+٥٠٠ حديد</button>
+            <button type="button" onclick="customBurnCaloriesPrompt()" class="btn-sec text-xs">مخصص</button>
           </div>
         </div>
 
+        <!-- بنك الوجبات السريعة -->
+        <div class="card-sub mb-3">
+          <div class="title-md mb-2">⚡ تسجيل سريع من بنك الوجبات</div>
+          <div class="grid-2">
+            <button type="button" onclick="quickAddMeal('٣ بيضات مسلوقة + خيار', 240, 20)" class="btn-sec text-xs">🥚 فطور بيض (240 س)</button>
+            <button type="button" onclick="quickAddMeal('صدر دجاج مشوي + سلطة', 350, 42)" class="btn-sec text-xs">🍗 دجاج وسلطة (350 س)</button>
+            <button type="button" onclick="quickAddMeal('علبة تونة + رغيف أسمر', 280, 28)" class="btn-sec text-xs">🐟 وجبة تونة (280 س)</button>
+            <button type="button" onclick="quickAddMeal('زبادي يوناني + مكسرات', 210, 15)" class="btn-sec text-xs">🥣 سناك صحي (210 س)</button>
+          </div>
+        </div>
+
+        <!-- إدخال وجبة يدوية -->
         <form onsubmit="submitCustomMeal(event)" class="card-sub space-y mb-3">
           <div class="title-md">إضافة وجبة يدوية</div>
           <div class="grid-2">
             <input type="text" id="mealNameIn" required placeholder="اسم الطعام">
-            <input type="number" id="mealCalIn" required placeholder="السعرات التقديرية">
+            <input type="number" id="mealCalIn" required placeholder="السعرات">
           </div>
           <button type="submit" class="btn-primary w-full">إضافة للسجل (+10 XP)</button>
         </form>
@@ -904,6 +949,7 @@
         <div id="todayMealsContainer" class="space-y"></div>
       </div>
     </section>
+
 
     <!-- ================= 8. التركيز والمذكرات ================= -->
     <section id="view-focus" class="hidden">
