@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rihlaty-offline-v5';
+const CACHE_NAME = 'rihlaty-gemini-v1';
 const ASSETS = [
   './',
   './index.html',
